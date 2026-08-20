@@ -1,60 +1,50 @@
 import time
-from Adafruit_LED_Backpack import AlphaNum4
+# from Adafruit_LED_Backpack import AlphaNum4
+from Adafruit_SSD1306 import SSD1306_128_64
+from PIL import Image, ImageDraw, ImageFont
 
-
-# Create display instance on default I2C address (0x70) and bus number.
-display = AlphaNum4.AlphaNum4()
-
-# Initialize the display. Must be called once before using the display.
+# Create display instance on the 128x64 OLED display.
+display = SSD1306_128_64(rst=None)
 display.begin()
+display.clear()
+display.display()
+
+image = Image.new('1', (display.width, display.height))
+draw = ImageDraw.Draw(image)
+font = ImageFont.load_default()
 
 # set decimal point flag - for decimal point blinking
 point = False
 
 # introduction message
-message = '   DISPLAY TIME   '
+message = ' DISPLAY TIME '
 pos = 0
 counter = 0
+
 # loop to scroll through the message
-while counter < len(message)-3:
-    # Clear the display buffer.
-    display.clear()
-    # Print a 4 character string to the display buffer.
-    display.print_str(message[pos:pos+4])
-    # Write the display buffer to the hardware.  This must be called to
-    # update the actual display LEDs.
-    display.write_display()
-    # Increment position. Wrap back to 0 when the end is reached.
-    pos += 1
-    if pos > len(message)-4:
+while counter < len(message) * 2:
+    draw.rectangle((0, 0, display.width - 1, display.height - 1), outline=0, fill=0)
+    draw.text((display.width - pos, 20), message, font=font, fill=255)
+    display.image(image)
+    display.display()
+    pos += 2
+    if pos > len(message) * 8:
         pos = 0
-    # Delay for half a second.
-    time.sleep(0.2)
-    # increase counter in order to end the loop at the end of the message
+    time.sleep(0.15)
     counter += 1
 
 # loop displaying the actual time
 while True:
-    # organise time format
-    now = time.strftime("%H%M")
-
-    # reset display
-    display.clear()
-
-    # display actual time
-    display.print_number_str(now)
-
-    # manage to get the decimal point blinking
+    now = time.strftime("%H:%M")
+    draw.rectangle((0, 0, display.width - 1, display.height - 1), outline=0, fill=0)
+    draw.text((18, 20), now, font=font, fill=255)
     if point:
-        display.set_decimal(1, point)
+        draw.ellipse((103, 48, 109, 54), fill=255)
         point = False
     else:
-        display.set_decimal(1, point)
         point = True
-
-    # write content to display
-    display.write_display()
-    # add time delay concerning the blinking
+    display.image(image)
+    display.display()
     time.sleep(1)
 
 

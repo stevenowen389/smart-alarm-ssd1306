@@ -1,137 +1,137 @@
-from Adafruit_LED_Backpack import AlphaNum4
+# from Adafruit_LED_Backpack import AlphaNum4
+from Adafruit_SSD1306 import SSD1306_128_64
+from PIL import Image, ImageDraw, ImageFont
 import time
 import logging
 import os
 
 
 # read environmental variable for project path
-project_path = os.environ['smart_alarm_path']
+project_path = os.environ.get('smart_alarm_path', '.')
 logger = logging.getLogger(__name__)
 
 
 class Display(object):
-    """
-    Display class: manages all methods concerning the alphanumeric display.
+    """Display wrapper around the SSD1306 OLED display.
+
+    The project previously used the Adafruit AlphaNum4 4-digit display. This
+    class keeps the public methods expected by smart_alarm, but renders them on
+    a 128x64 monochrome OLED instead.
     """
 
     def __init__(self):
-        """init function: imports adafruit alphanumeric display class and begins"""
-        # write to error.log file
-        self.display_lib = AlphaNum4.AlphaNum4()
+        self.display_lib = SSD1306_128_64(rst=None)
         self.display_lib.begin()
+        self.display_lib.clear()
+        self.display_lib.display()
+        self.width = self.display_lib.width
+        self.height = self.display_lib.height
+        self.image = Image.new('1', (self.width, self.height))
+        self.draw = ImageDraw.Draw(self.image)
+        self.font = ImageFont.load_default()
         self.display_in_use = False
         logger.info('display-module initialized')
 
+    def _clear_buffer(self):
+        self.image = Image.new('1', (self.width, self.height))
+        self.draw = ImageDraw.Draw(self.image)
+
+    def _draw_decimal(self, pos, decimal):
+        dots = {1: (105, 50), 3: (115, 50)}
+        if decimal and pos in dots:
+            x, y = dots[pos]
+            self.draw.ellipse((x, y, x + 4, y + 4), fill=255)
+        elif pos in dots:
+            x, y = dots[pos]
+            self.draw.rectangle((x, y, x + 4, y + 4), fill=0)
+
+    def _push(self):
+        self.display_lib.image(self.image)
+        self.display_lib.display()
+
     def scroll(self, message, number_of_iteration):
-        """scrolls the given message from right to left through the display.
-        Set number_f_iterations = 1, in order to display the message just once."""
+        """Scroll a text message across the display."""
         self.display_in_use = True
-        pos = 0
-        counter = 0
-        message = "   " + message + "   "
-        # loop to scroll through the message
-        while counter < (len(message) - 3) * number_of_iteration:
-            # Clear the display buffer.
-            self.display_lib.clear()
-            # Print a 4 character string to the display buffer.
-            self.display_lib.print_str(message[pos:pos + 4])
-            # Write the display buffer to the hardware.  This must be called to
-            # update the actual display LEDs.
-            self.display_lib.write_display()
-            # Increment position. Wrap back to 0 when the end is reached.
-            pos += 1
-            if pos > len(message) - 4:
-                pos = 0
-            # Delay for half a second
-            time.sleep(0.12)
-            # increase counter in order to end the loop at the end of the message
-            counter += 1
+        text = '   %s   ' % message
+        for _ in range(number_of_iteration):
+            for offset in range(0, len(text) * 6 + self.width):
+                self._clear_buffer()
+                self.draw.text((self.width - offset, 20), text, font=self.font, fill=255)
+                self._push()
+                time.sleep(0.05)
         self.display_in_use = False
 
-    def show_time(self, time):
-        """displays the given time using adafruit library"""
+    def show_time(self, value):
+        """Render a time-like value on the display."""
         if self.display_in_use:
             return
-        self.display_lib.print_number_str(time)
+        self._clear_buffer()
+        self.draw.text((20, 16), str(value), font=self.font, fill=255)
+        self._push()
 
     def set_brightness(self, value):
-        """change the displays brightness. Value is between 0 and 15"""
-        self.display_lib.set_brightness(value)
+        """Change the display brightness via SSD1306 contrast."""
+        try:
+            contrast = max(0, min(255, int(value * 16)))
+            self.display_lib.set_contrast(contrast)
+        except AttributeError:
+            pass
 
     def clear_class(self):
-        """clears the display, in order to accept new content
-        (note that it needs to be called different to -pythonic- 'clear')"""
-        self.display_lib.clear()
+        """Clear the display buffer and render the blank state."""
+        self._clear_buffer()
+        self._push()
 
     def write(self):
-        """writes all the earlier given content to the display,
-        needs to be done at every end of the loop"""
-        self.display_lib.write_display()
+        """Push the current buffer to the OLED."""
+        self._push()
 
     def set_decimal(self, pos, decimal):
-        """activates the decimal point. First argument is the poosition
-        from 0 to 3, second is True or False."""
+        """Render a small decimal marker at the requested position."""
         if self.display_in_use:
             return
-        self.display_lib.set_decimal(pos, decimal)
+        self._draw_decimal(pos, decimal)
 
     def set_segment(self, led, value):
-        """Sets specified LED (value of 0 to 127) to the specified value, 0/False
-        for off and 1 (or any True/non-zero value) for on."""
-        self.display_lib.set_led(led, value)
+        """Render a single segment on the OLED using a simple coordinate map."""
+        x = led % 16
+        y = led // 16
+        if value:
+            self.draw.rectangle((x * 8, y * 8, x * 8 + 6, y * 8 + 6), fill=255)
+        else:
+            self.draw.rectangle((x * 8, y * 8, x * 8 + 6, y * 8 + 6), fill=0)
 
-    # The following functions are not mandatory, because they just contain little display games
+    # The following functions are not mandatory and are kept for backwards
+    # compatibility with the previous AlphaNum4 display interface.
 
     def shutdown(self, number_of_iterations):
-        """goes from top segments to bottom segments"""
         self.display_in_use = True
-        delay = 0.1
-        sequence1 = [0, 8, 9, 12, 11, 3]
-        sequence2 = [0, 10, 9, 12, 13, 3]
-        counter = 0
-        while counter < number_of_iterations:
-            for a in range(len(sequence1)):
-                self.clear_class()
-                for i in range(4):
-                    self.set_segment(sequence1[a] + (i * 16), 1)
-                    self.set_segment(sequence2[a] + (i * 16), 1)
-                self.write()
-                time.sleep(delay)
-            counter += 1
+        for _ in range(number_of_iterations):
+            self._clear_buffer()
+            for i in range(1, 10):
+                self.draw.rectangle((i * 10, 0, i * 10 + 8, 60), fill=255)
+                self._push()
+                time.sleep(0.08)
         self.display_in_use = False
 
     def snake(self, number_of_iterations):
-        """runs a snake through the display from left to right"""
         self.display_in_use = True
-        counter = 0
-        delay = 0.02
-        loop = [3, 2, 1, 0, 5, 4, 3, 14]
-        while counter < number_of_iterations:
-            for z in range(4):
-                for i in range(len(loop)):
-                    self.clear_class()
-                    self.set_segment(loop[i] + (z * 16), 1)
-                    self.write()
-                    time.sleep(delay)
-            counter += 1
+        for _ in range(number_of_iterations):
+            for x in range(0, self.width):
+                self._clear_buffer()
+                self.draw.rectangle((x, 20, x + 8, 28), fill=255)
+                self._push()
+                time.sleep(0.02)
         self.display_in_use = False
 
     def big_stars(self, number_of_iterations):
-        """big stars circling in each digit"""
         self.display_in_use = True
-        delay = 0.03
-        counter = 0
-        segment1 = [6, 8, 9, 10, 7, 13, 12, 11]
-        segment2 = [7, 13, 12, 11, 6, 8, 9, 10]
-        while counter < number_of_iterations:
-            for a in range(len(segment1)):
-                self.clear_class()
-                for i in range(4):
-                    self.set_segment(segment1[a] + (i * 16), 1)
-                    self.set_segment(segment2[a] + (i * 16), 1)
-                self.write()
-                time.sleep(delay)
-            counter += 1
+        for _ in range(number_of_iterations):
+            self._clear_buffer()
+            for star in [(10, 10), (40, 18), (80, 10), (110, 24), (20, 45), (90, 45)]:
+                self.draw.ellipse((star[0], star[1], star[0] + 6, star[1] + 6), fill=255)
+            self._push()
+            time.sleep(0.05)
         self.display_in_use = False
 
 
