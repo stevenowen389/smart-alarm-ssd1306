@@ -28,20 +28,7 @@ $remote = "${piUser}@${piHost}:${piTarget}"
 scp "$localBundle" $remote
 
 Write-Host "Connecting to the Pi and updating the repo"
-ssh "$piUser@$piHost" @"
-set -e
-rm -rf /home/steven/smart_alarm
-cd /home/steven
-git clone /tmp/$bundleName smart_alarm
-cd /home/steven/smart_alarm
-git checkout $branch
-python3 -m venv .venv
-. .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install Adafruit-SSD1306 pillow
-python -m py_compile smart_alarm/modules/display_class.py playground/display_time.py playground/scroll_text.py
-
-echo "Update complete. Repo is at /home/steven/smart_alarm"
-"@
+$remoteCmd = "rm -rf /home/steven/smart_alarm; cd /home/steven; git clone /tmp/$bundleName smart_alarm; cd /home/steven/smart_alarm; git checkout $branch; python3 -m venv .venv; .venv/bin/python -m pip install --upgrade pip; .venv/bin/python -m pip install Adafruit-SSD1306 pillow; .venv/bin/python -m py_compile smart_alarm/modules/display_class.py playground/display_time.py playground/scroll_text.py; echo 'Update complete. Repo is at /home/steven/smart_alarm'"
+ssh "${piUser}@${piHost}" $remoteCmd
 
 Write-Host "All done."
