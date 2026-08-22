@@ -2,7 +2,6 @@
 import sys
 import traceback
 import inspect
-import importlib
 import subprocess
 import os
 
@@ -15,19 +14,18 @@ except Exception:
     traceback.print_exc()
 
 print('\n--- Adafruit_GPIO.GPIO probe ---')
+# Keep this minimal — CircuitPython (adafruit-circuitpython-ssd1306) is preferred
 try:
     import Adafruit_GPIO.GPIO as G
     print('has get_platform_gpio:', hasattr(G, 'get_platform_gpio'))
-    print('\nget_platform_gpio source:\n')
     try:
+        print('\nget_platform_gpio source:\n')
         print(inspect.getsource(G.get_platform_gpio))
     except Exception:
-        print('<could not show source>')
-
+        print('<could not show get_platform_gpio source>')
     try:
-        print('\nCalling get_platform_gpio()...')
-        platform = G.get_platform_gpio()
-        print('get_platform_gpio() returned:', platform)
+        G.get_platform_gpio()
+        print('get_platform_gpio() returned successfully')
     except Exception:
         print('get_platform_gpio() raised:')
         traceback.print_exc()
@@ -39,12 +37,6 @@ print('\n--- Python / environment ---')
 print('exe:', sys.executable)
 print('version:', sys.version.splitlines()[0])
 print('sys.path[0:8]=', sys.path[0:8])
-
-print('\nRPi.GPIO spec:')
-try:
-    print(importlib.util.find_spec('RPi.GPIO'))
-except Exception:
-    traceback.print_exc()
 
 print('\n--- device nodes ---')
 for p in ('/dev/gpiomem', '/dev/mem'):

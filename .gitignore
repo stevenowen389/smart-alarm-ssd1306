@@ -1,1 +1,12 @@
+# Ignore the generated bundle
+smart_alarm_ssd1306.bundle
+
+# Python/Venv
+.venv/
+__pycache__/
 *.pyc
+
+# Editor
+.vscode/
+.idea/
+

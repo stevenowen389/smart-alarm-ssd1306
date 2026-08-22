@@ -7,7 +7,7 @@ This smart_alarm project provides an easy to build and program Internet of Thing
 
 # Instructions - Wiki
 
- :warning: :warning: **THIS PROJECT IS STILL IN DEVELOPMENT AND MIGHT NOT RUN AS EXPECTED**  :warning: :warning:
+:warning: :warning: **THIS PROJECT IS STILL IN DEVELOPMENT AND MIGHT NOT RUN AS EXPECTED**  :warning: :warning:
 
 If you want to build and code your own _smart_alarm_ please visit the **[Smala Wiki](https://github.com/fgebhart/smart_alarm/wiki)**
 
@@ -17,6 +17,35 @@ Or if you just want to dive into the code, simply clone this repository to your 
 cd
 git clone https://github.com/fgebhart/smart_alarm.git
 ```
+
+
+### Raspberry Pi setup for SSD1306 (quick guide)
+
+On a Raspberry Pi and using the project's virtualenv, the SSD1306 display requires Blinka (CircuitPython support) and the CircuitPython SSD1306 driver. The following steps set up a venv and install the required packages:
+
+1. On the Pi install OS-level packages:
+
+   sudo apt update
+   sudo apt install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2
+
+2. From the project root on the Pi (recommended):
+
+   python3 -m venv --system-site-packages .venv
+   . .venv/bin/activate
+   python -m pip install --upgrade pip
+   python -m pip install adafruit-blinka adafruit-circuitpython-ssd1306 pillow
+
+3. Confirm the OLED is visible on I2C:
+
+   i2cdetect -y 1
+
+4. Run the simple test:
+
+   python playground/hello_ssd1306_simple.py
+
+Notes:
+- prefer running from the repository root so local package imports resolve correctly (use run_smart_alarm.py helper)
+- If you run into the old Adafruit_GPIO platform errors, prefer the CircuitPython driver path (Blinka + adafruit-circuitpython-ssd1306) as used by the Display wrapper.
 
 Also check out our Video on Youtube:
 
