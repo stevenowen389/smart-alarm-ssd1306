@@ -2,7 +2,7 @@ $branch = "ssd1306-updates"
 $bundleName = "smart_alarm_ssd1306.bundle"
 $worktreeDir = "C:\Users\steve\Documents\GitHub\smart_alarm.worktrees\retrieve-archived-chat"
 $piUser = "steven"
-$piHost = "192.168.1.42"
+$piHost = "192.168.1.79"
 $piTarget = "/tmp/$bundleName"
 
 Set-Location $worktreeDir
