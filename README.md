@@ -33,7 +33,7 @@ On a Raspberry Pi and using the project's virtualenv, the SSD1306 display requir
    python3 -m venv --system-site-packages .venv
    . .venv/bin/activate
    python -m pip install --upgrade pip
-   python -m pip install adafruit-blinka adafruit-circuitpython-ssd1306 pillow
+   python -m pip install adafruit-blinka adafruit-circuitpython-ssd1306 pillow pyttsx3 pygame
 
 3. Confirm the OLED is visible on I2C:
 

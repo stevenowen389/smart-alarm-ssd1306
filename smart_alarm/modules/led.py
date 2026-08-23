@@ -66,7 +66,7 @@ class LEDs(object):
 
     def wake_up_light_show(self, duration_time):
         """combination of earlier functions, adjust when needed"""
-        self.rainbow(1, duration_time/4)
-        self.rainbow(3, duration_time/4)
-        self.rainbow(10, duration_time/4)
-        self.white_blinking(duration_time/4)
+        self.rainbow(1, duration_time / 4)
+        self.rainbow(3, duration_time / 4)
+        self.rainbow(10, duration_time / 4)
+        self.white_blinking(duration_time / 4)

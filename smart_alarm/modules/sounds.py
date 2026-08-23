@@ -1,5 +1,5 @@
 import pygame
-import pyttsx
+import pyttsx3 as pyttsx
 import time
 from random import randint
 import os
