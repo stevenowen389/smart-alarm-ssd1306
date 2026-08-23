@@ -48,7 +48,7 @@ DLF News: http://www.deutschlandfunk.de/podcast-nachrichten.1257.de.podcast.xml
 """
 
 from urllib import request
-import RPi.GPIO as GPIO
+from gpiozero import Button, DigitalInputDevice, DigitalOutputDevice
 import threading
 import logging.config
 import log_config
@@ -69,15 +69,15 @@ from modules.xml_data import Xml_data
 from modules.led import LEDs
 
 
-def button_callback(channel):
+def button_callback():
     """define a threaded callback function to run when events are detected"""
     start_timer = time.time()
     timer = 0
 
     logger.debug("button pressed")
 
-    if GPIO.input(button_input_pin) and sound.sound_active is False and led.leds_active is False:  # if port 24 == 1
-        while GPIO.input(button_input_pin) and timer < 3:
+    if button.is_pressed and sound.sound_active is False and led.leds_active is False:
+        while button.is_pressed and timer < 3:
             loop_timer = time.time()
             timer = loop_timer - start_timer
             time.sleep(0.1)
@@ -89,7 +89,7 @@ def button_callback(channel):
             logger.info('button pressed for > 3 sec')
             shutdown_pi()
 
-    elif GPIO.input(button_input_pin):
+    elif button.is_pressed:
         if sound.sound_active is True:
             sound.stopping_sound()
         elif led.leds_active is True:
@@ -186,17 +186,18 @@ def read_photocell():
     while counter < max_iterations:
         brightness = 0
         # needs to be put low first, so the capacitor is empty
-        GPIO.setup(photocell_input_pin, GPIO.OUT)
-        GPIO.output(photocell_input_pin, GPIO.LOW)
+        discharge = DigitalOutputDevice(photocell_input_pin, initial_value=False)
+        discharge.close()
 
         time.sleep(0.1)
 
         # set to input to read out
-        GPIO.setup(photocell_input_pin, GPIO.IN)
+        photocell = DigitalInputDevice(photocell_input_pin, pull_up=False)
         # increases the brightness variable depending on the charge
         # of the capacitor (400 = dark; 0 = bright)
-        while GPIO.input(photocell_input_pin) == GPIO.LOW:
+        while not photocell.is_active:
             brightness += 1
+        photocell.close()
 
         summed_up_brightness = summed_up_brightness + brightness
         counter += 1
@@ -414,15 +415,15 @@ def shutdown_pi():
     timer = 0
     shutdown = False
 
-    while GPIO.input(button_input_pin) == 1:
+    while button.is_pressed:
         time.sleep(0.1)
 
-    if GPIO.input(button_input_pin) == 0:
+    if not button.is_pressed:
 
         while timer < 5:
             loop_timer = time.time()
             timer = loop_timer - start_timer
-            if GPIO.input(button_input_pin):
+            if button.is_pressed:
                 shutdown = True
                 break
             time.sleep(0.1)
@@ -473,7 +474,7 @@ def check_if_smartalarm_is_running_leds():
 
 
 def main():
-    global project_path, display, sound, xml_data, led
+    global project_path, display, sound, xml_data, led, button
     global button_input_pin, amp_switch_pin, time_for_leds, now
     project_path = os.environ['smart_alarm_path']
 
@@ -517,13 +518,8 @@ def main():
     # otherwise the leds functions will be skipped due to while functions
     time_for_leds = 300
 
-    # turn off GPIO warnings
-    GPIO.setwarnings(False)
-    # configure RPI GPIO. Make sure to use 1k ohms resistor to protect input pin
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(button_input_pin, GPIO.IN)
-    # set pin to output
-    GPIO.setup(amp_switch_pin, GPIO.OUT)
+    # configure the active-high button input; its external resistor provides the bias
+    button = Button(button_input_pin, pull_up=None, active_state=True, bounce_time=None)
     # set output low in order to turn off amplifier and nullify noise
     sound.toggle_amp_pin(0)
     # alternative starting display
@@ -543,7 +539,7 @@ def main():
     sound.say(dummy_message)
 
     # start the the button interrupt thread
-    GPIO.add_event_detect(button_input_pin, GPIO.BOTH, callback=button_callback)
+    button.when_pressed = button_callback
 
     # read out the settings in 'data.xml' from the same folder
     xml_file = xml_data.read_data()

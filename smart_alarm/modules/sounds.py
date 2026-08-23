@@ -3,7 +3,7 @@ import pyttsx3 as pyttsx
 import time
 from random import randint
 import os
-import RPi.GPIO as GPIO
+from gpiozero import OutputDevice
 import logging
 
 
@@ -12,12 +12,7 @@ button_input_pin = 24
 # set pin for amplifier switch
 amp_switch_pin = 5
 
-# turn off GPIO warnings
-GPIO.setwarnings(False)
-
-GPIO.setmode(GPIO.BCM)
-# set pin to output
-GPIO.setup(amp_switch_pin, GPIO.OUT)
+amp_switch = OutputDevice(amp_switch_pin, initial_value=False)
 
 # read environmental variable for project path
 project_path = os.environ['smart_alarm_path']
@@ -43,9 +38,9 @@ class Sound(object):
         # set pwm audio pin one or zero, depending on the current state
         logger.debug("setting amp switch pin to: {}".format(toggle))
         if toggle == 0:
-            GPIO.output(amp_switch_pin, 0)
+            amp_switch.off()
         elif toggle == 1:
-            GPIO.output(amp_switch_pin, 1)
+            amp_switch.on()
         else:
             raise TypeError("got wrong value for toggle variable, should be 1 or 0.")
 
