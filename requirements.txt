@@ -1,6 +1,7 @@
 adafruit-blinka
 adafruit-circuitpython-ssd1306
 coloredlogs
+colorschemes
 gpiozero
 Pillow
 pygame

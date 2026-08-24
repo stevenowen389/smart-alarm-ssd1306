@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# set envirmonetal variable for apache path 
-export smart_alarm_path=/home/pi/smart_alarm/smart_alarm
+# set environmental variable for the project path
+export smart_alarm_path="${SMART_ALARM_PATH:-$HOME/smart_alarm/smart_alarm}"
 
 # stop mpd service in order to run mopidy
 sudo service mpd stop

@@ -110,7 +110,7 @@ class Sound(object):
         os.system(volume_command)
 
     def play_wakeup_music(self):
-        """find all mp3 files in the folder /home/pi/music
+        """find all mp3 files in the user's music folder
         and play one of them at random"""
         list_of_music_files = []
         for track in os.listdir(project_path + '/music'):

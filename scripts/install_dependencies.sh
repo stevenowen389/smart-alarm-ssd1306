@@ -35,4 +35,5 @@ echo
 echo "Dependencies installed. Run the alarm with:"
 echo "  $VENV/bin/python $PROJECT_ROOT/run_smart_alarm.py"
 echo
-echo "Note: LED support also requires colorschemes.py from the external APA102_Pi library at /home/pi/APA102_Pi."
+echo "LED support includes the colorschemes package from requirements.txt."
+echo "Set APA102_PI_PATH if the legacy APA102_Pi library is outside ~/APA102_Pi."

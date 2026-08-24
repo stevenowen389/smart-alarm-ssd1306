@@ -1,6 +1,7 @@
 import sys
 import os
-sys.path.append(os.path.abspath("/home/pi/APA102_Pi"))
+apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
+sys.path.append(os.path.abspath(apa102_path))
 import colorschemes
 
 

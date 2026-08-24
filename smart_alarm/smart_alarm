@@ -158,9 +158,10 @@ def delete_old_files(time_to_alarm):
             list_of_mp3_files.append(project_path + '/' + str(mp3_file))
 
     # as well check the home folder
-    for mp3_file in os.listdir('/home/pi'):
+    home_path = os.path.expanduser('~')
+    for mp3_file in os.listdir(home_path):
         if mp3_file.endswith('.mp3'):
-            list_of_mp3_files.append('/home/pi/' + str(mp3_file))
+            list_of_mp3_files.append(os.path.join(home_path, str(mp3_file)))
 
     # delete old files, either 12h before or after alarm
     if time_to_alarm == 720 or time_to_alarm == -720:
@@ -465,7 +466,8 @@ def check_if_smartalarm_is_running_leds():
     is there, the operating smart alarm mostlikely is running
     with LEDs"""
     logger.info('checking if I have LEDs installed...')
-    if os.path.isfile('/home/pi/APA102_Pi/colorschemes.py'):
+    apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
+    if os.path.isfile(os.path.join(apa102_path, 'colorschemes.py')):
         logger.info('...yeah I\'m flashy')
         return True
     else:
