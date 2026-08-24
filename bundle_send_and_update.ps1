@@ -11,7 +11,7 @@ $bundleName = 'smart_alarm_ssd1306.bundle'
 $bundlePath = "$localRepo/$bundleName"
 $piUser = 'steven'
 $piHost = '192.168.1.79'
-$piTargetDir = '/home/steven/'
+$piTargetDir = '~/'
 
 Write-Host "Using local repo: $localRepo"
 if (-not (Test-Path $localRepo)) {
@@ -50,11 +50,11 @@ try {
     $remoteScript = @'
 #!/bin/bash
 set -e
-cd /home/steven/
+cd "$HOME"
 rm -rf smart_alarm
 # Clone from the bundle file (assumes bundle contains the branch refs)
 if git clone smart_alarm_ssd1306.bundle smart_alarm; then
-  echo "Cloned bundle into /home/steven/smart_alarm"
+    echo "Cloned bundle into $HOME/smart_alarm"
   cd smart_alarm
   # Try to check out the branch; if not present, create a local branch
   git checkout ssd1306-updates || git checkout -b ssd1306-updates
@@ -69,12 +69,9 @@ else
   cd ..
 fi
 
-# Prepare venv and install dependencies
-cd /home/steven/smart_alarm || exit 0
-python3 -m venv --system-site-packages .venv || true
-. .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install adafruit-blinka adafruit-circuitpython-ssd1306 pillow || true
+# Prepare the venv and install all system and Python dependencies from the repo
+cd "$HOME/smart_alarm" || exit 1
+bash scripts/install_dependencies.sh "$HOME/smart_alarm"
 
 echo "Remote update complete"
 '@
