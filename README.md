@@ -23,23 +23,17 @@ git clone https://github.com/fgebhart/smart_alarm.git
 
 On a Raspberry Pi and using the project's virtualenv, the SSD1306 display requires Blinka (CircuitPython support) and the CircuitPython SSD1306 driver. The following steps set up a venv and install the required packages:
 
-1. On the Pi install OS-level packages:
+1. From the project root on the Pi (recommended), install the dependencies:
 
-   sudo apt update
-   sudo apt install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2
+   bash scripts/install_dependencies.sh
 
-2. From the project root on the Pi (recommended):
+   The installer includes the Python packages listed in `requirements.txt` and the required system packages.
 
-   python3 -m venv --system-site-packages .venv
-   . .venv/bin/activate
-   python -m pip install --upgrade pip
-   python -m pip install adafruit-blinka adafruit-circuitpython-ssd1306 gpiozero pillow pyttsx3 pygame
-
-3. Confirm the OLED is visible on I2C:
+2. Confirm the OLED is visible on I2C:
 
    i2cdetect -y 1
 
-4. Run the simple test:
+3. Run the simple test:
 
    python playground/hello_ssd1306_simple.py
 

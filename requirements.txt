@@ -1,0 +1,7 @@
+adafruit-blinka
+adafruit-circuitpython-ssd1306
+coloredlogs
+gpiozero
+Pillow
+pygame
+pyttsx3
