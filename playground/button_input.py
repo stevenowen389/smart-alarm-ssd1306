@@ -13,5 +13,5 @@ GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 
 while True:
-    print "button is: ", GPIO.input(24)
+    print("button is: ", GPIO.input(24))
     time.sleep(0.4)

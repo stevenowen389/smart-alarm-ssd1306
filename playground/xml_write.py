@@ -13,7 +13,7 @@ def create(currentTime, settings):
     dataNode = doc.createElement('data')
     doc.appendChild(dataNode)
 
-    print settings.alarm_time
+    print(settings.alarm_time)
     timeNode = dataNode.appendChild(doc.createElement('alarm_time'))
     timeNode.appendChild(doc.createTextNode(settings.alarm_time))
 

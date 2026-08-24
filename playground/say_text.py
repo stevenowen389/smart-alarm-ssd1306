@@ -29,7 +29,7 @@ def say(text):
 
 
 while True:
-    print 'please enter your text message'
+    print('please enter your text message')
     text = raw_input('\n->')
 
     say(text)

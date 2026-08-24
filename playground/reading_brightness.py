@@ -54,4 +54,4 @@ def read_photocell():
 
 
 while True:
-    print read_photocell()
+    print(read_photocell())

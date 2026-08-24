@@ -12,8 +12,8 @@ GPIO.setup(amp_switch_pin, GPIO.OUT)
 
 
 if GPIO.input(amp_switch_pin) == 0:
-    print 'turning amp on'
+    print('turning amp on')
     GPIO.output(amp_switch_pin, 1)
 else:
-    print 'turning amp off'
+    print('turning amp off')
     GPIO.output(amp_switch_pin, 0)
