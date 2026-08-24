@@ -101,18 +101,20 @@ class Display(object):
     def _time_layout(self, value):
         text = str(value)
         character_width = self.draw.textlength('0', font=self.font)
-        character_spacing = 4
+        character_spacing = 8
         text_width = character_width * len(text) + character_spacing * max(0, len(text) - 1)
         text_bbox = self.draw.textbbox((0, 0), text, font=self.font)
         text_height = text_bbox[3] - text_bbox[1]
         x = (self.width - text_width) // 2
         y = (self.height - text_height) // 2 - text_bbox[1]
         self.decimal_positions = {}
-        for pos in (1, 3):
-            if pos < len(text):
-                self.decimal_positions[pos] = (
-                    int(x + pos * (character_width + character_spacing) - character_spacing / 2 - 2),
-                    int(y + text_height - 4))
+        if len(text) >= 4:
+            decimal_x = int(x + 2 * character_width + (character_spacing - 5) / 2)
+            decimal_y = int(y + text_height // 2 - 9)
+            self.decimal_positions = {
+                1: (decimal_x, decimal_y),
+                3: (decimal_x, decimal_y + 14),
+            }
         return text, x, y
 
     def _push(self):
@@ -173,7 +175,7 @@ class Display(object):
         text, x, y = self._time_layout(value)
         character_width = self.draw.textlength('0', font=self.font)
         for index, character in enumerate(text):
-            self.draw.text((x + index * (character_width + 4), y), character, font=self.font, fill=255)
+            self.draw.text((x + index * (character_width + 8), y), character, font=self.font, fill=255)
         self._push()
 
     def set_brightness(self, value):
