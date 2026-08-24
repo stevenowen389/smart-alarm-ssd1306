@@ -28,6 +28,7 @@ class Sound(object):
         logger.info('sound-module initialized')
         self.sound_active = False
         self.stop_sound = False
+        self.tts_engine = None
 
     def stopping_sound(self):
         """stops alarm when button is pressed"""
@@ -93,11 +94,12 @@ class Sound(object):
         # set output high in order to turn on amplifier
         self.toggle_amp_pin(1)
         time.sleep(0.3)
-        engine = pyttsx.init()
-        engine.setProperty('rate', 125)
+        if self.tts_engine is None:
+            self.tts_engine = pyttsx.init()
+            self.tts_engine.setProperty('rate', 125)
         # remove "pass" and uncomment next line in order to enable this function
-        engine.say(text)
-        engine.runAndWait()
+        self.tts_engine.say(text)
+        self.tts_engine.runAndWait()
         time.sleep(0.2)
         # set output low in order to turn off amplifier
         self.toggle_amp_pin(0)

@@ -20,7 +20,7 @@ fi
 
 echo "Installing system dependencies..."
 $APT apt-get update
-$APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2 alsa-utils mpc
+$APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2 alsa-utils mpc espeak-ng libespeak1
 
 if [ ! -x "$VENV/bin/python" ]; then
   echo "Creating virtual environment at $VENV..."
