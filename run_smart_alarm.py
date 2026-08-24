@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """Small launcher to run the smart_alarm project from the repo root.
 
-This wrapper avoids import/filename collisions when there is both a top-level
-script named ``smart_alarm`` and a package directory ``smart_alarm/``.
+This wrapper avoids import/filename collisions between the package directory
+and the legacy executable also named ``smart_alarm`` inside it.
 
 Run with the project's venv Python, e.g.:
   /home/steven/smart_alarm/.venv/bin/python run_smart_alarm.py
 
 The launcher tries, in order:
  1. import the smart_alarm package and call smart_alarm.main() or run it as a module
- 2. fallback to executing the top-level script file named "smart_alarm" in the repo root
+ 2. fallback to executing ``smart_alarm/smart_alarm``
 
 """
 import os
@@ -41,10 +41,14 @@ if _pkg is not None:
         # fallthrough to trying the top-level script
         pass
 
-# Fallback: run the repository's top-level script file named `smart_alarm`
-script_path = os.path.join(repo_root, 'smart_alarm')
+# Fallback: run the legacy executable inside the smart_alarm project directory.
+script_path = os.path.join(repo_root, 'smart_alarm', 'smart_alarm')
 if os.path.isfile(script_path):
+    project_path = os.path.dirname(script_path)
+    if project_path not in sys.path:
+        sys.path.insert(0, project_path)
+    os.environ.setdefault('smart_alarm_path', project_path)
     runpy.run_path(script_path, run_name='__main__')
 else:
-    print('ERROR: could not find a runnable smart_alarm entrypoint (no package import and no top-level script).', file=sys.stderr)
+    print('ERROR: could not find a runnable smart_alarm entrypoint.', file=sys.stderr)
     sys.exit(2)
