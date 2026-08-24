@@ -176,7 +176,6 @@ class Display(object):
         character_width = self.draw.textlength('0', font=self.font)
         for index, character in enumerate(text):
             self.draw.text((x + index * (character_width + 8), y), character, font=self.font, fill=255)
-        self._push()
 
     def set_brightness(self, value):
         """Change the display brightness via SSD1306 contrast."""
