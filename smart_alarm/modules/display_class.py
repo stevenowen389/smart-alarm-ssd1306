@@ -24,7 +24,8 @@ class Display(object):
         self.height = 64
         self.image = Image.new('1', (self.width, self.height))
         self.draw = ImageDraw.Draw(self.image)
-        self.font = ImageFont.load_default()
+        self.font = self._load_font()
+        self.decimal_positions = {}
         self.display_in_use = False
 
         # Try CircuitPython driver (preferred)
@@ -79,17 +80,40 @@ class Display(object):
         self.image = Image.new('1', (self.width, self.height))
         self.draw = ImageDraw.Draw(self.image)
 
+    def _load_font(self):
+        for font_path in (
+                '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',
+                '/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf'):
+            try:
+                return ImageFont.truetype(font_path, 36)
+            except OSError:
+                pass
+        return ImageFont.load_default()
+
     def _draw_decimal(self, pos, decimal):
-        dots = {
-            1: (105, 50),
-            3: (115, 50),
-        }
-        if decimal and pos in dots:
-            x, y = dots[pos]
-            self.draw.ellipse((x, y, x + 4, y + 4), fill=255)
-        elif pos in dots:
-            x, y = dots[pos]
-            self.draw.rectangle((x, y, x + 4, y + 4), fill=0)
+        if pos in self.decimal_positions:
+            x, y = self.decimal_positions[pos]
+            if decimal:
+                self.draw.ellipse((x, y, x + 4, y + 4), fill=255)
+            else:
+                self.draw.rectangle((x, y, x + 4, y + 4), fill=0)
+
+    def _time_layout(self, value):
+        text = str(value)
+        character_width = self.draw.textlength('0', font=self.font)
+        character_spacing = 4
+        text_width = character_width * len(text) + character_spacing * max(0, len(text) - 1)
+        text_bbox = self.draw.textbbox((0, 0), text, font=self.font)
+        text_height = text_bbox[3] - text_bbox[1]
+        x = (self.width - text_width) // 2
+        y = (self.height - text_height) // 2 - text_bbox[1]
+        self.decimal_positions = {}
+        for pos in (1, 3):
+            if pos < len(text):
+                self.decimal_positions[pos] = (
+                    int(x + pos * (character_width + character_spacing) - character_spacing / 2 - 2),
+                    int(y + text_height - 4))
+        return text, x, y
 
     def _push(self):
         # Try to use a driver-specific method to show a PIL image. Different
@@ -146,7 +170,10 @@ class Display(object):
         if self.display_in_use:
             return
         self._clear_buffer()
-        self.draw.text((20, 16), str(value), font=self.font, fill=255)
+        text, x, y = self._time_layout(value)
+        character_width = self.draw.textlength('0', font=self.font)
+        for index, character in enumerate(text):
+            self.draw.text((x + index * (character_width + 4), y), character, font=self.font, fill=255)
         self._push()
 
     def set_brightness(self, value):
