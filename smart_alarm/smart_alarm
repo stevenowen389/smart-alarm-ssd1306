@@ -452,6 +452,15 @@ def if_interrupt():
     logger.error('\n... crashed ... bye!\n   -> check error.log for more information')
 
 
+def blink_seconds_indicator():
+    """Toggle the seconds indicator independently of the main loop."""
+    seconds_on = False
+    while True:
+        time.sleep(0.5)
+        seconds_on = not seconds_on
+        display.update_decimal(1, seconds_on)
+
+
 def change_stream_url(stream_url):
     """deletes old mpc radio playlist
     and adds the new provided url"""
@@ -564,11 +573,9 @@ def main():
     # Increase value for more stability, decrease it for faster response time
     number_of_iterations = 5
 
-    # set decimal point flag - for decimal point blinking
-    point = False
-
-    # start timer for second-wise dot blinking
-    start_time = time.time()
+    displayed_time = None
+    displayed_alarm_state = None
+    threading.Thread(target=blink_seconds_indicator, daemon=True).start()
 
     if xml_data.test_alarm() == 1:
         logger.warning("setting test alarm to 0")
@@ -580,9 +587,6 @@ def main():
         while True:
             # organise time format
             now = time.strftime("%H%M")
-
-            # reset display
-            display.clear_class()
 
             # read xml file and store data to xml_data
             new_xml_file = xml_data.read_data()
@@ -649,28 +653,13 @@ def main():
                 # set just_played_alarm back to False in order to not miss the next alarm
                 just_played_alarm = False
 
-            # display the current time
-            display.show_time(now)
-
-            # check if alarm is active and set third decimal point
-            if xml_data.alarm_active() == '1':
-                display.set_decimal(3, True)
-            else:
-                # else if alarm is deactivated, turn last decimal point off
-                display.set_decimal(3, False)
-
-            if point:
-                display.set_decimal(1, point)
-                point = False
-                # write content to display
+            alarm_state = xml_data.alarm_active() == '1'
+            if now != displayed_time or alarm_state != displayed_alarm_state:
+                display.show_time(now)
+                display.set_decimal(3, alarm_state)
                 display.write()
-                time.sleep(1.0 - ((time.time() - start_time) % 1.0))
-            else:
-                display.set_decimal(1, point)
-                point = True
-                # write content to display
-                display.write()
-                time.sleep(1.0 - ((time.time() - start_time) % 1.0))
+                displayed_time = now
+                displayed_alarm_state = alarm_state
 
             # delete old and unneeded mp3 files
             delete_old_files(time_to_alarm)

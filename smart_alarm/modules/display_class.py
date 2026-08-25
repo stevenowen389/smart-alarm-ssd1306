@@ -6,6 +6,7 @@
 import time
 import logging
 import os
+import threading
 from PIL import Image, ImageDraw, ImageFont
 
 logger = logging.getLogger(__name__)
@@ -26,6 +27,7 @@ class Display(object):
         self.draw = ImageDraw.Draw(self.image)
         self.font = self._load_font()
         self.decimal_positions = {}
+        self._buffer_lock = threading.RLock()
         self.display_in_use = False
 
         # Try CircuitPython driver (preferred)
@@ -169,13 +171,14 @@ class Display(object):
 
     def show_time(self, value):
         """Render a time-like value on the display."""
-        if self.display_in_use:
-            return
-        self._clear_buffer()
-        text, x, y = self._time_layout(value)
-        character_width = self.draw.textlength('0', font=self.font)
-        for index, character in enumerate(text):
-            self.draw.text((x + index * (character_width + 8), y), character, font=self.font, fill=255)
+        with self._buffer_lock:
+            if self.display_in_use:
+                return
+            self._clear_buffer()
+            text, x, y = self._time_layout(value)
+            character_width = self.draw.textlength('0', font=self.font)
+            for index, character in enumerate(text):
+                self.draw.text((x + index * (character_width + 8), y), character, font=self.font, fill=255)
 
     def set_brightness(self, value):
         """Change the display brightness via SSD1306 contrast."""
@@ -193,13 +196,23 @@ class Display(object):
 
     def write(self):
         """Push the current buffer to the OLED."""
-        self._push()
+        with self._buffer_lock:
+            self._push()
 
     def set_decimal(self, pos, decimal):
         """Render a small decimal marker at the requested position."""
-        if self.display_in_use:
-            return
-        self._draw_decimal(pos, decimal)
+        with self._buffer_lock:
+            if self.display_in_use:
+                return
+            self._draw_decimal(pos, decimal)
+
+    def update_decimal(self, pos, decimal):
+        """Update one indicator and send the current framebuffer."""
+        with self._buffer_lock:
+            if self.display_in_use:
+                return
+            self._draw_decimal(pos, decimal)
+            self._push()
 
     def set_segment(self, led, value):
         """Render a single "segment" on the OLED using a simple coordinate map."""
