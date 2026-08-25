@@ -198,10 +198,14 @@ class Display(object):
         """Change the display brightness via SSD1306 contrast."""
         try:
             contrast = max(0, min(255, int(value * 16)))
-            if hasattr(self.display_lib, 'set_contrast'):
+            if hasattr(self.display_lib, 'contrast'):
+                self.display_lib.contrast(contrast)
+            elif hasattr(self.display_lib, 'set_contrast'):
                 self.display_lib.set_contrast(contrast)
+            else:
+                logger.warning('Display driver does not support brightness control')
         except Exception:
-            pass
+            logger.exception('Failed to set display brightness')
 
     def clear_class(self):
         """Clear the display buffer and render the blank state."""
