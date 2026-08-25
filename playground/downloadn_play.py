@@ -1,4 +1,4 @@
-import urllib2
+from urllib import request
 import pygame
 
 
@@ -9,10 +9,10 @@ import pygame
 url = "http://podcast-mp3.dradio.de/podcast/2016/09/27/nachrichten_dlf_20160927_1030_edc3be5b.mp3"
 
 file_name = url.split('/')[-1]
-u = urllib2.urlopen(url)
+u = request.urlopen(url)
 f = open(file_name, 'wb')
 meta = u.info()
-file_size = int(meta.getheaders("Content-Length")[0])
+file_size = int(meta.get("Content-Length", 0))
 print("Downloading: %s Bytes: %s" % (file_name, file_size))
 
 file_size_dl = 0
