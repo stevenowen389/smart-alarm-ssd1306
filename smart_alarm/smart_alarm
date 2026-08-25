@@ -48,6 +48,7 @@ DLF News: http://www.deutschlandfunk.de/podcast-nachrichten.1257.de.podcast.xml
 """
 
 from urllib import request
+import RPi.GPIO as GPIO
 from gpiozero import Button, DigitalInputDevice, DigitalOutputDevice
 import threading
 import logging.config
@@ -57,6 +58,8 @@ import time
 import os
 import coloredlogs
 import difflib
+
+GPIO.setmode(GPIO.BCM)
 
 # configure logger before importing other modules
 logging.config.dictConfig(log_config.logging_dict)
@@ -187,18 +190,17 @@ def read_photocell():
     while counter < max_iterations:
         brightness = 0
         # needs to be put low first, so the capacitor is empty
-        discharge = DigitalOutputDevice(photocell_input_pin, initial_value=False)
-        discharge.close()
+        GPIO.setup(photocell_input_pin, GPIO.OUT)
+        GPIO.output(photocell_input_pin, GPIO.LOW)
 
         time.sleep(0.1)
 
         # set to input to read out
-        photocell = DigitalInputDevice(photocell_input_pin, pull_up=False)
+        GPIO.setup(photocell_input_pin, GPIO.IN)
         # increases the brightness variable depending on the charge
         # of the capacitor (400 = dark; 0 = bright)
-        while not photocell.is_active:
+        while GPIO.input(photocell_input_pin) == GPIO.LOW:
             brightness += 1
-        photocell.close()
 
         summed_up_brightness = summed_up_brightness + brightness
         counter += 1
