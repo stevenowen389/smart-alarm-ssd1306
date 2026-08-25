@@ -197,7 +197,9 @@ class Display(object):
     def set_brightness(self, value):
         """Change the display brightness via SSD1306 contrast."""
         try:
-            contrast = max(0, min(255, int(value * 16)))
+            brightness = max(0.0, min(15.0, float(value)))
+            contrast = round(brightness * 255 / 15)
+            logger.debug('setting display brightness %.2f/15 to contrast %d', brightness, contrast)
             if hasattr(self.display_lib, 'contrast'):
                 self.display_lib.contrast(contrast)
             elif hasattr(self.display_lib, 'set_contrast'):

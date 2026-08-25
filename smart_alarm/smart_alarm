@@ -669,7 +669,9 @@ def main():
             # increase loop counter +1 since loop is about to start again
             loop_counter += 1
             if loop_counter > number_of_iterations:
-                display.set_brightness(int(brightness_data) / number_of_iterations)
+                average_brightness = brightness_data / number_of_iterations
+                logger.debug('photoresistor brightness: %.2f/15', average_brightness)
+                display.set_brightness(average_brightness)
                 loop_counter = 1
                 brightness_data = 0
 
