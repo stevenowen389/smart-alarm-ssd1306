@@ -63,7 +63,11 @@ else
 fi
 
 rm -f "$HOME/smart_alarm_ssd1306.bundle"
-echo "Remote update complete; existing virtualenv and dependencies were preserved"
+
+echo "Ensuring virtualenv and dependencies are installed/up to date..."
+bash "$HOME/smart_alarm/scripts/install_dependencies.sh" "$HOME/smart_alarm"
+
+echo "Remote update complete; dependencies are installed and up to date"
 '@
 
     # Remove Windows CRs from the here-string before piping so remote bash isn't given CRLFs
