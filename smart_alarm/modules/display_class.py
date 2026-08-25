@@ -87,7 +87,7 @@ class Display(object):
                 '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',
                 '/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf'):
             try:
-                return ImageFont.truetype(font_path, 36)
+                return ImageFont.truetype(font_path, 32)
             except OSError:
                 pass
         return ImageFont.load_default()
@@ -180,6 +180,19 @@ class Display(object):
             for index, character in enumerate(text):
                 self.draw.text((x + index * (character_width + 8), y), character, font=self.font, fill=255)
 
+    def show_message(self, message):
+        """Render a centered static message on the display."""
+        with self._buffer_lock:
+            if self.display_in_use:
+                return
+            self._clear_buffer()
+            text_bbox = self.draw.textbbox((0, 0), message, font=self.font)
+            text_width = text_bbox[2] - text_bbox[0]
+            text_height = text_bbox[3] - text_bbox[1]
+            x = (self.width - text_width) // 2 - text_bbox[0]
+            y = (self.height - text_height) // 2 - text_bbox[1]
+            self.draw.text((x, y), message, font=self.font, fill=255)
+
     def set_brightness(self, value):
         """Change the display brightness via SSD1306 contrast."""
         try:
@@ -222,7 +235,6 @@ class Display(object):
             self.draw.rectangle((x * 8, y * 8, x * 8 + 6, y * 8 + 6), fill=255)
         else:
             self.draw.rectangle((x * 8, y * 8, x * 8 + 6, y * 8 + 6), fill=0)
-
     # The following functions are not mandatory and are kept for backwards
     # compatibility with the previous AlphaNum4 display interface.
 
@@ -245,15 +257,3 @@ class Display(object):
                 self._push()
                 time.sleep(0.02)
         self.display_in_use = False
-
-    def big_stars(self, number_of_iterations):
-        self.display_in_use = True
-        for _ in range(number_of_iterations):
-            self._clear_buffer()
-            for star in [(10, 10), (40, 18), (80, 10), (110, 24), (20, 45), (90, 45)]:
-                self.draw.ellipse((star[0], star[1], star[0] + 6, star[1] + 6), fill=255)
-            self._push()
-            time.sleep(0.05)
-        self.display_in_use = False
-
-

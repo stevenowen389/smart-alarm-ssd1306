@@ -533,9 +533,11 @@ def main():
     button = Button(button_input_pin, pull_up=None, active_state=True, bounce_time=None)
     # set output low in order to turn off amplifier and nullify noise
     sound.toggle_amp_pin(0)
-    # alternative starting display
-    y = threading.Thread(target=display.big_stars, args=(7,))
-    y.start()
+    display.show_message('Welcome')
+    display.write()
+    time.sleep(0.5)
+    display.show_time(time.strftime("%H%M"))
+    display.write()
 
     # one quick led rainbow
     v = threading.Thread(target=led.rainbow, args=(10, 1,))
@@ -547,7 +549,8 @@ def main():
                                   + os.popen("iw dev wlan0 link | grep SSID | awk '{print $2}'").read()\
                                   + "wifi"
     dummy_message = 'hi'
-    sound.say(dummy_message)
+    welcome_thread = threading.Thread(target=sound.say, args=(dummy_message,))
+    welcome_thread.start()
 
     # start the the button interrupt thread
     button.when_pressed = button_callback
