@@ -186,6 +186,8 @@ def read_photocell():
     counter = 0
     summed_up_brightness = 0
     max_iterations = 5
+    max_charge_counts = 1000000
+    sample_counts = []
 
     while counter < max_iterations:
         brightness = 0
@@ -199,10 +201,11 @@ def read_photocell():
         GPIO.setup(photocell_input_pin, GPIO.IN)
         # increases the brightness variable depending on the charge
         # of the capacitor (400 = dark; 0 = bright)
-        while GPIO.input(photocell_input_pin) == GPIO.LOW:
+        while GPIO.input(photocell_input_pin) == GPIO.LOW and brightness < max_charge_counts:
             brightness += 1
 
         summed_up_brightness = summed_up_brightness + brightness
+        sample_counts.append(brightness)
         counter += 1
 
     # calculate the mean of the last 'max_iterations' measurements:
@@ -219,6 +222,7 @@ def read_photocell():
 
     # scale brightness to the scale of 0 - 15
     brightness = brightness / (upper_limit / 15)
+    logger.debug('photoresistor raw charge counts: %s', sample_counts)
 
     return brightness
 
