@@ -6,7 +6,7 @@ import pygame
 # actual mp3 news:      http://podcast-mp3.dradio.de/podcast/2016/09/27/nachrichten_dlf_20160927_1030_edc3be5b.mp3
 # sample sound file:    http://static1.grsites.com/archive/sounds/cartoon/cartoon001.mp3
 
-url = "http://podcast-mp3.dradio.de/podcast/2016/09/27/nachrichten_dlf_20160927_1030_edc3be5b.mp3"
+url = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
 
 file_name = url.split('/')[-1]
 u = request.urlopen(url)
