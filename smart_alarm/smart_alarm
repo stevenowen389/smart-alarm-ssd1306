@@ -543,15 +543,6 @@ def main():
     v = threading.Thread(target=led.rainbow, args=(10, 1,))
     v.start()
 
-    # say welcome message
-    welcome_message = 'What is my purpose?'
-    read_name_of_connected_wifi = "successfully connected to "\
-                                  + os.popen("iw dev wlan0 link | grep SSID | awk '{print $2}'").read()\
-                                  + "wifi"
-    dummy_message = 'hi'
-    welcome_thread = threading.Thread(target=sound.say, args=(dummy_message,))
-    welcome_thread.start()
-
     # start the the button interrupt thread
     button.when_pressed = button_callback
 
