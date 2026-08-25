@@ -82,12 +82,12 @@ class Display(object):
         self.image = Image.new('1', (self.width, self.height))
         self.draw = ImageDraw.Draw(self.image)
 
-    def _load_font(self):
+    def _load_font(self, size=32):
         for font_path in (
                 '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',
                 '/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf'):
             try:
-                return ImageFont.truetype(font_path, 32)
+                return ImageFont.truetype(font_path, size)
             except OSError:
                 pass
         return ImageFont.load_default()
@@ -114,7 +114,7 @@ class Display(object):
             decimal_x = int(x + 2 * character_width + (character_spacing - 5) / 2)
             decimal_y = int(y + text_height // 2 - 9)
             self.decimal_positions = {
-                1: (decimal_x, decimal_y),
+                1: (decimal_x + 10, decimal_y),
                 3: (decimal_x, decimal_y + 14),
             }
         return text, x, y
@@ -186,12 +186,13 @@ class Display(object):
             if self.display_in_use:
                 return
             self._clear_buffer()
-            text_bbox = self.draw.textbbox((0, 0), message, font=self.font)
+            message_font = self._load_font(24)
+            text_bbox = self.draw.textbbox((0, 0), message, font=message_font)
             text_width = text_bbox[2] - text_bbox[0]
             text_height = text_bbox[3] - text_bbox[1]
             x = (self.width - text_width) // 2 - text_bbox[0]
             y = (self.height - text_height) // 2 - text_bbox[1]
-            self.draw.text((x, y), message, font=self.font, fill=255)
+            self.draw.text((x, y), message, font=message_font, fill=255)
 
     def set_brightness(self, value):
         """Change the display brightness via SSD1306 contrast."""
