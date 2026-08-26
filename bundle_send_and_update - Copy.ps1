@@ -55,18 +55,29 @@ try {
         exit 1
     }
 
+    Write-Host "Testing SSH connectivity to $piHost"
+    & ssh "$($piUser)@$($piHost)" "echo 'SSH connection OK on $(hostname)'"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "SSH connectivity test failed"
+        exit 1
+    }
+
     Write-Host "Running remote update script on $piHost"
 
     $remoteScript = @'
 #!/bin/bash
-set -e
+set -euo pipefail
+trap 'echo "Remote update failed at line $LINENO"; exit 1' ERR
 cd "$HOME"
 mkdir -p "$HOME/smart_alarm"
 if [ ! -d "$HOME/smart_alarm/.git" ]; then
     git -C "$HOME/smart_alarm" init
     echo "Initialized new repo at $HOME/smart_alarm"
 fi
+echo "[1/5] Preparing repo directory"
+echo "[2/5] Fetching from bundle"
 git -C "$HOME/smart_alarm" fetch "$HOME/smart_alarm_ssd1306.bundle" ssd1306-updates
+echo "[3/5] Checking out branch"
 git -C "$HOME/smart_alarm" checkout -B ssd1306-updates FETCH_HEAD
 git -C "$HOME/smart_alarm" reset --hard FETCH_HEAD
 git -C "$HOME/smart_alarm" clean -fd
@@ -74,24 +85,16 @@ echo "Checked out ssd1306-updates at $HOME/smart_alarm"
 git -C "$HOME/smart_alarm" --no-pager log -1 --oneline
 grep -n "decimal_x\|character_spacing - 5" "$HOME/smart_alarm/smart_alarm/modules/display_class.py" || true
 
+echo "[4/5] Cleaning uploaded bundle"
 rm -f "$HOME/smart_alarm_ssd1306.bundle"
 
+echo "[5/5] Optional dependency installation"
 if [ "${INSTALL_DEPS:-0}" = "1" ]; then
     echo "Ensuring virtualenv and dependencies are installed/up to date..."
     bash "$HOME/smart_alarm/scripts/install_dependencies.sh" "$HOME/smart_alarm"
     echo "Remote update complete; dependencies are installed and up to date"
 else
     echo "Remote update complete; dependency install was skipped"
-fi
-
-if command -v systemctl >/dev/null 2>&1; then
-    if systemctl list-unit-files | grep -q '^smart_alarm\.service'; then
-        echo "Restarting smart_alarm.service"
-        sudo systemctl restart smart_alarm.service
-        sudo systemctl --no-pager --full status smart_alarm.service | sed -n '1,20p'
-    else
-        echo "smart_alarm.service not found; skipping service restart"
-    fi
 fi
 '@
 
