@@ -465,6 +465,7 @@ def blink_seconds_indicator():
         time.sleep(0.5)
         seconds_on = not seconds_on
         display.update_decimal(1, seconds_on)
+        display.update_decimal(3, seconds_on)
 
 
 def change_stream_url(stream_url):
@@ -656,7 +657,7 @@ def main():
             alarm_state = xml_data.alarm_active() == '1'
             if now != displayed_time or alarm_state != displayed_alarm_state:
                 display.show_time(now)
-                display.set_decimal(3, alarm_state)
+                display.set_alarm_status(alarm_state)
                 display.write()
                 displayed_time = now
                 displayed_alarm_state = alarm_state

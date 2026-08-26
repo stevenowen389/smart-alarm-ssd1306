@@ -27,6 +27,7 @@ class Display(object):
         self.draw = ImageDraw.Draw(self.image)
         self.font = self._load_font()
         self.decimal_positions = {}
+        self.alarm_status = False
         self._buffer_lock = threading.RLock()
         self.display_in_use = False
 
@@ -99,6 +100,11 @@ class Display(object):
                 self.draw.ellipse((x, y, x + 4, y + 4), fill=255)
             else:
                 self.draw.rectangle((x, y, x + 4, y + 4), fill=0)
+
+    def _draw_alarm_status(self):
+        x, y = self.width - 8, 2
+        fill = 255 if self.alarm_status else 0
+        self.draw.ellipse((x, y, x + 4, y + 4), fill=fill)
 
     def _time_layout(self, value):
         text = str(value)
@@ -180,6 +186,7 @@ class Display(object):
             character_width = self.draw.textlength('0', font=self.font)
             for index, character in enumerate(text):
                 self.draw.text((x + index * (character_width + 8), y), character, font=self.font, fill=255)
+            self._draw_alarm_status()
 
     def show_message(self, message):
         """Render a centered static message on the display."""
@@ -234,6 +241,14 @@ class Display(object):
                 return
             self._draw_decimal(pos, decimal)
             self._push()
+
+    def set_alarm_status(self, active):
+        """Set the separate alarm status indicator."""
+        with self._buffer_lock:
+            if self.display_in_use:
+                return
+            self.alarm_status = bool(active)
+            self._draw_alarm_status()
 
     def set_segment(self, led, value):
         """Render a single "segment" on the OLED using a simple coordinate map."""
