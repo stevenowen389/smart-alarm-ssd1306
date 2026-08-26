@@ -112,7 +112,7 @@ fi
     # Remove Windows CRs from the here-string before piping so remote bash isn't given CRLFs
     $remoteScriptNoCR = $remoteScript -replace "`r", ""
     $installDepsFlag = if ($InstallDependencies) { '1' } else { '0' }
-    $remoteScriptNoCR | ssh "$($piUser)@$($piHost)" "INSTALL_DEPS=$installDepsFlag bash -s"
+    $remoteScriptNoCR | ssh "$($piUser)@$($piHost)" "tr -d '\r' | INSTALL_DEPS=$installDepsFlag bash -s"
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Remote update failed"
         exit 1
