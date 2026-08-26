@@ -2,6 +2,10 @@
 # Create a git bundle from branch 'ssd1306-updates', scp it to the Pi, and run an update script there.
 # Edit $piUser and $piHost below if needed.
 
+param(
+    [switch]$InstallDependencies
+)
+
 $ErrorActionPreference = 'Stop'
 
 # Configuration
@@ -12,6 +16,12 @@ $bundlePath = "$localRepo/$bundleName"
 $piUser = 'steven'
 $piHost = '192.168.1.79'
 $piTargetDir = '~/'
+
+if ($InstallDependencies) {
+    Write-Host "Dependency install on Pi: enabled"
+} else {
+    Write-Host "Dependency install on Pi: skipped (use -InstallDependencies to enable)"
+}
 
 Write-Host "Using local repo: $localRepo"
 if (-not (Test-Path $localRepo)) {
@@ -66,15 +76,19 @@ echo "Checked out ssd1306-updates at $HOME/smart_alarm"
 
 rm -f "$HOME/smart_alarm_ssd1306.bundle"
 
-echo "Ensuring virtualenv and dependencies are installed/up to date..."
-bash "$HOME/smart_alarm/scripts/install_dependencies.sh" "$HOME/smart_alarm"
-
-echo "Remote update complete; dependencies are installed and up to date"
+if [ "${INSTALL_DEPS:-0}" = "1" ]; then
+    echo "Ensuring virtualenv and dependencies are installed/up to date..."
+    bash "$HOME/smart_alarm/scripts/install_dependencies.sh" "$HOME/smart_alarm"
+    echo "Remote update complete; dependencies are installed and up to date"
+else
+    echo "Remote update complete; dependency install was skipped"
+fi
 '@
 
     # Remove Windows CRs from the here-string before piping so remote bash isn't given CRLFs
     $remoteScriptNoCR = $remoteScript -replace "`r", ""
-    $remoteScriptNoCR | ssh "$($piUser)@$($piHost)" 'bash -s'
+    $installDepsFlag = if ($InstallDependencies) { '1' } else { '0' }
+    $remoteScriptNoCR | ssh "$($piUser)@$($piHost)" "INSTALL_DEPS=$installDepsFlag bash -s"
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Remote update failed"
         exit 1
