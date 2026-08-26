@@ -72,7 +72,11 @@ if [ ! -d "$HOME/smart_alarm/.git" ]; then
 fi
 git -C "$HOME/smart_alarm" fetch "$HOME/smart_alarm_ssd1306.bundle" ssd1306-updates
 git -C "$HOME/smart_alarm" checkout -B ssd1306-updates FETCH_HEAD
+git -C "$HOME/smart_alarm" reset --hard FETCH_HEAD
+git -C "$HOME/smart_alarm" clean -fd
 echo "Checked out ssd1306-updates at $HOME/smart_alarm"
+git -C "$HOME/smart_alarm" --no-pager log -1 --oneline
+grep -n "decimal_x\|character_spacing - 5" "$HOME/smart_alarm/smart_alarm/modules/display_class.py" || true
 
 rm -f "$HOME/smart_alarm_ssd1306.bundle"
 
@@ -82,6 +86,16 @@ if [ "${INSTALL_DEPS:-0}" = "1" ]; then
     echo "Remote update complete; dependencies are installed and up to date"
 else
     echo "Remote update complete; dependency install was skipped"
+fi
+
+if command -v systemctl >/dev/null 2>&1; then
+    if systemctl list-unit-files | grep -q '^smart_alarm\.service'; then
+        echo "Restarting smart_alarm.service"
+        sudo systemctl restart smart_alarm.service
+        sudo systemctl --no-pager --full status smart_alarm.service | sed -n '1,20p'
+    else
+        echo "smart_alarm.service not found; skipping service restart"
+    fi
 fi
 '@
 
