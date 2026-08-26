@@ -242,6 +242,15 @@ class Display(object):
             self._draw_decimal(pos, decimal)
             self._push()
 
+    def update_decimals(self, decimals):
+        """Update multiple indicators and send one framebuffer."""
+        with self._buffer_lock:
+            if self.display_in_use:
+                return
+            for pos, decimal in decimals.items():
+                self._draw_decimal(pos, decimal)
+            self._push()
+
     def set_alarm_status(self, active):
         """Set the separate alarm status indicator."""
         with self._buffer_lock:

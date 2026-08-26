@@ -464,8 +464,7 @@ def blink_seconds_indicator():
     while True:
         time.sleep(0.5)
         seconds_on = not seconds_on
-        display.update_decimal(1, seconds_on)
-        display.update_decimal(3, seconds_on)
+        display.update_decimals({1: seconds_on, 3: seconds_on})
 
 
 def change_stream_url(stream_url):
