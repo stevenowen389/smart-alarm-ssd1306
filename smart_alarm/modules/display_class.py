@@ -113,7 +113,7 @@ class Display(object):
         if len(text) >= 4:
             # Center the indicator dots in the gap between digit 2 and digit 3.
             decimal_x = int(x + 2 * character_width + (3 * character_spacing) / 2 - 2)
-            decimal_y = int(y + text_height // 2 - 10)
+            decimal_y = int(y + text_height // 2 - 6)
             self.decimal_positions = {
                 1: (decimal_x, decimal_y),
                 3: (decimal_x, decimal_y + 16),
