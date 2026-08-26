@@ -51,16 +51,18 @@ try {
 #!/bin/bash
 set -e
 cd "$HOME"
-if [ -d "$HOME/smart_alarm/.git" ]; then
-    git -C "$HOME/smart_alarm" fetch "$HOME/smart_alarm_ssd1306.bundle" ssd1306-updates
-    git -C "$HOME/smart_alarm" checkout -B ssd1306-updates FETCH_HEAD
-    echo "Updated existing checkout at $HOME/smart_alarm"
-elif git clone smart_alarm_ssd1306.bundle smart_alarm; then
-    echo "Cloned bundle into $HOME/smart_alarm"
-else
-    echo "Git clone from bundle failed"
-    exit 1
+
+# Bundles created with `git bundle create <file> <branch>` do not record a HEAD,
+# so `git clone` alone may leave the working tree empty on a brand-new install.
+# Always init (if needed) then fetch + checkout explicitly so files are present either way.
+mkdir -p "$HOME/smart_alarm"
+if [ ! -d "$HOME/smart_alarm/.git" ]; then
+    git -C "$HOME/smart_alarm" init
+    echo "Initialized new repo at $HOME/smart_alarm"
 fi
+git -C "$HOME/smart_alarm" fetch "$HOME/smart_alarm_ssd1306.bundle" ssd1306-updates
+git -C "$HOME/smart_alarm" checkout -B ssd1306-updates FETCH_HEAD
+echo "Checked out ssd1306-updates at $HOME/smart_alarm"
 
 rm -f "$HOME/smart_alarm_ssd1306.bundle"
 

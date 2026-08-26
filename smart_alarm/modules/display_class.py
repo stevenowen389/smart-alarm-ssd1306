@@ -111,11 +111,12 @@ class Display(object):
         y = (self.height - text_height) // 2 - text_bbox[1]
         self.decimal_positions = {}
         if len(text) >= 4:
-            decimal_x = int(x + 2 * character_width + (character_spacing - 5) / 2)
-            decimal_y = int(y + text_height // 2 - 9)
+            # Center the indicator dots in the gap between digit 2 and digit 3.
+            decimal_x = int(x + 2 * character_width + character_spacing / 2 - 2)
+            decimal_y = int(y + text_height // 2 - 10)
             self.decimal_positions = {
-                1: (decimal_x + 10, decimal_y),
-                3: (decimal_x, decimal_y + 14),
+                1: (decimal_x, decimal_y),
+                3: (decimal_x, decimal_y + 16),
             }
         return text, x, y
 
