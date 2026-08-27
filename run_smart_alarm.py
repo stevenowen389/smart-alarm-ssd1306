@@ -5,7 +5,7 @@ This wrapper avoids import/filename collisions between the package directory
 and the legacy executable also named ``smart_alarm`` inside it.
 
 Run with the project's venv Python, e.g.:
-  /home/$USER/smart_alarm/.venv/bin/python run_smart_alarm.py
+    /home/$USER/smart_alarm/.venv/bin/python /home/$USER/smart_alarm/run_smart_alarm.py
 
 The launcher tries, in order:
  1. import the smart_alarm package and call smart_alarm.main() or run it as a module
