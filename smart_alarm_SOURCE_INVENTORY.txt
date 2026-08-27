@@ -19,8 +19,7 @@ Python dependencies from requirements.txt
 ------------------------------------------
 adafruit-blinka       CircuitPython compatibility layer that exposes Raspberry Pi and
                        other hardware interfaces through common Python APIs.
-adafruit-circuitpython-ssd1306
-                       CircuitPython driver used to control SSD1306 OLED displays.
+adafruit-circuitpython-ssd1306 CircuitPython driver used to control SSD1306 OLED displays.
 coloredlogs           Optional colored logging package declared for readable terminal logs.
 colorschemes          APA102/LED color scheme helpers used to generate lighting colors.
 gpiozero              High-level Raspberry Pi GPIO library used for amplifier control.
@@ -75,8 +74,9 @@ mopidy                  Optional streaming/music service started by autostart.sh
 apt-get                 Installs Raspberry Pi OS system packages.
 pip                     Installs Python packages into the project virtual environment.
 systemctl               Enables, starts, and manages the systemd service.
-scp                      Copies deployment bundles to the Raspberry Pi.
+scp                     Copies deployment bundles to the Raspberry Pi.
 
+==========================
 PYTHON APPLICATION SOURCE
 ==========================
 
@@ -120,51 +120,43 @@ individual_message property
 text property           Exposes custom message text through getter and setter methods.
 volume property         Exposes volume through the getter and setter methods.
 
+--------------------------
 smart_alarm/log_config.py
 --------------------------
 logging_dict             Defines the shared logging configuration, including console and rotating-file handlers.
 
+-----------------------
 smart_alarm/smart_alarm
 -----------------------
 Imports: urllib.request, RPi.GPIO, gpiozero.Button, gpiozero.DigitalInputDevice, gpiozero.DigitalOutputDevice, threading, logging.config, log_config, xml.dom.minidom, time, os, coloredlogs, difflib, modules.display_class.Display, modules.sounds.Sound, modules.xml_data.Xml_data, modules.led.LEDs.
 button_callback()        Handles short and long hardware-button presses, including status reporting, stopping playback, and shutdown.
-download_file(link_to_file)
-                          Downloads a remote audio or podcast file and returns its local filename.
-find_most_recent_news_url_in_xml_file(xml_file)
-                          Parses an XML feed and returns the URL from its first enclosure item.
-set_ind_msg(ind_msg_active, ind_msg_text)
-                          Selects either the configured individual wake-up message or a generated default message.
-delete_old_files(time_to_alarm)
-                          Finds temporary MP3 files in the project and home directories and removes them at cleanup times.
+download_file(link_to_file) Downloads a remote audio or podcast file and returns its local filename.
+find_most_recent_news_url_in_xml_file(xml_file) Parses an XML feed and returns the URL from its first enclosure item.
+set_ind_msg(ind_msg_active, ind_msg_text) Selects either the configured individual wake-up message or a generated default message.
+delete_old_files(time_to_alarm) Finds temporary MP3 files in the project and home directories and removes them at cleanup times.
 read_photocell()         Measures ambient brightness through GPIO and converts it to the display brightness scale.
-tell_when_button_pressed(alarm_active, alarm_days, alarm_time)
-                          Reports alarm status and the next scheduled alarm when the control button is pressed.
+tell_when_button_pressed(alarm_active, alarm_days, alarm_time) Reports alarm status and the next scheduled alarm when the control button is pressed.
 run_alarm_light()        Runs the wake-up light behavior in its alarm thread.
 run_alarm_sound()        Runs the wake-up sound or news behavior with playback and snooze handling.
-add_stream_url_to_mpc_playlist(stream_url)
-                          Adds a configured streaming URL to the MPC playlist.
-check_if_podcast_url_correct(podcast_url)
-                          Checks a podcast URL and selects a fallback when the configured URL is unusable.
+add_stream_url_to_mpc_playlist(stream_url) Adds a configured streaming URL to the MPC playlist.
+check_if_podcast_url_correct(podcast_url) Checks a podcast URL and selects a fallback when the configured URL is unusable.
 shutdown_pi()            Requests an orderly Raspberry Pi shutdown.
 if_interrupt()           Cleans up GPIO and runtime state when the application is interrupted.
-blink_seconds_indicator()
-                          Blinks the display's seconds indicator while the alarm clock is running.
-change_stream_url(stream_url)
-                          Updates the active MPC stream source.
-check_if_smartalarm_is_running_leds()
-                          Checks whether the LED hardware is available and active.
+blink_seconds_indicator() Blinks the display's seconds indicator while the alarm clock is running.
+change_stream_url(stream_url) Updates the active MPC stream source.
+check_if_smartalarm_is_running_leds() Checks whether the LED hardware is available and active.
 main()                   Runs the main clock loop, synchronizes XML settings, updates displays, and starts alarm work.
 __main__ entry point     Initializes runtime state and invokes main() when this script is executed directly.
 
+----------------------------
 smart_alarm/python_server.py
 ----------------------------
 Imports: cgi, sys, os.path, logging, base64, modules.xml_data, wsgiref.simple_server, webbrowser.
-application(environ, start_response)
-                        Handles WSGI GET and POST requests for the alarm configuration web interface.
+application(environ, start_response) Handles WSGI GET and POST requests for the alarm configuration web interface.
 content_type(path)      Determines a response MIME type from a requested file path extension.
-show_404_app(environ, start_response, path)
-                        Returns a WSGI 404 response for an unavailable resource.
+show_404_app(environ, start_response, path) Returns a WSGI 404 response for an unavailable resource.
 
+------------------------------------
 smart_alarm/modules/display_class.py
 ------------------------------------
 Imports: time, logging, os, threading, PIL.Image, PIL.ImageDraw, PIL.ImageFont, board, busio, adafruit_ssd1306, Adafruit_SSD1306.
@@ -172,13 +164,11 @@ Class Display          Provides an SSD1306 OLED display abstraction with Circuit
 __init__()              Initializes the display driver, image buffer, and display state.
 _clear_buffer()         Clears the in-memory OLED image buffer.
 _load_font(size=32)     Loads a usable TrueType font from the configured system font locations.
-_draw_decimal(pos, decimal)
-                        Draws or removes a decimal-point indicator at a display position.
+_draw_decimal(pos, decimal) Draws or removes a decimal-point indicator at a display position.
 _draw_alarm_status()    Draws the alarm-enabled status indicator on the display.
 _time_layout(value)     Calculates the text layout needed to center a time value.
 _push()                 Sends the current image buffer to the physical display.
-scroll(message, number_of_iteration)
-                        Scrolls a text message horizontally across the OLED for a requested number of iterations.
+scroll(message, number_of_iteration) Scrolls a text message horizontally across the OLED for a requested number of iterations.
 show_time(value)        Renders a time value with decimal points and alarm status on the OLED.
 show_message(message)   Renders a centered static message on the OLED.
 
@@ -188,13 +178,11 @@ Imports: time, os, sys, colorschemes, logging.
 Class LEDs             Controls APA102 RGB LEDs for wake-up lighting effects.
 __init__()              Initializes the LED controller and animation state.
 stopping_leds()         Requests that the current LED animation stop.
-rainbow(brightness, duration_time)
-                        Displays a cycling rainbow pattern for the requested duration and brightness.
-white_blinking(duration_time)
-                        Displays a blinking white-light pattern for the requested duration.
-wake_up_light_show(duration_time)
-                        Runs the combined wake-up sequence, including rainbow and white-blinking stages.
+rainbow(brightness, duration_time) Displays a cycling rainbow pattern for the requested duration and brightness.
+white_blinking(duration_time) Displays a blinking white-light pattern for the requested duration.
+wake_up_light_show(duration_time) Runs the combined wake-up sequence, including rainbow and white-blinking stages.
 
+-----------------------------
 smart_alarm/modules/sounds.py
 -----------------------------
 Imports: pygame, pyttsx3, time, random.randint, os, gpiozero.OutputDevice, logging.
@@ -202,14 +190,13 @@ Class Sound            Controls MP3 playback, speech synthesis, streaming audio,
 __init__()              Initializes pygame audio, speech synthesis, and amplifier state.
 stopping_sound()       Requests that current sound playback stop.
 toggle_amp_pin(toggle) Turns the amplifier GPIO output on or off.
-play_mp3_file(mp3_file, force=False)
-                        Plays an MP3 file through pygame while managing amplifier state and stop behavior.
+play_mp3_file(mp3_file, force=False) Plays an MP3 file through pygame while managing amplifier state and stop behavior.
 say(text, force=False)  Speaks text through the pyttsx3 text-to-speech engine.
 adjust_volume(value)   Sets the system mixer volume by invoking the amixer command.
 play_wakeup_music()    Selects and plays a random MP3 from the configured music directory.
-play_online_stream(force=False)
-                        Starts online stream playback through the mpc command-line client.
+play_online_stream(force=False) Starts online stream playback through the mpc command-line client.
 
+-------------------------------
 smart_alarm/modules/xml_data.py
 -------------------------------
 Imports: xml.etree.cElementTree, copy, os, logging, os.listdir, os.path.isfile, os.path.join.
@@ -219,22 +206,19 @@ alarm_active()          Returns the XML value controlling whether the alarm is e
 alarm_time()            Returns the configured alarm time from XML.
 content()               Returns the selected alarm content type from XML.
 alarm_days()            Returns the configured alarm days from XML.
-individual_message_active()
-                        Returns whether the custom alarm message is enabled in XML.
-individual_message_text()
-                        Returns the custom alarm message text from XML.
+individual_message_active() Returns whether the custom alarm message is enabled in XML.
+individual_message_text() Returns the custom alarm message text from XML.
 volume()                Returns the configured volume from XML.
 content_podcast_url()   Returns the configured podcast URL from XML.
 content_stream_url()    Returns the configured stream URL from XML.
 test_alarm()            Returns the XML setting used to trigger an alarm test.
 read_data()             Reloads the XML file and returns its complete serialized content.
-changeValue(element_name, value)
-                        Changes one named XML element and persists the updated value.
+changeValue(element_name, value) Changes one named XML element and persists the updated value.
 writeFile()             Writes the current XML tree back to the configuration file.
-readFileNamesInMusicDirectory()
-                        Synchronizes music filenames from the music directory into XML.
+readFileNamesInMusicDirectory() Synchronizes music filenames from the music directory into XML.
 elements_equal(e1, e2) Compares two XML element trees, including tags, attributes, text, tails, and children.
 
+===========================
 PLAYGROUND PYTHON PROGRAMS
 ===========================
 
@@ -321,6 +305,7 @@ read_as_file_list(xml_file) Parses XML and returns selected element values as a 
 read_default(xml_file, settings)
                            Parses XML and populates a Settings object with stored defaults.
 
+=====================
 JAVASCRIPT WEB SOURCE
 =====================
 
@@ -331,20 +316,17 @@ Global state              Stores initialization state, MP3 data, XML data, month
 sleep(ms)                 Returns a Promise that resolves after the requested number of milliseconds.
 loadDoc()                 Requests data.xml asynchronously and begins populating the configuration interface.
 readXmlFile(xml)          Parses XML configuration data and updates the web form and its controls.
-showOrHideAlarmActiveClass()
-                          Shows or hides controls whose availability depends on the alarm-enabled state.
-showOrHideIndividualMessage()
-                          Shows or hides the custom-message controls based on their toggle state.
-Knob change/release handlers
-                          Persist hour and minute changes made through the rotating alarm-time controls.
+showOrHideAlarmActiveClass() Shows or hides controls whose availability depends on the alarm-enabled state.
+showOrHideIndividualMessage() Shows or hides the custom-message controls based on their toggle state.
+Knob change/release handlers Persist hour and minute changes made through the rotating alarm-time controls.
 Volume slider handler     Persists volume changes from the 0-to-100 slider.
 Content select handler    Updates the selected content type and related URL controls.
-URL and message focusout handlers
-                          Persist edited stream, podcast, and custom-message text when fields lose focus.
+URL and message focusout handlers Persist edited stream, podcast, and custom-message text when fields lose focus.
 MP3 upload handler        Validates and uploads a selected MP3 file to the server.
 MP3 delete handler        Removes the selected MP3 file through the web interface.
 Test alarm click handler Triggers the server-side test-alarm operation.
 
+----------------------------------------------------
 Bundled JavaScript libraries in smart_alarm/web/libs
 ----------------------------------------------------
 excanvas.js               Provides a Canvas API compatibility layer for older browsers.
@@ -354,10 +336,10 @@ jquery.ui.touch-punch.js Translates touch gestures into jQuery UI mouse-style ev
 listbox.js                Provides the repository's custom listbox widget behavior.
 jquery-ui.css             Supplies styles for jQuery UI widgets and is not executable library source.
 listbox.css               Supplies styles for the custom listbox and is not executable library source.
-smart_alarm/web/stylesheet.css
-                          Supplies the custom CSS styling for the alarm configuration interface and defines no functions or libraries.
+smart_alarm/web/stylesheet.css Supplies the custom CSS styling for the alarm configuration interface and defines no functions or libraries.
 images/*                  Supplies image assets used by the bundled web widgets.
 
+============================
 SHELL AND DEPLOYMENT SCRIPTS
 ============================
 
@@ -381,16 +363,7 @@ Parameter -InstallDependencies
                                Optionally requests dependency installation during remote deployment.
 Top-level script              Creates a Git bundle, copies it to the Raspberry Pi with SCP, and optionally runs the remote update process.
 
-bundle_send_and_update - Copy.ps1
-----------------------------------
-Top-level script              Duplicate deployment helper retained in the repository; it does not define named PowerShell functions.
-
-commit.ps1
-----------
-Parameters -repoRoot, -branch, -bundleName
-                               Identify the local repository, branch, and generated bundle.
-Top-level script              Removes the generated bundle from staging, commits staged changes, and regenerates the Git bundle.
-
+========
 C SOURCE
 ========
 
@@ -402,6 +375,7 @@ Global variables: mem_fd, gpio_map, gpio.
 main(int argc, char **argv) Parses pin and alternate-function command-line arguments and applies the requested GPIO configuration.
 setup_io()               Maps the Raspberry Pi GPIO register region through /dev/mem and mmap.
 
+========================
 PACKAGE MARKERS AND DATA
 ========================
 
@@ -414,6 +388,7 @@ smart_alarm/logfiles/smala.log
 smart_alarm/web/index.html
                           Defines the configuration interface whose behavior is implemented by java_functions.js.
 
+================
 MAINTENANCE NOTE
 ================
 This is a source-level inventory of the repository as currently checked out; when
