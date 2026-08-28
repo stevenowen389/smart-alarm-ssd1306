@@ -26,7 +26,7 @@ echo "Configuring apache2 for smart_alarm..."
 $APT a2enmod wsgi
 $APT cp "$PROJECT_ROOT/misc/apache/envvars" /etc/apache2/envvars
 $APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
-$APT chmod o+w "$PROJECT_ROOT/smart_alarm/smart_alarm/data.xml"
+$APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml"
 $APT systemctl restart apache2
 
 if [ ! -x "$VENV/bin/python" ]; then
