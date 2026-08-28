@@ -20,7 +20,14 @@ fi
 
 echo "Installing system dependencies..."
 $APT apt-get update
-$APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2 alsa-utils mpc espeak-ng libespeak1
+$APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2 alsa-utils mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi
+
+echo "Configuring apache2 for smart_alarm..."
+$APT a2enmod wsgi
+$APT cp "$PROJECT_ROOT/misc/apache/envvars" /etc/apache2/envvars
+$APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
+$APT chmod o+w "$PROJECT_ROOT/smart_alarm/smart_alarm/data.xml"
+$APT systemctl restart apache2
 
 if [ ! -x "$VENV/bin/python" ]; then
   echo "Creating virtual environment at $VENV..."

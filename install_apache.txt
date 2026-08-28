@@ -1,0 +1,37 @@
+
+8. Apache Server
+fgebhart edited this page on Feb 11, 2018 · 5 revisions
+
+One of our goals was to keep the design of the clock as simple as possible. As a result we had to find a way to configure the clock without the use of more than one button. Therefore we are using an apache webserver on the raspberry pi to set the alarm time, the type of content which is played and many more options.
+8.1 Installation of Apache Server
+
+To install the apache server on the raspberry pi zero please follow the steps in this tutorial. The plain installation command is:
+
+sudo apt-get install apache2 -y
+
+Due the fact that we are using python scripts on the server, it is necessary to install the wsgi module for apache:
+
+sudo apt-get install libapache2-mod-wsgi
+
+Usually the module gets automatically enabled if installed, if not please run the following line:
+
+sudo a2enmod wsgi
+
+Further Information about the wsgi module can be found here.
+8.2 Configuration of the Apache server
+
+The next step will be the configuration of the apache server. Since apache doesn’t have access to the environment variables of the system, we have to declare them separately. Therefore you can add the follwing lines at the end of the file /etc/apache2/envvars:
+
+# Set smart alarm path variables
+
+export smart_alarm_path=/home/pi/smart_alarm/smart_alarm
+
+An example how the file should look like can be found under smart_alarm/misc/apache in the repository.
+
+After that we can use the variable in the apache config files. The goal is, that our python_server.py script is getting executed, when the server is called in a web browser. The easiest way to achieve this is to replace /etc/apache2/sites-available/000-default.conf with our 000-default.conf under smart_alarm/misc/apache:
+
+sudo cp smart_alarm/misc/apache/000-defaul.conf /etc/apache2/sites-available
+
+Basically it links the root directory of the server "/" to the python script and grants the apache server the reading permissions for this folder. The last thing we have to do is giving the apache server the right to change the data.xml file. Usually the apache server has its own user “www-data”. There are many different ways to give “www-data” writing permission for the file. The easiest way, but maybe not the securest one, would be to allow everybody to change the file. This can be done in the folder /smart_alarm/smart_alarm/with following lines:
+
+sudo chmod o+w data.xml
