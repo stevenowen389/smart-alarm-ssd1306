@@ -27,6 +27,9 @@ $APT a2enmod wsgi
 $APT cp "$PROJECT_ROOT/misc/apache/envvars" /etc/apache2/envvars
 $APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
 $APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml"
+# www-data needs execute (traversal) permission on every directory leading to
+# the DocumentRoot; a restrictive home directory (e.g. 750) causes 403s.
+$APT chmod o+x "$HOME" "$PROJECT_ROOT" "$PROJECT_ROOT/smart_alarm"
 $APT systemctl restart apache2
 
 if [ ! -x "$VENV/bin/python" ]; then
