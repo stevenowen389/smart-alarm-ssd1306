@@ -49,3 +49,5 @@ export LANG
 # Load smart alarm path variable. Set SMART_ALARM_PATH when the project is
 # not located at $HOME/smart_alarm/smart_alarm.
 export smart_alarm_path="${SMART_ALARM_PATH:-$HOME/smart_alarm/smart_alarm}"
+# The WSGI daemon's python-home must point at the virtualenv, not the app dir.
+export smart_alarm_venv="${SMART_ALARM_VENV:-$HOME/smart_alarm/.venv}"

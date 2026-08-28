@@ -26,8 +26,11 @@ echo "Configuring apache2 for smart_alarm..."
 $APT a2enmod wsgi
 $APT cp "$PROJECT_ROOT/misc/apache/envvars" /etc/apache2/envvars
 # envvars is sourced as root at apache startup, so $HOME there means /root,
-# not this user's home. Override with the actual absolute project path.
-echo "export smart_alarm_path=\"$PROJECT_ROOT/smart_alarm\"" | $APT tee -a /etc/apache2/envvars > /dev/null
+# not this user's home. Override with the actual absolute project paths.
+{
+  echo "export smart_alarm_path=\"$PROJECT_ROOT/smart_alarm\""
+  echo "export smart_alarm_venv=\"$VENV\""
+} | $APT tee -a /etc/apache2/envvars > /dev/null
 $APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
 $APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml"
 # www-data needs execute (traversal) permission on every directory leading to
