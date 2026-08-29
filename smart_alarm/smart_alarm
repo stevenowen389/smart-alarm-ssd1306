@@ -298,8 +298,6 @@ def run_alarm_light():
     """runs the desired light show for wake up"""
     # display the current time
     display.show_time(now)
-    # write content to display
-    display.write()
 
     if check_if_smartalarm_is_running_leds():
         # starts led light show
@@ -313,8 +311,6 @@ def run_alarm_sound():
 
     # display the current time
     display.show_time(now)
-    # write content to display
-    display.write()
 
     # check if news or audio (offline mp3) is programmed
     if xml_data.content() == 'podcast':
@@ -543,7 +539,6 @@ def main():
     display.write()
     time.sleep(0.5)
     display.show_time(time.strftime("%H%M"))
-    display.write()
 
     # one quick led rainbow
     v = threading.Thread(target=led.rainbow, args=(10, 1,))
@@ -665,7 +660,6 @@ def main():
                 display.show_time(now)
                 display.set_alarm_status(alarm_state)
                 display.write()
-                displayed_time = now
                 displayed_alarm_state = alarm_state
 
             # delete old and unneeded mp3 files

@@ -138,6 +138,15 @@ class Display(object):
             # a "image" helper in some builds — try in this order.
             if hasattr(self.display_lib, 'image'):
                 self.display_lib.image(self.image)
+            elif hasattr(self.display_lib, 'framebuf'):
+                # Try to use framebuf attribute directly with PIL image
+                try:
+                    import framebuf
+                    # Convert PIL 1-bit image to framebuf format
+                    buf = framebuf.FrameBuffer(bytearray(self.image.tobytes()), self.width, self.height, framebuf.MONO_HLSB)
+                    self.display_lib.framebuf.blit(buf, 0, 0)
+                except Exception:
+                    pass
             elif hasattr(self.display_lib, 'blit'):
                 # blit may accept an (x,y,image) tuple in some implementations
                 try:
@@ -145,9 +154,7 @@ class Display(object):
                 except Exception:
                     pass
             else:
-                # Many CircuitPython drivers expose fill/text/show but not image.
-                # Convert PIL image to a raw buffer and write into the display if
-                # framebuf is available.
+                # Fallback: try direct buffer copy (may not work on all drivers)
                 try:
                     buf = self.image.tobytes()
                     if hasattr(self.display_lib, 'buffer'):
@@ -187,6 +194,7 @@ class Display(object):
             for index, character in enumerate(text):
                 self.draw.text((x + index * (character_width + 8), y), character, font=self.font, fill=255)
             self._draw_alarm_status()
+            self._push()
 
     def show_message(self, message):
         """Render a centered static message on the display."""
@@ -200,8 +208,7 @@ class Display(object):
             text_height = text_bbox[3] - text_bbox[1]
             x = (self.width - text_width) // 2 - text_bbox[0]
             y = (self.height - text_height) // 2 - text_bbox[1]
-            self.draw.text((x, y), message, font=message_font, fill=255)
-
+            self.draw.text((x, y), message, font=message_font, fill=255)            self._push()
     def set_brightness(self, value):
         """Change the display brightness via SSD1306 contrast."""
         try:
@@ -258,6 +265,7 @@ class Display(object):
                 return
             self.alarm_status = bool(active)
             self._draw_alarm_status()
+            self._push()
 
     def set_segment(self, led, value):
         """Render a single "segment" on the OLED using a simple coordinate map."""
