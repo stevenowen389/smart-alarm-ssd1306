@@ -50,6 +50,7 @@ $(function() {
 
         // set gui elements according to read in values
         $("#slider").slider("option", "value", volume);
+        $("#volume_text").text(volume);
 
         $("#hour_text").text(hour_value);
         $("#minute_text").text(minute_value);
@@ -57,6 +58,7 @@ $(function() {
         $('#minute_knob').val(minute_value).trigger('change');
 
         $('#cb_alarm_active').prop("checked", alarm_active);
+        $('#cb_alarm_active').checkboxradio("refresh");
 
         $("#sm_content").val(content).prop('selected', true);
         $("#sm_content").selectmenu( "refresh" ); //refreshes the button
@@ -70,12 +72,9 @@ $(function() {
 
         $('.cb_days').each(function () {
             var value = $(this).val();
-            if(days_array.indexOf(String(value)) != -1)
-            {
-                $(this).prop("checked", true);
-            }
+            $(this).prop("checked", days_array.indexOf(String(value)) != -1);
         });
-        $(".cb_days").button("refresh");
+        $(".cb_days").checkboxradio("refresh");
     
         // fill mp3 array
         var mp3Files = xmlDoc.getElementsByTagName("mp3_files")[0].childNodes;
@@ -137,6 +136,9 @@ $(function() {
     $( "input[type='checkbox']" ).checkboxradio(); //use jquery ui
 
     $('#cb_alarm_active').change(function() {
+        if (initializing) {
+            return;
+        }
         var value = $(this).is(":checked") ? 1 : 0;
         $.post("index.html",
         {
@@ -145,6 +147,9 @@ $(function() {
     });
 
     $('.cb_days').change(function() {
+        if (initializing) {
+            return;
+        }
 
         var sList = "";
         $('.cb_days').each(function () {
@@ -164,6 +169,9 @@ $(function() {
 
     $('#cb_individual_message').change(function() {
         showOrHideIndividualMessage();
+        if (initializing) {
+            return;
+        }
         var value = $(this).is(":checked") ? 1 : 0;
         $.post("index.html",
         {
@@ -315,6 +323,9 @@ $(function() {
     $( ".selectmenu" ).selectmenu({
         select: function( event, ui ) {
             //save in xml file
+            if (initializing) {
+                return;
+            }
             console.log("selected content selected : " + ui.item.value)
             $.post("index.html",
                 {
@@ -345,6 +356,9 @@ $(function() {
     // text fields
     //---------------------------------------------------
     $(".class_input_text").focusout(function(){
+        if (initializing) {
+            return;
+        }
         console.log("Textfeld " + this.id + "changed to: \"" + this.value + "\"");
 
         if(this.id == "txt_individual_message")
