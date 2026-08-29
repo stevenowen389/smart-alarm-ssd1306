@@ -62,11 +62,16 @@ def application(environ, start_response):
 
         if uploaded_mp3_file:
             mp3_data_base64 = uploaded_mp3_file['fileData'][uploaded_mp3_file['fileData'].find('base64,')+7:]
-            # mp3_data = decode_base64(mp3_data_base64)
-            f = open('./music/' + uploaded_mp3_file['name'], 'w')
-            f.write(base64.b64decode(mp3_data_base64))
-            f.close()
-            xml_data.readFileNamesInMusicDirectory()
+            filename = os.path.basename(uploaded_mp3_file['name'])
+            try:
+                with open(os.path.join('./music', filename), 'wb') as f:
+                    f.write(base64.b64decode(mp3_data_base64))
+                xml_data.readFileNamesInMusicDirectory()
+                logger.warning("Uploaded MP3 file %s", filename)
+            except (OSError, ValueError) as error:
+                logger.warning("Could not upload MP3 file %s: %s", filename, error)
+                start_response('400 Bad Request', [('content-type', 'text/plain')])
+                return [b'Could not upload MP3 file.']
 
     path = environ['PATH_INFO']
     if path != '/data.xml':
