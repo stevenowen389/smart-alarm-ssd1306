@@ -208,7 +208,9 @@ class Display(object):
             text_height = text_bbox[3] - text_bbox[1]
             x = (self.width - text_width) // 2 - text_bbox[0]
             y = (self.height - text_height) // 2 - text_bbox[1]
-            self.draw.text((x, y), message, font=message_font, fill=255)            self._push()
+            self.draw.text((x, y), message, font=message_font, fill=255)
+            self._push()
+
     def set_brightness(self, value):
         """Change the display brightness via SSD1306 contrast."""
         try:
