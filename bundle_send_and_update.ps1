@@ -84,12 +84,20 @@ echo "[2/5] Fetching from bundle"
 git -C "$HOME/smart_alarm" fetch "$HOME/smart_alarm_ssd1306.bundle" ssd1306-updates
 
 echo "[3/5] Checking out branch"
+# Preserve runtime settings before the forced checkout replaces tracked files.
+if [ -f "$HOME/smart_alarm/smart_alarm/data.xml" ]; then
+    cp "$HOME/smart_alarm/smart_alarm/data.xml" "$HOME/.smart_alarm-data.xml"
+fi
 # Discard local tracked/untracked changes before checkout so log files
 # or other local edits do not block branch updates.
 git -C "$HOME/smart_alarm" reset --hard
 git -C "$HOME/smart_alarm" clean -fd
 git -C "$HOME/smart_alarm" checkout -B ssd1306-updates -f FETCH_HEAD
 git -C "$HOME/smart_alarm" reset --hard FETCH_HEAD
+if [ -f "$HOME/.smart_alarm-data.xml" ]; then
+    cp "$HOME/.smart_alarm-data.xml" "$HOME/smart_alarm/smart_alarm/data.xml"
+    rm -f "$HOME/.smart_alarm-data.xml"
+fi
 echo "Checked out ssd1306-updates at $HOME/smart_alarm"
 git -C "$HOME/smart_alarm" --no-pager log -1 --oneline
 grep -n "decimal_x\|character_spacing - 5" "$HOME/smart_alarm/smart_alarm/modules/display_class.py" || true
