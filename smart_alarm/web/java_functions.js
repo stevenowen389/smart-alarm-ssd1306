@@ -389,15 +389,17 @@ $(function() {
     // MP3 list box
     //---------------------------------------------------
     $('#btn_del_mp3_list').click(function() {
-        var filename = $("#sel_mp3_list").val();
-        if (!filename) {
+            var filenames = $("#sel_mp3_list").val();
+            if (!filenames || filenames.length === 0) {
             return;
         }
 
-        $.post("index.html", { deleteMp3File: filename })
-            .done(loadDoc)
+            $.when.apply($, $.map(filenames, function(filename) {
+                return $.post("index.html", { deleteMp3File: filename });
+            }))
+                .done(loadDoc)
             .fail(function() {
-                alert("Could not delete the selected MP3 file.");
+                    alert("Could not delete one or more selected MP3 files.");
             });
     });
     
