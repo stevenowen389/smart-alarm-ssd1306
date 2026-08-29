@@ -23,7 +23,8 @@ $(function() {
           readXmlFile(this);
         }
       };
-      xhttp.open("GET", "./data.xml", true);
+            xhttp.open("GET", "./data.xml?cacheBust=" + Date.now(), true);
+            xhttp.setRequestHeader("Cache-Control", "no-cache");
       xhttp.send();
     };
 
@@ -50,6 +51,8 @@ $(function() {
         // set gui elements according to read in values
         $("#slider").slider("option", "value", volume);
 
+        $("#hour_text").text(hour_value);
+        $("#minute_text").text(minute_value);
         $('#hour_knob').val(hour_value).trigger('change');
         $('#minute_knob').val(minute_value).trigger('change');
 

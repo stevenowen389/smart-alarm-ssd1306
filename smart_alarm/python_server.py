@@ -74,6 +74,8 @@ def application(environ, start_response):
         h.close()
 
         headers = [('content-type', content_type(path))]
+        if path == './data.xml':
+            headers.append(('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0'))
         start_response('200 OK', headers)
         return [content]
     else:

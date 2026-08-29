@@ -531,8 +531,8 @@ def main():
     # otherwise the leds functions will be skipped due to while functions
     time_for_leds = 300
 
-    # configure the active-high button input; its external resistor provides the bias
-    button = Button(button_input_pin, pull_up=None, active_state=True, bounce_time=None)
+    # The button connects GPIO24 to 3.3V when pressed.
+    button = Button(button_input_pin, pull_up=False, bounce_time=None)
     # set output low in order to turn off amplifier and nullify noise
     sound.toggle_amp_pin(0)
     display.show_message('Welcome')
