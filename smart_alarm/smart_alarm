@@ -602,12 +602,11 @@ def main():
                 sound.play_mp3_file(project_path + '/sounds/blop.mp3')
 
                 # check if test alarm was pressed
-                if xml_data.test_alarm() == '1' and just_played_alarm is False:
+                if xml_data.test_alarm() == '1':
                     logger.warning('running test alarm')
                     xml_data.changeValue('test_alarm', '0')
                     q = threading.Thread(target=run_alarm_sound, args=())
                     q.start()
-                    just_played_alarm = True
                 elif volume != new_volume:
                     sound.adjust_volume(xml_data.volume())
 
