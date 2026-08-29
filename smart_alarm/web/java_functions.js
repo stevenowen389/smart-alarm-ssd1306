@@ -419,14 +419,16 @@ $(function() {
         senddata.type = uploadedFile.type;
 
         var reader = new FileReader();
-        reader.onload = async function(){
+        reader.onload = function(){
             senddata.fileData = reader.result;
-            $.post("index.html",
-                {
-                  uploadMp3File: senddata,
+            $.post("index.html", { uploadMp3File: senddata })
+                .done(loadDoc)
+                .fail(function(jqXHR) {
+                    alert("Could not upload MP3 file: " + jqXHR.responseText);
                 });
-            await sleep(1000);
-            loadDoc();
+        };
+        reader.onerror = function() {
+            alert("Could not read the selected file.");
         };
         reader.readAsDataURL(uploadedFile);
         
