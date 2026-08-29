@@ -571,6 +571,7 @@ def main():
     displayed_time = None
     displayed_alarm_state = None
     previous_alarm_active = xml_data.alarm_active()
+    previous_day = time.strftime('%w')
     threading.Thread(target=blink_seconds_indicator, daemon=True).start()
 
     if xml_data.test_alarm() == '1':
@@ -651,9 +652,11 @@ def main():
                 # set just_played_alarm back to False in order to not miss the next alarm
                 just_played_light_show = False
 
-            if time_to_alarm != 0:
-                # set just_played_alarm back to False in order to not miss the next alarm
-                just_played_alarm = False
+                # Reset just_played_alarm only when we move to a new day (so alarm can trigger again tomorrow)
+                current_day = time.strftime('%w')
+                if current_day != previous_day:
+                    just_played_alarm = False
+                    previous_day = current_day
 
             alarm_state = xml_data.alarm_active() == '1'
             if now != displayed_time or alarm_state != displayed_alarm_state:
