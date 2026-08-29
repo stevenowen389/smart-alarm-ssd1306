@@ -54,6 +54,7 @@ $(function() {
         $('#minute_knob').val(minute_value).trigger('change');
 
         $('#cb_alarm_active').prop("checked", alarm_active);
+        showOrHideAlarmActiveClass();
 
         $("#sm_content").val(content).prop('selected', true);
         $("#sm_content").selectmenu( "refresh" ); //refreshes the button
@@ -134,12 +135,26 @@ $(function() {
     $( "input[type='checkbox']" ).checkboxradio(); //use jquery ui
 
     $('#cb_alarm_active').change(function() {
+        showOrHideAlarmActiveClass();
         var value = $(this).is(":checked") ? 1 : 0;
         $.post("index.html",
         {
           alarm_active: value,
         });
     });
+    
+    // show or hide gui elements according if alarm_active is checked
+    function showOrHideAlarmActiveClass()
+    {
+        if($('#cb_alarm_active').is(":checked"))
+        {
+            $(".class_hide").show("slow");
+        }
+        else
+        {
+            $(".class_hide").hide("slow");
+        }
+    };
 
     $('.cb_days').change(function() {
 
