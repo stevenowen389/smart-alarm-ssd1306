@@ -87,7 +87,7 @@ $(function() {
         // refresh mp3 list GUI
         $('#sel_mp3_list').find("option").remove();
         for (var index in mp3Array) {
-            $("#sel_mp3_list").append("<option value=\"" + index + "\">" + mp3Array[index] + "</option>");
+              $("#sel_mp3_list").append($("<option>").val(mp3Array[index]).text(mp3Array[index]));
         }
         
         initializing = false;
@@ -388,17 +388,17 @@ $(function() {
     //---------------------------------------------------
     // MP3 list box
     //---------------------------------------------------
-    $('#btn_del_mp3_list').click(async function() {
-        // remove one array element with splice
-        var index = $("#sel_mp3_list")[0].value;
-        console.log("delete" + mp3Array[index])
-        //mp3Array.splice(index, 1)
-        $.post("index.html",
-        {
-          deleteMp3File: mp3Array[index],
-        });
-        await sleep(1000);
-        loadDoc();
+    $('#btn_del_mp3_list').click(function() {
+        var filename = $("#sel_mp3_list").val();
+        if (!filename) {
+            return;
+        }
+
+        $.post("index.html", { deleteMp3File: filename })
+            .done(loadDoc)
+            .fail(function() {
+                alert("Could not delete the selected MP3 file.");
+            });
     });
     
     $('#btn_add_mp3_list').change(function(event, ui ) {

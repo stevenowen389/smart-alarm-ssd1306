@@ -43,8 +43,16 @@ def application(environ, start_response):
                 fieldName = s[s.find('[')+1:s.find(']')]
                 uploaded_mp3_file[fieldName] = post.getvalue(s)
             elif s == 'deleteMp3File':
-                os.remove('./music/' + post.getvalue(s))
-                xml_data.readFileNamesInMusicDirectory()
+                    filename = os.path.basename(post.getvalue(s))
+                    file_path = os.path.join('./music', filename)
+                    try:
+                        os.remove(file_path)
+                        xml_data.readFileNamesInMusicDirectory()
+                        logger.warning("Deleted MP3 file %s", filename)
+                    except OSError as error:
+                        logger.warning("Could not delete MP3 file %s: %s", filename, error)
+                        start_response('400 Bad Request', [('content-type', 'text/plain')])
+                        return [b'Could not delete MP3 file.']
             else:
                 try:
                     xml_data.changeValue(s, post.getvalue(s))
