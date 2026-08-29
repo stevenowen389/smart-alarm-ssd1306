@@ -615,20 +615,11 @@ def main():
                 elif volume != new_volume:
                     sound.adjust_volume(xml_data.volume())
 
-                # stop alarm if it was turned off while playing
-                if xml_data.alarm_active() == '0' and previous_alarm_active == '1':
-                    logger.warning('Alarm was disabled, stopping sound')
-                    sound.stopping_sound()
-                    just_played_alarm = False
-
-                previous_alarm_active = xml_data.alarm_active()
-
-            # also check alarm status outside XML change detection to catch any state changes
+            # check alarm status every iteration: if it was turned off, stop the sound
             if xml_data.alarm_active() == '0' and previous_alarm_active == '1':
-                logger.warning('Alarm was disabled (non-XML check), stopping sound')
+                logger.warning('Alarm was disabled, stopping sound')
                 sound.stopping_sound()
                 just_played_alarm = False
-                previous_alarm_active = '0'
 
             time_to_alarm = int(int(str(xml_data.alarm_time()[:2]) + str(xml_data.alarm_time()[3:]))) - int(now)
 
@@ -682,6 +673,9 @@ def main():
 
             # update xml file in order to find differences in next loop
             xml_file = new_xml_file
+
+            # update alarm state for next iteration
+            previous_alarm_active = xml_data.alarm_active()
 
             # read area brightness with photocell, save the data to current_brightness and add it the brightness_data
             # in order to calculate the mean of an set of measurements
