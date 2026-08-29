@@ -107,6 +107,11 @@ if [ "${INSTALL_DEPS:-0}" = "1" ]; then
 else
     echo "Remote update complete; dependency install was skipped"
 fi
+
+echo "[6/6] Setting file permissions for web server"
+sudo chmod 666 "$HOME/smart_alarm/smart_alarm/data.xml"
+sudo chmod 775 "$HOME/smart_alarm/smart_alarm/music/"
+echo "File permissions updated for Apache web server access"
 '@
 
     # Remove Windows CRs from the here-string before piping so remote bash isn't given CRLFs
