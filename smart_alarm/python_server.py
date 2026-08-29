@@ -3,8 +3,6 @@ import sys
 import os.path
 import logging
 
-import base64   # for decoding mp3 data from web server
-
 # important for apache web server:
 project_path = os.environ['smart_alarm_path']
 if project_path not in sys.path:
@@ -37,11 +35,23 @@ def application(environ, start_response):
            keep_blank_values=False
         )
 
-        uploaded_mp3_file = {}
+        # xml_data is a long-lived, per-process object; reload it so we
+        # never overwrite fields the alarm daemon changed on disk since.
+        xml_data.read_data()
+
         for s in post:
-            if 'uploadMp3File' in s:
-                fieldName = s[s.find('[')+1:s.find(']')]
-                uploaded_mp3_file[fieldName] = post.getvalue(s)
+            if s == 'uploadMp3File':
+                item = post['uploadMp3File']
+                filename = os.path.basename(item.filename)
+                try:
+                    with open(os.path.join('./music', filename), 'wb') as f:
+                        f.write(item.file.read())
+                    xml_data.readFileNamesInMusicDirectory()
+                    logger.warning("Uploaded MP3 file %s", filename)
+                except (OSError, ValueError) as error:
+                    logger.warning("Could not upload MP3 file %s: %s", filename, error)
+                    start_response('400 Bad Request', [('content-type', 'text/plain')])
+                    return [b'Could not upload MP3 file.']
             elif s == 'deleteMp3File':
                     filename = os.path.basename(post.getvalue(s))
                     file_path = os.path.join('./music', filename)
@@ -60,18 +70,6 @@ def application(environ, start_response):
                 except Exception as e:
                     logger.warning("Error: Couldn't change xml entry {} to {} with error: {}".format(s, post.getvalue(s), e))
 
-        if uploaded_mp3_file:
-            mp3_data_base64 = uploaded_mp3_file['fileData'][uploaded_mp3_file['fileData'].find('base64,')+7:]
-            filename = os.path.basename(uploaded_mp3_file['name'])
-            try:
-                with open(os.path.join('./music', filename), 'wb') as f:
-                    f.write(base64.b64decode(mp3_data_base64))
-                xml_data.readFileNamesInMusicDirectory()
-                logger.warning("Uploaded MP3 file %s", filename)
-            except (OSError, ValueError) as error:
-                logger.warning("Could not upload MP3 file %s: %s", filename, error)
-                start_response('400 Bad Request', [('content-type', 'text/plain')])
-                return [b'Could not upload MP3 file.']
 
     path = environ['PATH_INFO']
     if path != '/data.xml':

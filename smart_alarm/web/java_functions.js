@@ -411,27 +411,22 @@ $(function() {
             alert("The size of the mp3 file has to be less than 25 MB.");
             return;
         }
-        
-        var senddata = new Object();
-        senddata.name = uploadedFile.name;
-        senddata.date = uploadedFile.lastModified;
-        senddata.size = uploadedFile.size;
-        senddata.type = uploadedFile.type;
 
-        var reader = new FileReader();
-        reader.onload = function(){
-            senddata.fileData = reader.result;
-            $.post("index.html", { uploadMp3File: senddata })
-                .done(loadDoc)
-                .fail(function(jqXHR) {
-                    alert("Could not upload MP3 file: " + jqXHR.responseText);
-                });
-        };
-        reader.onerror = function() {
-            alert("Could not read the selected file.");
-        };
-        reader.readAsDataURL(uploadedFile);
-        
+        // send the raw file via multipart/form-data, avoids base64 + urlencoding overhead
+        var formData = new FormData();
+        formData.append('uploadMp3File', uploadedFile, uploadedFile.name);
+
+        $.ajax({
+            url: "index.html",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false
+        })
+            .done(loadDoc)
+            .fail(function(jqXHR) {
+                alert("Could not upload MP3 file: " + jqXHR.responseText);
+            });
     });
 
 
