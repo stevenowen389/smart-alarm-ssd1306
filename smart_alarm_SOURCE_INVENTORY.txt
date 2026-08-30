@@ -128,18 +128,14 @@ logging_dict             Defines the shared logging configuration, including con
 -----------------------
 smart_alarm/smart_alarm
 -----------------------
-Imports: urllib.request, RPi.GPIO, gpiozero.Button, gpiozero.DigitalInputDevice, gpiozero.DigitalOutputDevice, threading, logging.config, log_config, xml.dom.minidom, time, os, coloredlogs, difflib, modules.display_class.Display, modules.sounds.Sound, modules.xml_data.Xml_data, modules.led.LEDs.
+Imports: RPi.GPIO, gpiozero.Button, gpiozero.DigitalInputDevice, gpiozero.DigitalOutputDevice, threading, logging.config, log_config, time, os, coloredlogs, difflib, modules.display_class.Display, modules.sounds.Sound, modules.xml_data.Xml_data, modules.led.LEDs.
 button_callback()        Handles short and long hardware-button presses, including status reporting, stopping playback, and shutdown.
-download_file(link_to_file) Downloads a remote audio or podcast file and returns its local filename.
-find_most_recent_news_url_in_xml_file(xml_file) Parses an XML feed and returns the URL from its first enclosure item.
 set_ind_msg(ind_msg_active, ind_msg_text) Selects either the configured individual wake-up message or a generated default message.
-delete_old_files(time_to_alarm) Finds temporary MP3 files in the project and home directories and removes them at cleanup times.
 read_photocell()         Measures ambient brightness through GPIO and converts it to the display brightness scale.
 tell_when_button_pressed(alarm_active, alarm_days, alarm_time) Reports alarm status and the next scheduled alarm when the control button is pressed.
 run_alarm_light()        Runs the wake-up light behavior in its alarm thread.
-run_alarm_sound()        Runs the wake-up sound or news behavior with playback and snooze handling.
+run_alarm_sound()        Runs the selected local MP3 or streaming-radio wake-up sound.
 add_stream_url_to_mpc_playlist(stream_url) Adds a configured streaming URL to the MPC playlist.
-check_if_podcast_url_correct(podcast_url) Checks a podcast URL and selects a fallback when the configured URL is unusable.
 shutdown_pi()            Requests an orderly Raspberry Pi shutdown.
 if_interrupt()           Cleans up GPIO and runtime state when the application is interrupted.
 blink_seconds_indicator() Blinks the display's seconds indicator while the alarm clock is running.
@@ -209,7 +205,6 @@ alarm_days()            Returns the configured alarm days from XML.
 individual_message_active() Returns whether the custom alarm message is enabled in XML.
 individual_message_text() Returns the custom alarm message text from XML.
 volume()                Returns the configured volume from XML.
-content_podcast_url()   Returns the configured podcast URL from XML.
 content_stream_url()    Returns the configured stream URL from XML.
 test_alarm()            Returns the XML setting used to trigger an alarm test.
 read_data()             Reloads the XML file and returns its complete serialized content.
@@ -321,7 +316,7 @@ showOrHideIndividualMessage() Shows or hides the custom-message controls based o
 Knob change/release handlers Persist hour and minute changes made through the rotating alarm-time controls.
 Volume slider handler     Persists volume changes from the 0-to-100 slider.
 Content select handler    Updates the selected content type and related URL controls.
-URL and message focusout handlers Persist edited stream, podcast, and custom-message text when fields lose focus.
+URL and message focusout handlers Persist edited stream and custom-message text when fields lose focus.
 MP3 upload handler        Validates and uploads a selected MP3 file to the server.
 MP3 delete handler        Removes the selected MP3 file through the web interface.
 Test alarm click handler Triggers the server-side test-alarm operation.

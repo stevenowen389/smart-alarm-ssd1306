@@ -8,8 +8,6 @@
 
     <content>mp3</content>
     
-    <content_podcast_url>podcast test</content_podcast_url>
-    
     <content_stream_url>stream_url awe</content_stream_url>
 
     <days>1,2,3,4,5</days>

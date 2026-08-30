@@ -180,7 +180,7 @@ class Display(object):
             self.display_in_use = True
             try:
                 text = '   %s   ' % message
-                scroll_font = self._load_font(40)
+                scroll_font = self._load_font(32)
                 text_width = int(self.draw.textlength(text, font=scroll_font))
                 text_bbox = self.draw.textbbox((0, 0), text, font=scroll_font)
                 text_y = (self.height - (text_bbox[3] - text_bbox[1])) // 2 - text_bbox[1]

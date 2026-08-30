@@ -44,9 +44,6 @@ class Xml_data(object):
     def volume(self):
         return self.xmldoc.find('volume').text
 
-    def content_podcast_url(self):
-        return self.xmldoc.find('content_podcast_url').text
-
     def content_stream_url(self):
         return self.xmldoc.find('content_stream_url').text
 

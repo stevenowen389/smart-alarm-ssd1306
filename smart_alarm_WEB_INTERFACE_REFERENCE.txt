@@ -50,9 +50,8 @@ cb_alarm_active                             Master on/off switch for the alarm.
 btn_test_alarm                              Immediately triggers the alarm sound on the Pi (test_alarm=1).
 hour_knob / minute_knob                     Rotating dials (jQuery Knob) that set the alarm_time.
 cb_days_mon .. cb_days_sun (class cb_days)  Per-weekday checkboxes; values 1-6 = Mon-Sat, 0 = Sun, matching Python's time.strftime('%w').
-sm_content                                  Selects alarm content: "mp3", "podcast", or "stream".
-txt_content_podcast_url / txt_content_stream_url
-                                             Free-text URLs for the podcast and stream content types.
+sm_content                                  Selects alarm content: "mp3" or "stream".
+txt_content_stream_url                      Free-text URL for the stream content type.
 sel_mp3_list (multiple select)              Lists MP3 filenames currently in smart_alarm/music/; supports multi-select for deletion.
 btn_add_mp3_list (input type=file)          Native file picker; selecting a file immediately uploads it. 
 btn_del_mp3_list                            Deletes every filename currently selected in sel_mp3_list.
@@ -80,7 +79,7 @@ readXmlFile(xml)
     Parses the data.xml response and writes every value into its
     corresponding control: volume slider + text, hour/minute knobs and their
     text labels, alarm_active checkbox, content select menu and its
-    associated URL fields, individual-message checkbox and text, the
+    stream URL field, individual-message checkbox and text, the
     per-weekday checkboxes (checked state fully replaced, not just added to),
     and the MP3 select list (rebuilt from the <mp3_files><track> nodes).
     Sets `initializing = true` for the duration so that refreshing the
@@ -114,13 +113,13 @@ Volume slider (#slider)
     slide   callback only updates the visible volume_text while dragging.
 
 Content select menu (.selectmenu)
-    select  callback POSTs { content: "mp3"|"podcast"|"stream" }.
-    change  callback toggles which of content_mp3_list / content_podcast_url
-            / content_stream_url is visible; does not itself POST.
+    select  callback POSTs { content: "mp3"|"stream" }.
+    change  callback toggles content_mp3_list or content_stream_url;
+            it does not itself POST.
 
 Text field handler (.class_input_text, focusout)
-    On losing focus, POSTs one of { text }, { content_stream_url }, or
-    { content_podcast_url } depending on which field id triggered the event.
+    On losing focus, POSTs either { text } or { content_stream_url },
+    depending on which field id triggered the event.
     Skips the POST while `initializing` is true.
 
 MP3 delete handler (#btn_del_mp3_list click)

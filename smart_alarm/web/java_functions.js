@@ -34,7 +34,6 @@ $(function() {
         xmlDoc = xml.responseXML;
         var content = xmlDoc.getElementsByTagName('content')[0].childNodes[0].nodeValue;
         var content_stream_url = xmlDoc.getElementsByTagName('content_stream_url')[0].childNodes[0].nodeValue;
-        var content_podcast_url = xmlDoc.getElementsByTagName('content_podcast_url')[0].childNodes[0].nodeValue;
         var volume = xmlDoc.getElementsByTagName('volume')[0].childNodes[0].nodeValue;
         var alarm_time = xmlDoc.getElementsByTagName('alarm_time')[0].childNodes[0].nodeValue;
         var days = xmlDoc.getElementsByTagName('days')[0].childNodes[0].nodeValue;
@@ -63,7 +62,6 @@ $(function() {
         $("#sm_content").val(content).prop('selected', true);
         $("#sm_content").selectmenu( "refresh" ); //refreshes the button
         $("#sm_content").selectmenu('option', 'change').call($("#sm_content")); //call change trigger manually
-        $("#txt_content_podcast_url").val(content_podcast_url);
         $("#txt_content_stream_url").val(content_stream_url);
 
         $("#cb_individual_message").prop("checked", individual_message);
@@ -340,10 +338,6 @@ $(function() {
             {
                 $("#content_mp3_list").show();
             }
-            else if (sel_content == "podcast")
-            {
-                $("#content_podcast_url").show();
-            }
             else if (sel_content == "stream")
             {
                 $("#content_stream_url").show();
@@ -373,13 +367,6 @@ $(function() {
             $.post("index.html",
                 {
                   content_stream_url: this.value,
-                });
-        }
-        else if(this.id == "txt_content_podcast_url")
-        {
-            $.post("index.html",
-                {
-                  content_podcast_url: this.value,
                 });
         }
     });

@@ -65,10 +65,9 @@ We recently released the **v2 version** which includes several new features:
 The ***v1 version*** was already born with the following features:
 
 * text to speech synthesizer
-* three ways of wake-up sound:
+* two ways of wake-up sound:
     - play local mp3 files
-    - play internet radio station and
-    - play latest news as podcast (independent to the alarm time)
+   - play internet radio station
 * set alarm via smartphone or any other computer
 * running apache2 server
 * automatic display brightness adjustment due to inbuilt photocell
