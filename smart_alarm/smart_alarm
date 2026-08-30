@@ -497,7 +497,7 @@ def main():
                     xml_data.changeValue('test_alarm', '0')
                     scrolling_message = threading.Thread(
                         target=display.scroll,
-                        args=('Smart Alarm scrolling text test', 1),
+                        args=('Smart Alarm test', 1),
                         daemon=True)
                     scrolling_message.start()
                     q = threading.Thread(target=run_alarm_sound, args=())
