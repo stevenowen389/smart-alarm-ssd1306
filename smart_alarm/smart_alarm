@@ -438,7 +438,6 @@ def shutdown_pi():
             sound.say('O K. Bye!')
             display.clear_class()
             display.scroll('    ', 4)
-            display.write()
             os.system('sudo poweroff')
         else:
             logger.debug("won't shut down")
@@ -536,7 +535,6 @@ def main():
     # set output low in order to turn off amplifier and nullify noise
     sound.toggle_amp_pin(0)
     display.show_message('Welcome')
-    display.write()
     time.sleep(0.5)
     display.show_time(time.strftime("%H%M"))
 
@@ -658,7 +656,6 @@ def main():
             if now != displayed_time or alarm_state != displayed_alarm_state:
                 display.show_time(now)
                 display.set_alarm_status(alarm_state)
-                display.write()
                 displayed_alarm_state = alarm_state
 
             # delete old and unneeded mp3 files

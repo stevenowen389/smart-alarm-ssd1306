@@ -173,15 +173,19 @@ class Display(object):
 
     def scroll(self, message, number_of_iteration):
         """Scroll a text message across the display."""
-        self.display_in_use = True
-        text = '   %s   ' % message
-        for _ in range(number_of_iteration):
-            for offset in range(0, len(text) * 6 + self.width):
-                self._clear_buffer()
-                self.draw.text((self.width - offset, 20), text, font=self.font, fill=255)
-                self._push()
-                time.sleep(0.05)
-        self.display_in_use = False
+        with self._buffer_lock:
+            self.display_in_use = True
+            try:
+                text = '   %s   ' % message
+                text_width = int(self.draw.textlength(text, font=self.font))
+                for _ in range(number_of_iteration):
+                    for offset in range(text_width + self.width):
+                        self._clear_buffer()
+                        self.draw.text((self.width - offset, 20), text, font=self.font, fill=255)
+                        self._push()
+                        time.sleep(0.05)
+            finally:
+                self.display_in_use = False
 
     def show_time(self, value):
         """Render a time-like value on the display."""
@@ -228,8 +232,9 @@ class Display(object):
 
     def clear_class(self):
         """Clear the display buffer and render the blank state."""
-        self._clear_buffer()
-        self._push()
+        with self._buffer_lock:
+            self._clear_buffer()
+            self._push()
 
     def write(self):
         """Push the current buffer to the OLED."""
@@ -281,21 +286,27 @@ class Display(object):
     # compatibility with the previous AlphaNum4 display interface.
 
     def shutdown(self, number_of_iterations):
-        self.display_in_use = True
-        for _ in range(number_of_iterations):
-            self._clear_buffer()
-            for i in range(1, 10):
-                self.draw.rectangle((i * 10, 0, i * 10 + 8, 60), fill=255)
-                self._push()
-                time.sleep(0.08)
-        self.display_in_use = False
+        with self._buffer_lock:
+            self.display_in_use = True
+            try:
+                for _ in range(number_of_iterations):
+                    self._clear_buffer()
+                    for i in range(1, 10):
+                        self.draw.rectangle((i * 10, 0, i * 10 + 8, 60), fill=255)
+                        self._push()
+                        time.sleep(0.08)
+            finally:
+                self.display_in_use = False
 
     def snake(self, number_of_iterations):
-        self.display_in_use = True
-        for _ in range(number_of_iterations):
-            for x in range(0, self.width):
-                self._clear_buffer()
-                self.draw.rectangle((x, 20, x + 8, 28), fill=255)
-                self._push()
-                time.sleep(0.02)
-        self.display_in_use = False
+        with self._buffer_lock:
+            self.display_in_use = True
+            try:
+                for _ in range(number_of_iterations):
+                    for x in range(self.width):
+                        self._clear_buffer()
+                        self.draw.rectangle((x, 20, x + 8, 28), fill=255)
+                        self._push()
+                        time.sleep(0.02)
+            finally:
+                self.display_in_use = False
