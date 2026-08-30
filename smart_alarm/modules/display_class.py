@@ -85,13 +85,16 @@ class Display(object):
 
     def _load_font(self, size=32):
         for font_path in (
+                '/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf',
                 '/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',
+                '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+                '/usr/share/fonts/truetype/liberation2/LiberationMono-Bold.ttf',
                 '/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf'):
             try:
                 return ImageFont.truetype(font_path, size)
             except OSError:
                 pass
-        return ImageFont.load_default()
+        return ImageFont.load_default(size=size)
 
     def _draw_decimal(self, pos, decimal):
         if pos in self.decimal_positions:
@@ -177,16 +180,16 @@ class Display(object):
             self.display_in_use = True
             try:
                 text = '   %s   ' % message
-                scroll_font = self._load_font(32)
+                scroll_font = self._load_font(40)
                 text_width = int(self.draw.textlength(text, font=scroll_font))
                 text_bbox = self.draw.textbbox((0, 0), text, font=scroll_font)
                 text_y = (self.height - (text_bbox[3] - text_bbox[1])) // 2 - text_bbox[1]
                 for _ in range(number_of_iteration):
-                    for offset in range(0, text_width + self.width, 8):
+                    for offset in range(0, text_width + self.width, 12):
                         self._clear_buffer()
                         self.draw.text((self.width - offset, text_y), text, font=scroll_font, fill=255)
                         self._push()
-                        time.sleep(0.03)
+                        time.sleep(0.02)
             finally:
                 self.display_in_use = False
 
