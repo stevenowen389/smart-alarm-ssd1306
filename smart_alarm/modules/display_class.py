@@ -177,13 +177,16 @@ class Display(object):
             self.display_in_use = True
             try:
                 text = '   %s   ' % message
-                text_width = int(self.draw.textlength(text, font=self.font))
+                scroll_font = self._load_font(32)
+                text_width = int(self.draw.textlength(text, font=scroll_font))
+                text_bbox = self.draw.textbbox((0, 0), text, font=scroll_font)
+                text_y = (self.height - (text_bbox[3] - text_bbox[1])) // 2 - text_bbox[1]
                 for _ in range(number_of_iteration):
-                    for offset in range(text_width + self.width):
+                    for offset in range(0, text_width + self.width, 4):
                         self._clear_buffer()
-                        self.draw.text((self.width - offset, 20), text, font=self.font, fill=255)
+                        self.draw.text((self.width - offset, text_y), text, font=scroll_font, fill=255)
                         self._push()
-                        time.sleep(0.05)
+                        time.sleep(0.03)
             finally:
                 self.display_in_use = False
 
