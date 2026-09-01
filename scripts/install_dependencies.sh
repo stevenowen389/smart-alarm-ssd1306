@@ -24,18 +24,19 @@ $APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2
 
 echo "Configuring apache2 for smart_alarm..."
 $APT a2enmod wsgi
-$APT cp "$PROJECT_ROOT/misc/apache/envvars" /etc/apache2/envvars
-# envvars is sourced as root at apache startup, so $HOME there means /root,
-# not this user's home. Override with the actual absolute project paths.
+# Keep Debian's envvars package file intact. Apache loads conf-enabled before
+# sites-enabled, so these values are available to the virtual host config.
 {
-  echo "export smart_alarm_path=\"$PROJECT_ROOT/smart_alarm\""
-  echo "export smart_alarm_venv=\"$VENV\""
-} | $APT tee -a /etc/apache2/envvars > /dev/null
+  echo "Define smart_alarm_path $PROJECT_ROOT/smart_alarm"
+  echo "Define smart_alarm_venv $VENV"
+} | $APT tee /etc/apache2/conf-available/smart-alarm-paths.conf > /dev/null
+$APT a2enconf smart-alarm-paths
 $APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
 $APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml"
 # www-data needs execute (traversal) permission on every directory leading to
 # the DocumentRoot; a restrictive home directory (e.g. 750) causes 403s.
 $APT chmod o+x "$HOME" "$PROJECT_ROOT" "$PROJECT_ROOT/smart_alarm"
+$APT apache2ctl configtest
 $APT systemctl restart apache2
 
 if [ ! -x "$VENV/bin/python" ]; then
