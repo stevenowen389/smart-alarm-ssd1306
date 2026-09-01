@@ -2,6 +2,9 @@
 # install_systemd_unit.sh - install a systemd service for smart_alarm
 # Usage: sudo ./scripts/install_systemd_unit.sh /home/steven/smart_alarm steven
 
+# This file is stored with LF line endings; run it with bash if it was copied
+# through a tool that changes line endings.
+
 if [ "$#" -lt 2 ]; then
   echo "Usage: $0 <project_root> <user>"
   exit 1
