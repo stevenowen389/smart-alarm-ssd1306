@@ -20,13 +20,14 @@ fi
 
 echo "Installing system dependencies..."
 $APT apt-get update
-$APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools libgpiod2 alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
+$APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
 
 echo "Configuring apache2 for smart_alarm..."
 $APT a2enmod wsgi
 # Keep Debian's envvars package file intact. Apache loads conf-enabled before
 # sites-enabled, so these values are available to the virtual host config.
 {
+  echo "ServerName localhost"
   echo "Define smart_alarm_path $PROJECT_ROOT/smart_alarm"
   echo "Define smart_alarm_venv $VENV"
 } | $APT tee /etc/apache2/conf-available/smart-alarm-paths.conf > /dev/null
