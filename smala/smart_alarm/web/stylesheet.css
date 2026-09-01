@@ -1,0 +1,21 @@
+/* Slider */
+.ui-slider-horizontal {
+    height: 8px;
+    width: 250px;
+}
+.ui-slider .ui-slider-handle {
+    height: 20px;
+    width: 5px;
+    padding-left: 5px;
+}    
+
+/* Selectmenu */
+#sm_content-button {
+  width: 100px !important;
+}
+
+body{
+    background-color:#DDD;
+}
+
+.clock { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:24px; text-align:center; text-shadow:0 0 1px #000000; }

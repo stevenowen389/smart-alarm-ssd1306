@@ -98,9 +98,6 @@ if [ -f "$HOME/.smart_alarm-data.xml" ]; then
     cp "$HOME/.smart_alarm-data.xml" "$HOME/smart_alarm/smart_alarm/data.xml"
     rm -f "$HOME/.smart_alarm-data.xml"
 fi
-echo "Checked out ssd1306-updates at $HOME/smart_alarm"
-git -C "$HOME/smart_alarm" --no-pager log -1 --oneline
-grep -n "decimal_x\|character_spacing - 5" "$HOME/smart_alarm/smart_alarm/modules/display_class.py" || true
 
 echo "[4/5] Cleaning uploaded bundle"
 rm -f "$HOME/smart_alarm_ssd1306.bundle"
