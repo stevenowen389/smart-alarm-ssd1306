@@ -20,7 +20,7 @@ fi
 
 echo "Installing system dependencies..."
 $APT apt-get update
-$APT apt-get install -y python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
+$APT apt-get install -y git python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
 
 echo "Configuring apache2 for smart_alarm..."
 $APT a2enmod wsgi

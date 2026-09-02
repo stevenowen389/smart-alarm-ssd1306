@@ -141,6 +141,12 @@ class Display(object):
             # a "image" helper in some builds — try in this order.
             if hasattr(self.display_lib, 'image'):
                 self.display_lib.image(self.image)
+            elif hasattr(self.display_lib, 'pixel'):
+                self.display_lib.fill(0)
+                pixels = self.image.load()
+                for y in range(self.height):
+                    for x in range(self.width):
+                        self.display_lib.pixel(x, y, 1 if pixels[x, y] else 0)
             elif hasattr(self.display_lib, 'framebuf'):
                 # Try to use framebuf attribute directly with PIL image
                 try:

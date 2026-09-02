@@ -103,9 +103,10 @@ echo "[4/5] Cleaning uploaded bundle"
 rm -f "$HOME/smart_alarm_ssd1306.bundle"
 
 echo "[5/5] Optional dependency installation"
+sed -i 's/\r$//' "$HOME/smart_alarm/scripts/install_dependencies.sh" "$HOME/smart_alarm/scripts/install_systemd_unit.sh"
+bash -n "$HOME/smart_alarm/scripts/install_systemd_unit.sh"
 if [ "${INSTALL_DEPS:-0}" = "1" ]; then
     echo "Ensuring virtualenv and dependencies are installed/up to date..."
-    sed -i 's/\r$//' "$HOME/smart_alarm/scripts/install_dependencies.sh"
     bash -n "$HOME/smart_alarm/scripts/install_dependencies.sh"
     bash "$HOME/smart_alarm/scripts/install_dependencies.sh" "$HOME/smart_alarm"
     echo "Remote update complete; dependencies are installed and up to date"
