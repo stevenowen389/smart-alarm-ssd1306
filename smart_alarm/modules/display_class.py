@@ -55,6 +55,7 @@ class Display(object):
             self.height = getattr(self.display_lib, 'height', self.height)
             logger.info('SSD1306 (CircuitPython) display initialized')
         except Exception:
+            logger.exception('CircuitPython SSD1306 initialization failed')
             # Fallback to older Adafruit_Python_SSD1306 if available
             try:
                 from Adafruit_SSD1306 import SSD1306_128_64
@@ -73,7 +74,7 @@ class Display(object):
             except Exception:
                 # No hardware display available; operate in headless/sim mode
                 self.display_lib = None
-                logger.warning('No SSD1306 driver available; running in headless mode')
+                logger.exception('No SSD1306 driver available; running in headless mode')
 
         # recreate image/draw with actual size
         self.image = Image.new('1', (self.width, self.height))
