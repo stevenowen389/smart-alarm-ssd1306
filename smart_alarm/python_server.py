@@ -7,6 +7,7 @@ from urllib.parse import parse_qsl
 
 # Apache configuration variables do not automatically become process variables.
 project_path = os.environ.get('smart_alarm_path', os.path.dirname(os.path.abspath(__file__)))
+os.environ.setdefault('smart_alarm_path', project_path)
 if project_path not in sys.path:
     sys.path.append(project_path)
 os.chdir(project_path)
