@@ -1,7 +1,9 @@
-import cgi
 import sys
 import os.path
 import logging
+from email.parser import BytesParser
+from email.policy import default
+from urllib.parse import parse_qsl
 
 # important for apache web server:
 project_path = os.environ['smart_alarm_path']
@@ -25,35 +27,45 @@ MIME_TABLE = {'.txt': 'text/plain',
               '.png': 'image/png'}
 
 
+def parse_post(environ):
+    """Return submitted fields and an optional uploaded file."""
+    content_length = int(environ.get('CONTENT_LENGTH') or 0)
+    body = environ['wsgi.input'].read(content_length)
+    content_type = environ.get('CONTENT_TYPE', '')
+
+    if content_type.startswith('multipart/form-data'):
+        message = BytesParser(policy=default).parsebytes(
+            b'Content-Type: ' + content_type.encode() + b'\r\n\r\n' + body
+        )
+        fields = {}
+        upload = None
+        for part in message.iter_parts():
+            name = part.get_param('name', header='content-disposition')
+            filename = part.get_filename()
+            if not name:
+                continue
+            if filename:
+                upload = (name, filename, part.get_payload(decode=True))
+            else:
+                fields[name] = part.get_content()
+        return fields, upload
+
+    return dict(parse_qsl(body.decode('utf-8'), keep_blank_values=True)), None
+
+
 def application(environ, start_response):
     logger.warning("python_server application started")
     # response for POST
     if environ['REQUEST_METHOD'] == 'POST':
-        post = cgi.FieldStorage(
-           fp=environ['wsgi.input'],
-           environ=environ,
-           keep_blank_values=False
-        )
+        post, upload = parse_post(environ)
 
         # xml_data is a long-lived, per-process object; reload it so we
         # never overwrite fields the alarm daemon changed on disk since.
         xml_data.read_data()
 
         for s in post:
-            if s == 'uploadMp3File':
-                item = post['uploadMp3File']
-                filename = os.path.basename(item.filename)
-                try:
-                    with open(os.path.join('./music', filename), 'wb') as f:
-                        f.write(item.file.read())
-                    xml_data.readFileNamesInMusicDirectory()
-                    logger.warning("Uploaded MP3 file %s", filename)
-                except (OSError, ValueError) as error:
-                    logger.warning("Could not upload MP3 file %s: %s", filename, error)
-                    start_response('400 Bad Request', [('content-type', 'text/plain')])
-                    return [b'Could not upload MP3 file.']
-            elif s == 'deleteMp3File':
-                    filename = os.path.basename(post.getvalue(s))
+            if s == 'deleteMp3File':
+                    filename = os.path.basename(post[s])
                     file_path = os.path.join('./music', filename)
                     try:
                         os.remove(file_path)
@@ -65,10 +77,23 @@ def application(environ, start_response):
                         return [b'Could not delete MP3 file.']
             else:
                 try:
-                    xml_data.changeValue(s, post.getvalue(s))
-                    logger.warning("{} changed to {}".format(s, post.getvalue(s)))
+                    xml_data.changeValue(s, post[s])
+                    logger.warning("{} changed to {}".format(s, post[s]))
                 except Exception as e:
-                    logger.warning("Error: Couldn't change xml entry {} to {} with error: {}".format(s, post.getvalue(s), e))
+                    logger.warning("Error: Couldn't change xml entry {} to {} with error: {}".format(s, post[s], e))
+
+        if upload:
+            _, uploaded_filename, uploaded_data = upload
+            filename = os.path.basename(uploaded_filename)
+            try:
+                with open(os.path.join('./music', filename), 'wb') as f:
+                    f.write(uploaded_data)
+                xml_data.readFileNamesInMusicDirectory()
+                logger.warning("Uploaded MP3 file %s", filename)
+            except (OSError, ValueError) as error:
+                logger.warning("Could not upload MP3 file %s: %s", filename, error)
+                start_response('400 Bad Request', [('content-type', 'text/plain')])
+                return [b'Could not upload MP3 file.']
 
 
     path = environ['PATH_INFO']
