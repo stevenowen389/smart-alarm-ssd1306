@@ -5,8 +5,8 @@ from email.parser import BytesParser
 from email.policy import default
 from urllib.parse import parse_qsl
 
-# important for apache web server:
-project_path = os.environ['smart_alarm_path']
+# Apache configuration variables do not automatically become process variables.
+project_path = os.environ.get('smart_alarm_path', os.path.dirname(os.path.abspath(__file__)))
 if project_path not in sys.path:
     sys.path.append(project_path)
 os.chdir(project_path)
