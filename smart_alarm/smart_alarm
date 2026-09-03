@@ -489,7 +489,10 @@ def main():
                 new_lines = str(new_xml_file).strip().splitlines()
                 for line in difflib.unified_diff(old_lines, new_lines, fromfile="old_xml", tofile="new_xml", lineterm=''):
                     logger.debug(line)
-                sound.play_mp3_file(project_path + '/sounds/blop.mp3')
+                if sound.sound_active:
+                    logger.debug('skipping web update sound while audio is active')
+                else:
+                    sound.play_mp3_file(project_path + '/sounds/blop.mp3')
 
                 # check if test alarm was pressed
                 if xml_data.test_alarm() == '1':
