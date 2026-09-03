@@ -124,8 +124,11 @@ echo "File permissions updated for Apache web server access"
     # Remove Windows CRs from the here-string before piping so remote bash isn't given CRLFs
     $remoteScriptNoCR = $remoteScript -replace "`r", ""
     $installDepsFlag = if ($InstallDependencies) { '1' } else { '0' }
-    $sshOptions = if ($InstallDependencies) { @('-tt') } else { @() }
-    $remoteScriptNoCR | ssh @sshOptions "$($piUser)@$($piHost)" "tr -d '\r' | INSTALL_DEPS=$installDepsFlag bash -s"
+    if ($InstallDependencies) {
+        $remoteScriptNoCR | ssh -tt "$($piUser)@$($piHost)" "tr -d '\r' | INSTALL_DEPS=$installDepsFlag bash -s"
+    } else {
+        $remoteScriptNoCR | ssh "$($piUser)@$($piHost)" "tr -d '\r' | INSTALL_DEPS=$installDepsFlag bash -s"
+    }
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Remote update failed"
         exit 1
