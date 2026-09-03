@@ -56,28 +56,29 @@ class Sound(object):
         logger.warning("sound play done - now playing next")
 
         self.sound_active = True
-        # set output high in order to turn on amplifier
-        self.toggle_amp_pin(1)
-        time.sleep(0.3)
-        pygame.mixer.init()
-        pygame.mixer.music.load(mp3_file)
-        logger.debug("now playing file: {}".format(mp3_file))
-        pygame.mixer.music.play()
-        while pygame.mixer.music.get_busy():
-            time.sleep(0.1)
-            if self.stop_sound:
-                pygame.mixer.music.stop()
+        try:
+            # set output high in order to turn on amplifier
+            self.toggle_amp_pin(1)
+            time.sleep(0.3)
+            pygame.mixer.init()
+            pygame.mixer.music.load(mp3_file)
+            logger.debug("now playing file: {}".format(mp3_file))
+            pygame.mixer.music.play()
+            while pygame.mixer.music.get_busy():
+                time.sleep(0.1)
+                if self.stop_sound:
+                    pygame.mixer.music.stop()
+                    logger.debug('mp3 alarm turned off via button pressed')
+                    break
+        except Exception:
+            logger.exception("unable to play mp3 file: %s", mp3_file)
+        finally:
+            if pygame.mixer.get_init():
                 pygame.mixer.quit()
-                logger.debug('mp3 alarm turned off via button pressed')
-                break
-            else:
-                continue
-        time.sleep(0.5)
-        # set output low in order to turn off amplifier
-        self.toggle_amp_pin(0)
-        pygame.mixer.quit()
-        self.sound_active = False
-        self.stop_sound = False
+            # set output low in order to turn off amplifier
+            self.toggle_amp_pin(0)
+            self.sound_active = False
+            self.stop_sound = False
 
     def say(self, text, force=False):
         """synthesizes the given text to speech"""
@@ -91,19 +92,22 @@ class Sound(object):
         logger.warning("sound play done - now playing next")
 
         self.sound_active = True
-        # set output high in order to turn on amplifier
-        self.toggle_amp_pin(1)
-        time.sleep(0.3)
-        if self.tts_engine is None:
-            self.tts_engine = pyttsx.init()
-            self.tts_engine.setProperty('rate', 125)
-        # remove "pass" and uncomment next line in order to enable this function
-        self.tts_engine.say(text)
-        self.tts_engine.runAndWait()
-        time.sleep(0.2)
-        # set output low in order to turn off amplifier
-        self.toggle_amp_pin(0)
-        self.sound_active = False
+        try:
+            # set output high in order to turn on amplifier
+            self.toggle_amp_pin(1)
+            time.sleep(0.3)
+            if self.tts_engine is None:
+                self.tts_engine = pyttsx.init()
+                self.tts_engine.setProperty('rate', 125)
+            self.tts_engine.say(text)
+            self.tts_engine.runAndWait()
+            time.sleep(0.2)
+        except Exception:
+            logger.exception("unable to speak text")
+        finally:
+            # set output low in order to turn off amplifier
+            self.toggle_amp_pin(0)
+            self.sound_active = False
 
     def adjust_volume(self, value):
         """adjusts the audio volume by the given value (0-100%)"""
