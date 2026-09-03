@@ -19,30 +19,22 @@ git clone https://github.com/fgebhart/smart_alarm.git
 ```
 
 
-### Raspberry Pi setup for SSD1306 (quick guide)
-
-On a Raspberry Pi and using the project's virtualenv, the SSD1306 display requires Blinka (CircuitPython support) and the CircuitPython SSD1306 driver. The following steps set up a venv and install the required packages:
-
-1. From the project root on the Pi (recommended), install the dependencies:
-
-   bash scripts/install_dependencies.sh
-
-   The installer includes the Python packages listed in `requirements.txt` and the required system packages.
-
-   If a `wheelhouse/` directory is present in the project root, the installer uses it for offline Python dependency installation. Otherwise, packages are downloaded from PyPI.
-
-2. Confirm the OLED is visible on I2C:
-
-   i2cdetect -y 1
-
-3. Run the simple test:
-
-   python playground/hello_ssd1306_simple.py
-
-Notes:
-- prefer running from the repository root so local package imports resolve correctly (use run_smart_alarm.py helper)
-- If you run into the old Adafruit_GPIO platform errors, prefer the CircuitPython driver path (Blinka + adafruit-circuitpython-ssd1306) as used by the Display wrapper.
-
+### Raspberry Pi setup with SSD1306 (quick guide)
+Install the latest RPI OS
+Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
+When the pi is running, ssh username@piaddress
+sudo raspi-config, enable I2C in the interface settings.
+sudo apt update
+sudo apt install -y git openssh-client
+sudo nano /boot/firmware/config.txt
+Add these lines:
+   dtparam=audio=on #this may already exist.
+   dtparam=audremap,pins_12_13
+Ctrl O, enter, Ctrl X, enter
+sudo reboot
+Verify the audio device: 
+   aplay -l
+   speaker-test -D default -c 2 -t sine -f 440 -l 1
 Also check out our Video on Youtube:
 
 <a href="https://www.youtube.com/watch?v=BQ0yeRbUKlk" target="_blank"><img src="http://img.youtube.com/vi/BQ0yeRbUKlk/0.jpg" 

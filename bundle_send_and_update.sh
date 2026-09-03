@@ -120,10 +120,9 @@ chmod 777 "$HOME/smart_alarm/smart_alarm/music/"
 echo "File permissions updated for Apache web server access"
 EOF
 
-SSH_OPTIONS=()
 if [ "$INSTALL_DEPENDENCIES" = "1" ]; then
-  SSH_OPTIONS=(-tt)
+  ssh -tt "$PI_USER@$PI_HOST" "sudo -v"
 fi
-echo "$REMOTE_SCRIPT" | ssh "${SSH_OPTIONS[@]}" "$PI_USER@$PI_HOST" "INSTALL_DEPS=$INSTALL_DEPENDENCIES bash -s"
+echo "$REMOTE_SCRIPT" | ssh "$PI_USER@$PI_HOST" "INSTALL_DEPS=$INSTALL_DEPENDENCIES bash -s"
 
 echo "Bundle transferred and remote update finished successfully."

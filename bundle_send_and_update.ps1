@@ -125,10 +125,13 @@ echo "File permissions updated for Apache web server access"
     $remoteScriptNoCR = $remoteScript -replace "`r", ""
     $installDepsFlag = if ($InstallDependencies) { '1' } else { '0' }
     if ($InstallDependencies) {
-        $remoteScriptNoCR | ssh -tt "$($piUser)@$($piHost)" "tr -d '\r' | INSTALL_DEPS=$installDepsFlag bash -s"
-    } else {
-        $remoteScriptNoCR | ssh "$($piUser)@$($piHost)" "tr -d '\r' | INSTALL_DEPS=$installDepsFlag bash -s"
+        ssh -tt "$($piUser)@$($piHost)" "sudo -v"
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "Sudo authentication failed"
+            exit 1
+        }
     }
+    $remoteScriptNoCR | ssh "$($piUser)@$($piHost)" "tr -d '\r' | INSTALL_DEPS=$installDepsFlag bash -s"
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Remote update failed"
         exit 1
