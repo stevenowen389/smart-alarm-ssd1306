@@ -114,9 +114,9 @@ else
 fi
 
 echo "[6/6] Setting file permissions for web server"
-sudo chmod 666 "$HOME/smart_alarm/smart_alarm/data.xml"
+chmod 666 "$HOME/smart_alarm/smart_alarm/data.xml"
 # 777: www-data (Apache) is not in the file owner's group, so it needs "other" write access
-sudo chmod 777 "$HOME/smart_alarm/smart_alarm/music/"
+chmod 777 "$HOME/smart_alarm/smart_alarm/music/"
 echo "File permissions updated for Apache web server access"
 EOF
 
