@@ -492,11 +492,6 @@ def main():
                 if xml_data.test_alarm() == '1':
                     logger.warning('running test alarm')
                     xml_data.changeValue('test_alarm', '0')
-                    scrolling_message = threading.Thread(
-                        target=display.scroll,
-                        args=('Smart Alarm test', 1),
-                        daemon=True)
-                    scrolling_message.start()
                     run_alarm_sound()
                 else:
                     if sound.sound_active:
