@@ -267,8 +267,7 @@ def run_alarm_sound():
         # wake up with individual message
         sound.say(individual_message)
 
-        b = threading.Thread(target=sound.play_wakeup_music, args=())
-        b.start()
+        sound.play_wakeup_music()
 
     elif xml_data.content() == 'stream':
         logger.info('chosen alarm option: stream')
