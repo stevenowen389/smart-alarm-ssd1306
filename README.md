@@ -29,6 +29,8 @@ On a Raspberry Pi and using the project's virtualenv, the SSD1306 display requir
 
    The installer includes the Python packages listed in `requirements.txt` and the required system packages.
 
+   If a `wheelhouse/` directory is present in the project root, the installer uses it for offline Python dependency installation. Otherwise, packages are downloaded from PyPI.
+
 2. Confirm the OLED is visible on I2C:
 
    i2cdetect -y 1

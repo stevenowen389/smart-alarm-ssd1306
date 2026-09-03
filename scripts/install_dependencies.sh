@@ -46,8 +46,16 @@ if [ ! -x "$VENV/bin/python" ]; then
 fi
 
 echo "Installing Python dependencies..."
-"$VENV/bin/python" -m pip install --upgrade pip
-"$VENV/bin/python" -m pip install -r "$PROJECT_ROOT/requirements.txt"
+if [ -d "$PROJECT_ROOT/wheelhouse" ]; then
+  echo "Installing Python dependencies from local wheelhouse..."
+  "$VENV/bin/python" -m pip install --no-index \
+    --find-links "$PROJECT_ROOT/wheelhouse" \
+    -r "$PROJECT_ROOT/requirements.txt"
+else
+  echo "Installing Python dependencies from PyPI..."
+  "$VENV/bin/python" -m pip install --upgrade pip
+  "$VENV/bin/python" -m pip install -r "$PROJECT_ROOT/requirements.txt"
+fi
 
 echo
 echo "Dependencies installed. Run the alarm with:"

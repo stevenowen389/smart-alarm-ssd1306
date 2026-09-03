@@ -87,7 +87,7 @@ fi
 # Discard local tracked/untracked changes before checkout so log files
 # or other local edits do not block branch updates.
 git -C "$HOME/smart_alarm" reset --hard
-git -C "$HOME/smart_alarm" clean -fd
+git -C "$HOME/smart_alarm" clean -fd -e wheelhouse/ -e wheelhouse/**
 git -C "$HOME/smart_alarm" checkout -B ssd1306-updates -f FETCH_HEAD
 git -C "$HOME/smart_alarm" reset --hard FETCH_HEAD
 if [ -f "$HOME/.smart_alarm-data.xml" ]; then
