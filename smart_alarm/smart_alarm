@@ -460,7 +460,7 @@ def main():
     displayed_time = None
     displayed_alarm_state = None
     previous_alarm_active = xml_data.alarm_active()
-    last_scheduled_alarm_date = None
+    last_scheduled_alarm = None
     last_schedule_diagnostic_minute = None
     threading.Thread(target=blink_seconds_indicator, daemon=True).start()
 
@@ -547,11 +547,12 @@ def main():
                         p.start()
                         just_played_light_show = True
 
+                    scheduled_alarm = (today_date, alarm_time)
                     if (current_time == alarm_time and
-                            last_scheduled_alarm_date != today_date):
+                            last_scheduled_alarm != scheduled_alarm):
                         # ----------- RUN ALARM HERE! -----------
                         logger.warning('running scheduled alarm for %s', alarm_time)
-                        last_scheduled_alarm_date = today_date
+                        last_scheduled_alarm = scheduled_alarm
                         q = threading.Thread(target=run_alarm_sound, args=())
                         q.start()
 
