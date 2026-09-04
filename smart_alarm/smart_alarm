@@ -461,6 +461,7 @@ def main():
     displayed_alarm_state = None
     previous_alarm_active = xml_data.alarm_active()
     last_scheduled_alarm_date = None
+    last_schedule_diagnostic_minute = None
     threading.Thread(target=blink_seconds_indicator, daemon=True).start()
 
     if xml_data.test_alarm() == '1':
@@ -512,11 +513,23 @@ def main():
             time_to_alarm = int(int(str(alarm_time[:2]) + str(alarm_time[3:]))) - int(now)
             today_nr = time.strftime('%w')
             today_date = time.strftime('%Y-%m-%d')
+            current_time = time.strftime('%H:%M')
+            alarm_active = xml_data.alarm_active()
+            alarm_days = xml_data.alarm_days()
+
+            if current_time != last_schedule_diagnostic_minute:
+                logger.info(
+                    'schedule check: now=%r alarm_time=%r active=%r days=%r '
+                    'day=%r time_match=%s day_match=%s',
+                    current_time, alarm_time, alarm_active, alarm_days, today_nr,
+                    current_time == alarm_time, today_nr in alarm_days,
+                )
+                last_schedule_diagnostic_minute = current_time
 
             # Run once at the configured time on each selected day.
-            if xml_data.alarm_active() == '1':
+            if alarm_active == '1':
 
-                if today_nr in xml_data.alarm_days():      # check if current day is programmed to alarm
+                if today_nr in alarm_days:      # check if current day is programmed to alarm
                     # alarm is set to go off today, calculate the remaining time to alarm
 
                     if time_to_alarm % 5 == 0 and just_checked_wifi is False:      # checks every 5 min for wifi
@@ -534,7 +547,7 @@ def main():
                         p.start()
                         just_played_light_show = True
 
-                    if (time.strftime('%H:%M') == alarm_time and
+                    if (current_time == alarm_time and
                             last_scheduled_alarm_date != today_date):
                         # ----------- RUN ALARM HERE! -----------
                         logger.warning('running scheduled alarm for %s', alarm_time)
