@@ -43,13 +43,14 @@ $(function() {
 
         var alarm_active = (alarm_active == "1"); //convert to bool
         var individual_message = (individual_message == "1"); //convert to bool
+        var normalized_volume = (Number(volume) - 50) * 2;
         var days_array = days.split(",");
         var hour_value = alarm_time.substr(0, alarm_time.indexOf(':'));
         var minute_value = alarm_time.substr(alarm_time.indexOf(':')+1, 2);
 
         // set gui elements according to read in values
-        $("#slider").slider("option", "value", volume);
-        $("#volume_text").text(volume);
+        $("#slider").slider("option", "value", normalized_volume);
+        $("#volume_text").text(normalized_volume);
 
         $("#hour_text").text(hour_value);
         $("#minute_text").text(minute_value);
