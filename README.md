@@ -40,6 +40,43 @@ Also check out our Video on Youtube:
 <a href="https://www.youtube.com/watch?v=BQ0yeRbUKlk" target="_blank"><img src="http://img.youtube.com/vi/BQ0yeRbUKlk/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
+### Troubleshooting: internet radio / stream playback
+
+Internet radio playback uses `mpd`/`mpc`. If MP3 playback and text-to-speech both work fine, but selecting the "Stream" option fails with an error such as:
+
+```
+ERROR: Failed to open "default detected output" (sndio); Requested audio params cannot be satisfied
+```
+
+it means `mpd` isn't configured to use the Pi's ALSA audio device (a fresh `mpd` install may default to an incompatible output like `sndio`). Fix it by pointing `mpd` at ALSA explicitly:
+
+```
+sudo nano /etc/mpd.conf
+```
+
+Add or replace the `audio_output` block with:
+
+```
+audio_output {
+    type            "alsa"
+    name            "smart_alarm_output"
+    device          "default"
+    mixer_type      "software"
+}
+```
+
+Then restart `mpd` and test:
+
+```
+sudo systemctl restart mpd
+mpc clear
+mpc add 'https://your-stream-url'
+mpc play
+mpc status
+```
+
+If `device "default"` doesn't work, run `aplay -l` to find the correct ALSA card/device (e.g. `hw:1,0`) and use that instead.
+
 If you want to 3D-print your case, please follow **[this link to thingiverse](http://www.thingiverse.com/thing:2009740)**. Note the [project page on hackaday](https://hackaday.io/project/19230-iot-smart-alarm-clock).
 
 
