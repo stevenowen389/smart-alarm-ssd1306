@@ -20,25 +20,7 @@ fi
 
 echo "Installing system dependencies..."
 $APT apt-get update
-$APT apt-get install -y git python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
-
-echo "Configuring apache2 for smart_alarm..."
-$APT a2enmod wsgi
-# Keep Debian's envvars package file intact. Apache loads conf-enabled before
-# sites-enabled, so these values are available to the virtual host config.
-{
-  echo "ServerName localhost"
-  echo "Define smart_alarm_path $PROJECT_ROOT/smart_alarm"
-  echo "Define smart_alarm_venv $VENV"
-} | $APT tee /etc/apache2/conf-available/smart-alarm-paths.conf > /dev/null
-$APT a2enconf smart-alarm-paths
-$APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
-$APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml"
-# www-data needs execute (traversal) permission on every directory leading to
-# the DocumentRoot; a restrictive home directory (e.g. 750) causes 403s.
-$APT chmod o+x "$HOME" "$PROJECT_ROOT" "$PROJECT_ROOT/smart_alarm"
-$APT apache2ctl configtest
-$APT systemctl restart apache2
+$APT apt-get install -y git python3-rpi.gpio python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
 
 if [ ! -x "$VENV/bin/python" ]; then
   echo "Creating virtual environment at $VENV..."
@@ -56,6 +38,24 @@ else
   "$VENV/bin/python" -m pip install --upgrade pip
   "$VENV/bin/python" -m pip install -r "$PROJECT_ROOT/requirements.txt"
 fi
+
+echo "Configuring apache2 for smart_alarm..."
+$APT a2enmod wsgi
+# Keep Debian's envvars package file intact. Apache loads conf-enabled before
+# sites-enabled, so these values are available to the virtual host config.
+{
+  echo "ServerName localhost"
+  echo "Define smart_alarm_path $PROJECT_ROOT/smart_alarm"
+  echo "Define smart_alarm_venv $VENV"
+} | $APT tee /etc/apache2/conf-available/smart-alarm-paths.conf > /dev/null
+$APT a2enconf smart-alarm-paths
+$APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
+$APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml" "$PROJECT_ROOT/smart_alarm/music"
+# www-data needs execute (traversal) permission on every directory leading to
+# the DocumentRoot; a restrictive home directory (e.g. 750) causes 403s.
+$APT chmod o+x "$HOME" "$PROJECT_ROOT" "$PROJECT_ROOT/smart_alarm"
+$APT apache2ctl configtest
+$APT systemctl restart apache2
 
 echo
 echo "Dependencies installed. Run the alarm with:"
