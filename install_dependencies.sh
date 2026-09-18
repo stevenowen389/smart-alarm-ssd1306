@@ -20,7 +20,10 @@ fi
 
 echo "Installing system dependencies..."
 $APT apt-get update
-$APT apt-get install -y git python3-rpi.gpio python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
+# --no-install-recommends avoids pulling in unrelated extras (e.g. mesa/vulkan
+# drivers dragged in as recommends of mpd's codec libraries, desktop utilities
+# recommended by apache2/alsa-utils, etc.) that this headless installer doesn't need.
+$APT apt-get install -y --no-install-recommends git python3-rpi.gpio python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
 
 if [ ! -x "$VENV/bin/python" ]; then
   echo "Creating virtual environment at $VENV..."
