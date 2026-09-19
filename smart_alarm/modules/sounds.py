@@ -29,6 +29,7 @@ class Sound(object):
         self.sound_active = False
         self.stop_sound = False
         self.tts_engine = None
+        self._audio_lock = threading.RLock()
 
     def stopping_sound(self):
         """stops alarm when button is pressed"""
@@ -46,6 +47,7 @@ class Sound(object):
             raise TypeError("got wrong value for toggle variable, should be 1 or 0.")
 
     def play_mp3_file(self, mp3_file, force=False):
+        self._audio_lock.acquire()
         if self.sound_active:
             if force:
                 self.stopping_sound()
@@ -79,9 +81,11 @@ class Sound(object):
             self.toggle_amp_pin(0)
             self.sound_active = False
             self.stop_sound = False
+            self._audio_lock.release()
 
     def say(self, text, force=False):
         """synthesizes the given text to speech"""
+        self._audio_lock.acquire()
         if self.sound_active:
             if force:
                 self.stopping_sound()
@@ -99,21 +103,27 @@ class Sound(object):
             if self.tts_engine is None:
                 self.tts_engine = pyttsx.init()
                 self.tts_engine.setProperty('rate', 125)
+            speech_done = threading.Event()
+            callback_token = self.tts_engine.connect(
+                'finished-utterance',
+                lambda name, completed: speech_done.set(),
+            )
             self.tts_engine.say(text)
-            self.tts_engine.runAndWait()
-            # runAndWait() returns once speech is queued, not once audio has
-            # actually finished playing (pyttsx3/espeak quirk on Linux), so
-            # wait out the estimated speaking duration to avoid cutting the
-            # message off or overlapping it with whatever plays next.
-            words_per_second = 125 / 60
-            estimated_duration = len(text.split()) / words_per_second
-            time.sleep(max(0.2, estimated_duration))
+            try:
+                self.tts_engine.runAndWait()
+                words_per_second = 125 / 60
+                estimated_duration = len(text.split()) / words_per_second
+                if not speech_done.wait(timeout=max(2.0, estimated_duration + 2.0)):
+                    logger.warning('TTS completion event timed out; continuing')
+            finally:
+                self.tts_engine.disconnect(callback_token)
         except Exception:
             logger.exception("unable to speak text")
         finally:
             # set output low in order to turn off amplifier
             self.toggle_amp_pin(0)
             self.sound_active = False
+            self._audio_lock.release()
 
     def adjust_volume(self, value):
         """adjusts the audio volume by the given value (0-100%)"""
