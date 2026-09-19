@@ -26,6 +26,8 @@ if [ ! -f "$PROJECT_ROOT/run_smart_alarm.py" ]; then
   exit 1
 fi
 
+sudo chown -R "$RUN_USER:" "$PROJECT_ROOT/smart_alarm/logfiles" "$PROJECT_ROOT/smart_alarm/data.xml" "$PROJECT_ROOT/smart_alarm/music"
+
 cat > /tmp/$SERVICE_NAME <<'UNIT'
 [Unit]
 Description=Smart Alarm Service
