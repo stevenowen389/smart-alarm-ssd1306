@@ -26,15 +26,22 @@ $APT apt-get update
 $APT apt-get install -y --no-install-recommends git python3-rpi.gpio python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
 
 echo "Enabling I2C interface (required for the SSD1306 display)..."
+CONFIG_TXT=/boot/firmware/config.txt
+[ -f "$CONFIG_TXT" ] || CONFIG_TXT=/boot/config.txt
 if command -v raspi-config > /dev/null; then
   $APT raspi-config nonint do_i2c 0
 else
-  CONFIG_TXT=/boot/firmware/config.txt
-  [ -f "$CONFIG_TXT" ] || CONFIG_TXT=/boot/config.txt
   grep -q '^dtparam=i2c_arm=on' "$CONFIG_TXT" 2>/dev/null || echo 'dtparam=i2c_arm=on' | $APT tee -a "$CONFIG_TXT" > /dev/null
 fi
 if [ ! -e /dev/i2c-1 ]; then
   echo "NOTE: /dev/i2c-1 not present yet; a reboot is required before the display will work."
+fi
+
+echo "Configuring onboard audio (PWM output via the PAM8403 amplifier)..."
+grep -q '^dtparam=audio=on' "$CONFIG_TXT" 2>/dev/null || echo 'dtparam=audio=on' | $APT tee -a "$CONFIG_TXT" > /dev/null
+grep -q '^dtparam=audremap' "$CONFIG_TXT" 2>/dev/null || echo 'dtparam=audremap,pins_12_13' | $APT tee -a "$CONFIG_TXT" > /dev/null
+if ! aplay -l > /dev/null 2>&1; then
+  echo "NOTE: no sound card detected yet; a reboot is required before audio will work."
 fi
 
 if [ ! -x "$VENV/bin/python" ]; then
@@ -87,5 +94,10 @@ echo "Set APA102_PI_PATH if the legacy APA102_Pi library is outside ~/APA102_Pi.
 if [ ! -e /dev/i2c-1 ]; then
   echo
   echo "IMPORTANT: I2C was just enabled but requires a reboot to take effect (needed for the display)."
+  echo "  sudo reboot"
+fi
+if ! aplay -l > /dev/null 2>&1; then
+  echo
+  echo "IMPORTANT: audio was just enabled but requires a reboot to take effect (needed for sound)."
   echo "  sudo reboot"
 fi
