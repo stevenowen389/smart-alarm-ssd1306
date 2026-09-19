@@ -1,0 +1,35 @@
+Here is the clean setup sequence for the Pi using the steven home folder and a virtual environment.
+
+Run these on the Pi:
+
+Go to the repo
+cd /home/steven/smart_alarm
+
+Create a virtual environment
+python3 -m venv .venv
+
+Activate it
+. .venv/bin/activate
+
+Upgrade pip in the venv
+python -m pip install --upgrade pip
+
+Install the display dependencies
+python -m pip install Adafruit-SSD1306 pillow
+
+Validate the changed files
+python -m py_compile smart_alarm/modules/display_class.py playground/display_time.py playground/scroll_text.py
+
+Check the repo status
+git status
+git branch
+
+If you want to ensure the SSD1306 changes are present:
+git log --oneline -n 5
+git grep -n "SSD1306" .
+
+If you want to run the app in this venv:
+. /home/steven/smart_alarm/.venv/bin/activate
+cd /home/steven/smart_alarm
+python smart_alarm
+

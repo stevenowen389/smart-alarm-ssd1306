@@ -1,0 +1,31 @@
+1. The systemd unit file
+Create /etc/systemd/system/sunlamp.service:
+
+[Unit]
+Description=Sunrise/Sunset Lamp Controller
+After=network.target
+
+[Service]
+Type=idle
+User=pi
+WorkingDirectory=/home/pi/sunlamp
+ExecStart=/usr/bin/python3 /home/pi/sunlamp/sunlamp.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+Then:
+
+sudo systemctl daemon-reload
+sudo systemctl enable sunlamp.service
+sudo systemctl start sunlamp.service
+
+Useful commands:
+
+Command	Purpose
+sudo systemctl status sunlamp	Check if running
+sudo journalctl -f -u sunlamp	Live logs
+sudo systemctl restart sunlamp	Restart after edits
+sudo systemctl stop sunlamp	Stop

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ffef43d2-f25e-4dd7-a949-4bd98031cec9}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>__init__.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="playground\button_input.py" />
+    <Compile Include="playground\display_time.py" />
+    <Compile Include="playground\downloadn_play.py" />
+    <Compile Include="playground\light_up_leds.py" />
+    <Compile Include="playground\play_sound.py" />
+    <Compile Include="playground\reading_brightness.py" />
+    <Compile Include="playground\read_wifi_name.py" />
+    <Compile Include="playground\say_text.py" />
+    <Compile Include="playground\scroll_text.py" />
+    <Compile Include="playground\toggle_amp_on_off.py" />
+    <Compile Include="playground\xml_read.py" />
+    <Compile Include="playground\xml_write.py" />
+    <Compile Include="smart_alarm\log_config.py" />
+    <Compile Include="smart_alarm\modules\display_class.py" />
+    <Compile Include="smart_alarm\modules\led.py" />
+    <Compile Include="smart_alarm\modules\sounds.py" />
+    <Compile Include="smart_alarm\modules\xml_data.py" />
+    <Compile Include="smart_alarm\modules\__init__.py" />
+    <Compile Include="smart_alarm\python_server.py" />
+    <Compile Include="smart_alarm\settings.py" />
+    <Compile Include="smart_alarm\__init__.py" />
+    <Compile Include="__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="3d-print\cura_slicing_options.ini" />
+    <Content Include="smart_alarm\web\index.html" />
+    <Content Include="smart_alarm\web\java_functions.js" />
+    <Content Include="smart_alarm\web\libs\excanvas.js" />
+    <Content Include="smart_alarm\web\libs\images\ui-icons_444444_256x240.png" />
+    <Content Include="smart_alarm\web\libs\images\ui-icons_555555_256x240.png" />
+    <Content Include="smart_alarm\web\libs\images\ui-icons_777620_256x240.png" />
+    <Content Include="smart_alarm\web\libs\images\ui-icons_777777_256x240.png" />
+    <Content Include="smart_alarm\web\libs\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="smart_alarm\web\libs\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="smart_alarm\web\libs\jquery-ui.css" />
+    <Content Include="smart_alarm\web\libs\jquery-ui.js" />
+    <Content Include="smart_alarm\web\libs\jquery.knob.js" />
+    <Content Include="smart_alarm\web\libs\jquery.ui.touch-punch.js" />
+    <Content Include="smart_alarm\web\libs\listbox.css" />
+    <Content Include="smart_alarm\web\libs\listbox.js" />
+    <Content Include="smart_alarm\web\stylesheet.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="3d-print" />
+    <Folder Include="playground" />
+    <Folder Include="smart_alarm" />
+    <Folder Include="smart_alarm\modules" />
+    <Folder Include="smart_alarm\web" />
+    <Folder Include="smart_alarm\web\libs" />
+    <Folder Include="smart_alarm\web\libs\images" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
