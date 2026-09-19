@@ -101,7 +101,13 @@ class Sound(object):
                 self.tts_engine.setProperty('rate', 125)
             self.tts_engine.say(text)
             self.tts_engine.runAndWait()
-            time.sleep(0.2)
+            # runAndWait() returns once speech is queued, not once audio has
+            # actually finished playing (pyttsx3/espeak quirk on Linux), so
+            # wait out the estimated speaking duration to avoid cutting the
+            # message off or overlapping it with whatever plays next.
+            words_per_second = 125 / 60
+            estimated_duration = len(text.split()) / words_per_second
+            time.sleep(max(0.2, estimated_duration))
         except Exception:
             logger.exception("unable to speak text")
         finally:

@@ -34,7 +34,7 @@ sudo apt install -y git openssh-client
 sudo nano /boot/firmware/config.txt
 Add these lines:
    dtparam=audio=on #this may already exist.
-   dtparam=audremap,pins_12_13
+   dtoverlay=audremap,pins_12_13
 Ctrl O, enter, Ctrl X, enter
 sudo reboot
 Verify the audio device: 

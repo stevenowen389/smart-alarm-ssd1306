@@ -39,7 +39,8 @@ fi
 
 echo "Configuring onboard audio (PWM output via the PAM8403 amplifier)..."
 grep -q '^dtparam=audio=on' "$CONFIG_TXT" 2>/dev/null || echo 'dtparam=audio=on' | $APT tee -a "$CONFIG_TXT" > /dev/null
-grep -q '^dtparam=audremap' "$CONFIG_TXT" 2>/dev/null || echo 'dtparam=audremap,pins_12_13' | $APT tee -a "$CONFIG_TXT" > /dev/null
+# audremap is a dtoverlay (not a dtparam) - it remaps PWM audio from GPIO40/41 to GPIO12/13.
+grep -q '^dtoverlay=audremap' "$CONFIG_TXT" 2>/dev/null || echo 'dtoverlay=audremap,pins_12_13' | $APT tee -a "$CONFIG_TXT" > /dev/null
 if ! aplay -l > /dev/null 2>&1; then
   echo "NOTE: no sound card detected yet; a reboot is required before audio will work."
 fi
