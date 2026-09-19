@@ -1,5 +1,15 @@
 # Welcome to "_Smala_" - the IoT Smart Alarm Clock
 
+<<<<<<< HEAD
+=======
+All credit goes to the original creator of the original repo, this fork is my version that uses a SSD1306 OLED display.
+ALL PHOTOS SHOW THE ORIGINAL SMART ALARM CASE, I HAVEN'T MODIFIED THE CAD/STL FILES, I LEAVE THIS UP TO THE USER.
+THE WIKI ALSO HAS REFERENCES TO FUNCTIONS THAT I HAVEN'T IMPLEMENTED IE LEDs AND RSS FEEDS.
+
+This smart_alarm project provides an easy to build and program Internet of Things alarm clock. We would love to see you build your own version of it. It is designed, such that you can adapt your needs and improve it easily. Let us know if you want to contribute to this repository or simply want to share your ideas. All kinds of support is appreciated. 
+
+
+>>>>>>> f188146ca633cd9fbeaba30150c1b335b2235b44
 # Instructions - Wiki
 
 :warning: :warning: **THIS PROJECT IS STILL IN DEVELOPMENT AND MIGHT NOT RUN AS EXPECTED**  :warning: :warning:
@@ -73,7 +83,12 @@ If `device "default"` doesn't work, run `aplay -l` to find the correct ALSA card
 * text to speech synthesizer
 * two ways of wake-up sound:
     - play local mp3 files
+<<<<<<< HEAD
    - play internet radio station
+=======
+    - play internet radio station and
+    
+>>>>>>> f188146ca633cd9fbeaba30150c1b335b2235b44
 * set alarm via smartphone or any other computer
 * running apache2 server
 * automatic display brightness adjustment due to inbuilt photocell
