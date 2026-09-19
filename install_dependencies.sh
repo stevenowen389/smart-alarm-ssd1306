@@ -67,8 +67,14 @@ $APT a2enconf smart-alarm-paths
 $APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
 $APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml" "$PROJECT_ROOT/smart_alarm/music"
 # www-data needs execute (traversal) permission on every directory leading to
-# the DocumentRoot; a restrictive home directory (e.g. 750) causes 403s.
-$APT chmod o+x "$HOME" "$PROJECT_ROOT" "$PROJECT_ROOT/smart_alarm"
+# the DocumentRoot. Walk up from PROJECT_ROOT instead of trusting $HOME, since
+# $HOME resolves to /root (not the invoking user's home) when this script is
+# run as "sudo bash install_dependencies.sh" rather than as a normal user.
+p="$(cd "$PROJECT_ROOT" && pwd)"
+while [ "$p" != "/" ]; do
+  $APT chmod o+x "$p"
+  p="$(dirname "$p")"
+done
 $APT apache2ctl configtest
 $APT systemctl restart apache2
 
