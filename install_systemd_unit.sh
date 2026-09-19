@@ -15,6 +15,17 @@ RUN_USER="$2"
 SERVICE_NAME="smart_alarm.service"
 SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
 
+# Fail fast on typo'd/mismatched paths instead of silently writing a broken unit.
+if [ ! -x "$PROJECT_ROOT/.venv/bin/python" ]; then
+  echo "ERROR: $PROJECT_ROOT/.venv/bin/python not found." >&2
+  echo "Check that <project_root> matches where you actually cloned the repo (run install_dependencies.sh first)." >&2
+  exit 1
+fi
+if [ ! -f "$PROJECT_ROOT/run_smart_alarm.py" ]; then
+  echo "ERROR: $PROJECT_ROOT/run_smart_alarm.py not found." >&2
+  exit 1
+fi
+
 cat > /tmp/$SERVICE_NAME <<'UNIT'
 [Unit]
 Description=Smart Alarm Service

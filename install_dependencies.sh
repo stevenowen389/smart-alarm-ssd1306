@@ -25,6 +25,18 @@ $APT apt-get update
 # recommended by apache2/alsa-utils, etc.) that this headless installer doesn't need.
 $APT apt-get install -y --no-install-recommends git python3-rpi.gpio python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
 
+echo "Enabling I2C interface (required for the SSD1306 display)..."
+if command -v raspi-config > /dev/null; then
+  $APT raspi-config nonint do_i2c 0
+else
+  CONFIG_TXT=/boot/firmware/config.txt
+  [ -f "$CONFIG_TXT" ] || CONFIG_TXT=/boot/config.txt
+  grep -q '^dtparam=i2c_arm=on' "$CONFIG_TXT" 2>/dev/null || echo 'dtparam=i2c_arm=on' | $APT tee -a "$CONFIG_TXT" > /dev/null
+fi
+if [ ! -e /dev/i2c-1 ]; then
+  echo "NOTE: /dev/i2c-1 not present yet; a reboot is required before the display will work."
+fi
+
 if [ ! -x "$VENV/bin/python" ]; then
   echo "Creating virtual environment at $VENV..."
   python3 -m venv --system-site-packages "$VENV"
@@ -66,3 +78,8 @@ echo "  $VENV/bin/python $PROJECT_ROOT/run_smart_alarm.py"
 echo
 echo "LED support includes the colorschemes package from requirements.txt."
 echo "Set APA102_PI_PATH if the legacy APA102_Pi library is outside ~/APA102_Pi."
+if [ ! -e /dev/i2c-1 ]; then
+  echo
+  echo "IMPORTANT: I2C was just enabled but requires a reboot to take effect (needed for the display)."
+  echo "  sudo reboot"
+fi
