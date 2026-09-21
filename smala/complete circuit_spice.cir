@@ -1,0 +1,21 @@
+complete circuit
+C12 12 13 100n IC=0
+C13 0 16 1u IC=0
+R12 13 0 10k
+C8 14 0 10n IC=0
+C9 0 17 10n IC=0
+R13 12 9 1k
+C10 1 17 1u IC=0
+R9 15 17 270
+R11 0 17 150
+R10 14 0 150
+C11 2 14 1u IC=0
+R14 16 9 {10>0.01?((10/0.01)**(log(400/300k)/ln(10)/4))*300k:300k}
+R8 8 14 270
+
+.option savecurrents
+.option interp
+.OP
+*.TRAN 1ms 100ms
+* .AC DEC 100 100 1MEG
+.END
