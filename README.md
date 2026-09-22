@@ -2,7 +2,7 @@
 
 <<<<<<< HEAD
 =======
-All credit goes to the original creator of the original repo, this fork is my version that uses a SSD1306 OLED display.
+All credit goes to the creator of the original repo, this fork is my version that uses a SSD1306 OLED display.
 ALL PHOTOS SHOW THE ORIGINAL SMART ALARM CASE, I HAVEN'T MODIFIED THE CAD/STL FILES, I LEAVE THIS UP TO THE USER.
 THE WIKI ALSO HAS REFERENCES TO FUNCTIONS THAT I HAVEN'T IMPLEMENTED IE LEDs AND RSS FEEDS.
 
