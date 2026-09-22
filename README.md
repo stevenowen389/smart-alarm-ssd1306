@@ -49,18 +49,14 @@ mpc play
 mpc status
 ```
 
-If `device "default"` doesn't work, run `aplay -l` to find the correct ALSA card/device (e.g. `hw:1,0`) and use that instead.
-
-
 * text to speech synthesizer
 * two ways of wake-up sound:
     - play local mp3 files
 <<<<<<< HEAD
    - play internet radio station
 =======
-    - play internet radio station and
+    - play internet radio station
     
->>>>>>> f188146ca633cd9fbeaba30150c1b335b2235b44
 * set alarm via smartphone or any other computer
 * running apache2 server
 * automatic display brightness adjustment due to inbuilt photocell
