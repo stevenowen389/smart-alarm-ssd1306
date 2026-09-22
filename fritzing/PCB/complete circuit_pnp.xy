@@ -1,0 +1,52 @@
+# Pick And Place List
+# eMail=
+#
+# Project=complete circuit
+# Date=12:58:55
+# CreatedBy=Fritzing 1.0.7.2026-04-14.CD-2576-0-394a8bb4
+#
+# Coordinates in mils, always center of component
+# Origin 0/0=Lower left corner of PCB. Rotation in degree (0-360, math. pos.)
+RefDes,Description,Package,X,Y,Rotation,Side,Mount
+Description: resistance;capacitance;inductance;voltage;current;power;mpn;mn;
+OLED I2C1,";;;;;;;;","",60.0777,618.59,90,Top,MANUAL
+Via2,";;;;;;;;","",264,925.783,0,Top,MANUAL
+Via1,";;;;;;;;","",552,653.783,0,Top,MANUAL
+Via4,";;;;;;;;","",1440.33,175.324,0,Top,MANUAL
+Via3,";;;;;;;;","",744,909.783,0,Top,MANUAL
+Via5,";;;;;;;;","",1440.33,265.175,0,Top,MANUAL
+Via13,";;;;;;;;","",1361.59,550.608,0,Top,MANUAL
+Via6,";;;;;;;;","",1440.33,589.978,0,Top,MANUAL
+Via7,";;;;;;;;","",1440.33,688.403,0,Top,MANUAL
+Via8,";;;;;;;;","",1440.33,786.828,0,Top,MANUAL
+Via12,";;;;;;;;","",2168.68,176.592,0,Top,MANUAL
+Via11,";;;;;;;;","",2168.68,265.175,0,Top,MANUAL
+Via10,";;;;;;;;","",2168.68,698.246,0,Top,MANUAL
+Via9,";;;;;;;;","",2168.68,786.828,0,Top,MANUAL
+SW1,";;;;;;;;","screwterminal-3.5mm-2_lock",1152.05,200.214,180,Top,SMT
+JP1,";;;;;;;;","jst-4-pth",2400.96,599.821,90,Top,SMT
+R10,"150;;;;;0.25W;;;","THT",502.151,215.954,0,Top,THT
+R13,"1k;;;;;0.25W;;;","THT",508.44,314.388,180,Top,THT
+R8,"270;;;;;0.25W;;;","THT",508.44,432.488,180,Top,THT
+R9,"270;;;;;0.25W;;;","THT",502.151,519.81,0,Top,THT
+R11,"150;;;;;0.25W;;;","THT",502.151,618.232,0,Top,THT
+C8,";10nF;;35V;;;;;","100 mil [THT, multilayer]",889.144,266.145,90,Top,THT
+C9,";10nF;;35V;;;;;","100 mil [THT, multilayer]",356.68,836.041,0,Top,THT
+R12,"10k;;;;;0.25W;;;","THT",508.44,716.654,180,Top,THT
+C13,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",909.621,550.608,180,Top,THT
+R14,";;;;;0.25W;;;","THT",670.251,826.199,0,Top,THT
+J12,";;;;;;;;","THT",1440.33,176.592,0,Top,THT
+C11,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1145.05,521.868,90,Top,THT
+J4,";;;;;;;;","THT",1440.33,265.175,0,Top,THT
+C12,";100nF;;35V;;;;;","100 mil [THT, multilayer]",976.759,836.041,0,Top,THT
+J3,";;;;;;;;","THT",1440.33,373.443,0,Top,THT
+C10,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1164.74,786.347,90,Top,THT
+J5,";;;;;;;;","THT",1440.33,589.978,0,Top,THT
+J6,";;;;;;;;","THT",1440.33,688.403,0,Top,THT
+J7,";;;;;;;;","THT",1440.33,786.829,0,Top,THT
+J1,";;;;;;;;","THT",1277.03,994.789,90,Top,THT
+J11,";;;;;;;;","THT",2168.68,176.592,0,Top,THT
+J2,";;;;;;;;","THT",1277.03,1101.79,90,Top,THT
+J10,";;;;;;;;","THT",2168.68,265.175,0,Top,THT
+J9,";;;;;;;;","THT",2168.68,698.246,0,Top,THT
+J8,";;;;;;;;","THT",2168.68,786.829,0,Top,THT
