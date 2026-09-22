@@ -17,45 +17,16 @@ If you want to build and code your own _smart_alarm_ please visit the **[Smala W
 Install the latest RPI OS
 Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
 When the pi is running, ssh username@piaddress
-sudo raspi-config, enable I2C in the interface settings.
-sudo apt update
-sudo apt install -y git openssh-client
-sudo nano /boot/firmware/config.txt
-Add these lines:
-   dtparam=audio=on #this may already exist.
-   dtoverlay=audremap,pins_12_13
-Ctrl O, enter, Ctrl X, enter
-sudo reboot
-Verify the audio device: 
-   aplay -l
-   speaker-test -D default -c 2 -t sine -f 440 -l 1
+run install_dependencies.sh --installdependencies
 
-
-audio_output {
-    type            "alsa"
-    name            "smart_alarm_output"
-    device          "default"
-    mixer_type      "software"
-}
-```
-
-Then restart `mpd` and test:
-
-```
-sudo systemctl restart mpd
-mpc clear
-mpc add 'https://your-stream-url'
-mpc play
-mpc status
-```
+Currently working functions
+============================
 
 * text to speech synthesizer
+   - user text input
 * two ways of wake-up sound:
-    - play local mp3 files
-<<<<<<< HEAD
+   - play local mp3 files
    - play internet radio station
-=======
-    - play internet radio station
     
 * set alarm via smartphone or any other computer
 * running apache2 server
