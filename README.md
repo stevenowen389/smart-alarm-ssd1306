@@ -9,20 +9,9 @@ THE WIKI ALSO HAS REFERENCES TO FUNCTIONS THAT I HAVEN'T IMPLEMENTED IE LEDs AND
 This smart_alarm project provides an easy to build and program Internet of Things alarm clock. We would love to see you build your own version of it. It is designed, such that you can adapt your needs and improve it easily. Let us know if you want to contribute to this repository or simply want to share your ideas. All kinds of support is appreciated. 
 
 
->>>>>>> f188146ca633cd9fbeaba30150c1b335b2235b44
-# Instructions - Wiki
-
 :warning: :warning: **THIS PROJECT IS STILL IN DEVELOPMENT AND MIGHT NOT RUN AS EXPECTED**  :warning: :warning:
 
 If you want to build and code your own _smart_alarm_ please visit the **[Smala Wiki](https://github.com/fgebhart/smart_alarm/wiki)**
-
-Or if you just want to dive into the code, simply clone this repository to your computer / Raspberry Pi Zero:
-
-```
-cd
-git clone https://github.com/fgebhart/smart_alarm.git
-```
-
 
 ### Raspberry Pi setup with SSD1306 (quick guide)
 Install the latest RPI OS
@@ -42,23 +31,6 @@ Verify the audio device:
    speaker-test -D default -c 2 -t sine -f 440 -l 1
 
 
-### Troubleshooting: internet radio / stream playback
-
-Internet radio playback uses `mpd`/`mpc`. If MP3 playback and text-to-speech both work fine, but selecting the "Stream" option fails with an error such as:
-
-```
-ERROR: Failed to open "default detected output" (sndio); Requested audio params cannot be satisfied
-```
-
-it means `mpd` isn't configured to use the Pi's ALSA audio device (a fresh `mpd` install may default to an incompatible output like `sndio`). Fix it by pointing `mpd` at ALSA explicitly:
-
-```
-sudo nano /etc/mpd.conf
-```
-
-Add or replace the `audio_output` block with:
-
-```
 audio_output {
     type            "alsa"
     name            "smart_alarm_output"
