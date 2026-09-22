@@ -45,6 +45,25 @@ if ! aplay -l > /dev/null 2>&1; then
   echo "NOTE: no sound card detected yet; a reboot is required before audio will work."
 fi
 
+echo "Configuring MPD audio output (internet radio)..."
+MPD_CONF=/etc/mpd.conf
+if [ -f "$MPD_CONF" ] && ! grep -q '^audio_output' "$MPD_CONF"; then
+  # find the ALSA card number for the onboard PWM "Headphones" device; falls
+  # back to card 0 if aplay isn't available yet (e.g. before the first reboot)
+  ALSA_CARD="$(aplay -l 2>/dev/null | grep -oP '(?<=^card )\d+(?=.*Headphones)' | head -n1)"
+  ALSA_CARD="${ALSA_CARD:-0}"
+  {
+    echo ""
+    echo "audio_output {"
+    echo "    type          \"alsa\""
+    echo "    name          \"PAM8403 Headphones\""
+    echo "    device        \"hw:${ALSA_CARD},0\""
+    echo "    mixer_type    \"software\""
+    echo "}"
+  } | $APT tee -a "$MPD_CONF" > /dev/null
+  $APT systemctl restart mpd
+fi
+
 if [ ! -x "$VENV/bin/python" ]; then
   echo "Creating virtual environment at $VENV..."
   python3 -m venv --system-site-packages "$VENV"

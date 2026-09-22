@@ -290,8 +290,8 @@ def run_alarm_sound():
 def add_stream_url_to_mpc_playlist(stream_url):
     """reads the provided stream url"""
     os.system('mpc clear')
-    # managa default stream url
-    default_stream_url = "http://orange-01.live.sil.at:8000"
+    # default stream is a direct (non-HLS) mount that MPD can actually decode
+    default_stream_url = "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service"
     if stream_url.startswith(('http://', 'https://', 'www.', 'spotify:')):
         pass
     else:
