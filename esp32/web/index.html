@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Smart Alarm</title>
+</head>
+<body>
+  <h1>Smart Alarm</h1>
+  <form action="/set_alarm" method="post">
+    <label>Hour: <input type="number" name="hour" min="0" max="23" required></label><br>
+    <label>Minute: <input type="number" name="minute" min="0" max="59" required></label><br>
+    <label>Volume: <input type="number" name="volume" min="0" max="100" value="70"></label><br>
+    <label><input type="checkbox" name="enabled"> Alarm enabled</label><br>
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>

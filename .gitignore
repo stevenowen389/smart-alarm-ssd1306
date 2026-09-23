@@ -10,3 +10,6 @@ __pycache__/
 .vscode/
 .idea/
 
+# ESP32 MicroPython secrets
+esp32/wifi_secrets.py
+
