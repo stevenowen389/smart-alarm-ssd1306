@@ -241,14 +241,27 @@ def tell_when_button_pressed(alarm_active, alarm_days, alarm_time):
     sound.say(info_message)
 
 
-def run_alarm_light():
-    """runs the desired light show for wake up"""
+def run_alarm_light(duration_minutes):
+    """runs the simulated sunrise leading up to the wake up alarm"""
     # display the current time
     display.show_time(now)
 
     if check_if_smartalarm_is_running_leds():
-        # starts led light show
-        led.wake_up_light_show(time_for_leds)
+        led.stop_led = False
+        # starts the simulated sunrise, gradually brightening/warming up
+        # until it reaches full brightness right at the alarm time
+        led.sunrise(duration_minutes * 60)
+
+
+def run_sunset():
+    """runs the simulated sunset at the configured local bedtime"""
+    if check_if_smartalarm_is_running_leds():
+        try:
+            duration_minutes = int(xml_data.sunset_duration())
+        except (TypeError, ValueError):
+            duration_minutes = 20
+        led.stop_led = False
+        led.sunset(duration_minutes * 60)
 
 
 def run_alarm_sound():
@@ -378,7 +391,7 @@ def check_if_smartalarm_is_running_leds():
 
 def main():
     global project_path, display, sound, xml_data, led, button
-    global button_input_pin, amp_switch_pin, time_for_leds, now
+    global button_input_pin, amp_switch_pin, now
     project_path = os.environ['smart_alarm_path']
 
 
@@ -416,10 +429,6 @@ def main():
     button_input_pin = 24
     # set pin for amplifier switch
     amp_switch_pin = 5
-
-    # define time for led light show in seconds, needs to be >= 10,
-    # otherwise the leds functions will be skipped due to while functions
-    time_for_leds = 300
 
     # The button connects GPIO24 to 3.3V when pressed.
     button = Button(button_input_pin, pull_up=False, bounce_time=None)
@@ -461,6 +470,7 @@ def main():
     displayed_alarm_state = None
     previous_alarm_active = xml_data.alarm_active()
     last_scheduled_alarm = None
+    last_scheduled_sunset = None
     last_schedule_diagnostic_minute = None
     threading.Thread(target=blink_seconds_indicator, daemon=True).start()
 
@@ -517,6 +527,11 @@ def main():
             alarm_active = xml_data.alarm_active()
             alarm_days = xml_data.alarm_days()
 
+            try:
+                sunrise_minutes = int(xml_data.sunrise_duration())
+            except (TypeError, ValueError):
+                sunrise_minutes = 15
+
             if current_time != last_schedule_diagnostic_minute:
                 logger.info(
                     'schedule check: now=%r alarm_time=%r active=%r days=%r '
@@ -541,9 +556,10 @@ def main():
 
                     # logger.debug("time to alarm: {} min".format(time_to_alarm))
 
-                    if time_to_alarm == time_for_leds / 60 and just_played_light_show is False:
-                        # is true 5 minutes before actual alarm was set
-                        p = threading.Thread(target=run_alarm_light, args=())
+                    if time_to_alarm == sunrise_minutes and just_played_light_show is False:
+                        # is true 'sunrise_minutes' minutes before the actual alarm time,
+                        # so the simulated sunrise finishes exactly as the alarm goes off
+                        p = threading.Thread(target=run_alarm_light, args=(sunrise_minutes,))
                         p.start()
                         just_played_light_show = True
 
@@ -556,15 +572,26 @@ def main():
                         q = threading.Thread(target=run_alarm_sound, args=())
                         q.start()
 
-            if time_to_alarm != time_for_leds / 60:
+            if time_to_alarm != sunrise_minutes:
                 # set just_played_alarm back to False in order to not miss the next alarm
                 just_played_light_show = False
+
+            # simulated sunset: runs once a day at the configured local bedtime,
+            # independent of the wake-up alarm's active/day settings
+            if xml_data.sunset_active() == '1':
+                sunset_time = xml_data.sunset_time()
+                if current_time == sunset_time and last_scheduled_sunset != today_date:
+                    logger.warning('running scheduled sunset for %s', sunset_time)
+                    last_scheduled_sunset = today_date
+                    r = threading.Thread(target=run_sunset, args=())
+                    r.start()
 
             alarm_state = xml_data.alarm_active() == '1'
             if now != displayed_time or alarm_state != displayed_alarm_state:
                 display.show_time(now)
                 display.set_alarm_status(alarm_state)
                 displayed_alarm_state = alarm_state
+
 
             # delete old and unneeded mp3 files
             delete_old_files(time_to_alarm)

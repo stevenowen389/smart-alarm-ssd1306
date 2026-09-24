@@ -133,7 +133,8 @@ button_callback()        Handles short and long hardware-button presses, includi
 set_ind_msg(ind_msg_active, ind_msg_text) Selects either the configured individual wake-up message or a generated default message.
 read_photocell()         Measures ambient brightness through GPIO and converts it to the display brightness scale.
 tell_when_button_pressed(alarm_active, alarm_days, alarm_time) Reports alarm status and the next scheduled alarm when the control button is pressed.
-run_alarm_light()        Runs the wake-up light behavior in its alarm thread.
+run_alarm_light(duration_minutes) Runs the simulated sunrise leading up to the wake-up alarm in its own thread.
+run_sunset()             Runs the simulated sunset at the configured local bedtime in its own thread.
 run_alarm_sound()        Runs the selected local MP3 or streaming-radio wake-up sound.
 add_stream_url_to_mpc_playlist(stream_url) Adds a configured streaming URL to the MPC playlist.
 shutdown_pi()            Requests an orderly Raspberry Pi shutdown.
@@ -170,13 +171,15 @@ show_message(message)   Renders a centered static message on the OLED.
 
 smart_alarm/modules/led.py
 --------------------------
-Imports: time, os, sys, colorschemes, logging.
+Imports: time, os, sys, colorschemes, apa102, logging.
 Class LEDs             Controls APA102 RGB LEDs for wake-up lighting effects.
 __init__()              Initializes the LED controller and animation state.
 stopping_leds()         Requests that the current LED animation stop.
 rainbow(brightness, duration_time) Displays a cycling rainbow pattern for the requested duration and brightness.
 white_blinking(duration_time) Displays a blinking white-light pattern for the requested duration.
 wake_up_light_show(duration_time) Runs the combined wake-up sequence, including rainbow and white-blinking stages.
+sunrise(duration_time, max_brightness=10) Gradually brightens/warms the strip from a dark ember to bright white, simulating a local sunrise.
+sunset(duration_time, start_brightness=10) Gradually dims/cools the strip from bright white to off, simulating a local sunset.
 
 -----------------------------
 smart_alarm/modules/sounds.py
@@ -207,6 +210,10 @@ individual_message_text() Returns the custom alarm message text from XML.
 volume()                Returns the configured volume from XML.
 content_stream_url()    Returns the configured stream URL from XML.
 test_alarm()            Returns the XML setting used to trigger an alarm test.
+sunrise_duration()       Returns configured minutes the simulated sunrise runs before alarm_time (default 15).
+sunset_active()          Returns whether the simulated sunset is enabled.
+sunset_time()            Returns the configured local HH:MM time the simulated sunset starts at.
+sunset_duration()        Returns configured minutes the simulated sunset takes to fade out.
 read_data()             Reloads the XML file and returns its complete serialized content.
 changeValue(element_name, value) Changes one named XML element and persists the updated value.
 writeFile()             Writes the current XML tree back to the configuration file.

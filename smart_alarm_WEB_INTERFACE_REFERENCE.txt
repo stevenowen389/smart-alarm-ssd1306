@@ -56,6 +56,8 @@ sel_mp3_list (multiple select)              Lists MP3 filenames currently in sma
 btn_add_mp3_list (input type=file)          Native file picker; selecting a file immediately uploads it. 
 btn_del_mp3_list                            Deletes every filename currently selected in sel_mp3_list.
 cb_individual_message / txt_individual_message Toggles and text for a custom wake-up message; the alarm speaks a generated default message when disabled.
+txt_sunrise_duration                        Minutes the simulated sunrise runs for before alarm_time (LEDs fade in from a dark ember to bright white).
+cb_sunset_active / txt_sunset_time / txt_sunset_duration Enables a simulated sunset (LEDs fade from white to off) at a configured local HH:MM time, independent of the wake-up alarm's active/day settings.
 slider (#slider, jQuery UI)                 Volume control, 0-100.
 class_hide                                  Marks the groups of controls that are always shown; the alarm no longer hides/shows this class based on cb_alarm_active.
 

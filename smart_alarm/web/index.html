@@ -125,6 +125,25 @@
             <input type="checkbox" id="cb_individual_message">
             <input type="text" id="txt_individual_message" class="class_input_text">
         </div>    
+
+        <br>
+
+        <div style="width:320px;margin:auto" class="class_hide">
+            Sunrise duration (min before alarm):
+            <input type="number" id="txt_sunrise_duration" min="1" max="60" class="class_input_text" style="width:50px">
+        </div>
+
+        <br>
+
+        <div style="width:320px;margin:auto" class="class_hide">
+            <label for="cb_sunset_active">Sunset Active</label>
+            <input type="checkbox" id="cb_sunset_active">
+        </div>
+
+        <div style="width:320px;margin:auto" id="div_sunset" class="class_hide">
+            Sunset time: <input type="time" id="txt_sunset_time" class="class_input_text">
+            Duration (min): <input type="number" id="txt_sunset_duration" min="1" max="60" class="class_input_text" style="width:50px">
+        </div>
                     
     </body>
 </html>
