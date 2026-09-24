@@ -1,7 +1,0 @@
-{
-    "alarm_hour": 7,
-    "alarm_minute": 0,
-    "alarm_enabled": false,
-    "volume": 70,
-    "sound_file": "/sd/sounds/alarm1.wav"
-}
