@@ -4,6 +4,14 @@
 
     <test_alarm>0</test_alarm>
 
+    <sunrise_duration>15</sunrise_duration>
+
+    <sunset_active>0</sunset_active>
+
+    <sunset_time>21:00</sunset_time>
+
+    <sunset_duration>20</sunset_duration>
+
     <last_modified>19:59:34</last_modified>
 
     <content>mp3</content>

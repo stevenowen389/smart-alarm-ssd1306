@@ -41,8 +41,19 @@ $(function() {
         var individual_message = xmlDoc.getElementsByTagName('individual_message')[0].childNodes[0].nodeValue;
         var individual_message_text = xmlDoc.getElementsByTagName('text')[0].childNodes[0].nodeValue;
 
+        // sunrise/sunset elements may be missing from an older data.xml, so fall back to defaults
+        var sunrise_duration = xmlDoc.getElementsByTagName('sunrise_duration')[0];
+        sunrise_duration = sunrise_duration ? sunrise_duration.childNodes[0].nodeValue : '15';
+        var sunset_active = xmlDoc.getElementsByTagName('sunset_active')[0];
+        sunset_active = sunset_active ? sunset_active.childNodes[0].nodeValue : '0';
+        var sunset_time = xmlDoc.getElementsByTagName('sunset_time')[0];
+        sunset_time = sunset_time ? sunset_time.childNodes[0].nodeValue : '21:00';
+        var sunset_duration = xmlDoc.getElementsByTagName('sunset_duration')[0];
+        sunset_duration = sunset_duration ? sunset_duration.childNodes[0].nodeValue : '20';
+
         var alarm_active = (alarm_active == "1"); //convert to bool
         var individual_message = (individual_message == "1"); //convert to bool
+        var sunset_active = (sunset_active == "1"); //convert to bool
         var normalized_volume = (Number(volume) - 50) * 2;
         var days_array = days.split(",");
         var hour_value = alarm_time.substr(0, alarm_time.indexOf(':'));
@@ -74,7 +85,13 @@ $(function() {
             $(this).prop("checked", days_array.indexOf(String(value)) != -1);
         });
         $(".cb_days").checkboxradio("refresh");
-    
+
+        $("#txt_sunrise_duration").val(sunrise_duration);
+        $("#cb_sunset_active").prop("checked", sunset_active);
+        $("#cb_sunset_active").checkboxradio("refresh");
+        $("#txt_sunset_time").val(sunset_time);
+        $("#txt_sunset_duration").val(sunset_duration);
+
         // fill mp3 array
         var mp3Files = xmlDoc.getElementsByTagName("mp3_files")[0].childNodes;
         mp3Array = [];
@@ -175,6 +192,17 @@ $(function() {
         $.post("index.html",
         {
           individual_message: value,
+        });
+    });
+
+    $('#cb_sunset_active').change(function() {
+        if (initializing) {
+            return;
+        }
+        var value = $(this).is(":checked") ? 1 : 0;
+        $.post("index.html",
+        {
+          sunset_active: value,
         });
     });
     
@@ -368,6 +396,27 @@ $(function() {
             $.post("index.html",
                 {
                   content_stream_url: this.value,
+                });
+        }
+        if(this.id == "txt_sunrise_duration")
+        {
+            $.post("index.html",
+                {
+                  sunrise_duration: this.value,
+                });
+        }
+        if(this.id == "txt_sunset_time")
+        {
+            $.post("index.html",
+                {
+                  sunset_time: this.value,
+                });
+        }
+        if(this.id == "txt_sunset_duration")
+        {
+            $.post("index.html",
+                {
+                  sunset_duration: this.value,
                 });
         }
     });

@@ -50,6 +50,25 @@ class Xml_data(object):
     def test_alarm(self):
         return self.xmldoc.find('test_alarm').text
 
+    def sunrise_duration(self):
+        """minutes the simulated sunrise runs for before alarm_time"""
+        node = self.xmldoc.find('sunrise_duration')
+        return node.text if node is not None else '15'
+
+    def sunset_active(self):
+        node = self.xmldoc.find('sunset_active')
+        return node.text if node is not None else '0'
+
+    def sunset_time(self):
+        """local HH:MM time the simulated sunset starts at"""
+        node = self.xmldoc.find('sunset_time')
+        return node.text if node is not None else '21:00'
+
+    def sunset_duration(self):
+        """minutes the simulated sunset takes to fade out"""
+        node = self.xmldoc.find('sunset_duration')
+        return node.text if node is not None else '20'
+
     def read_data(self):
         """reads the data.xml file and returns the data of the whole
         file as a string. Used for detecting changes in the file."""
