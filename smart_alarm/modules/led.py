@@ -1,16 +1,24 @@
 import time
 import os
 import sys
-apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
-sys.path.append(os.path.abspath(apa102_path))
-import colorschemes
-import apa102
 import logging
-
 
 # read environmental variable for project path
 project_path = os.environ['smart_alarm_path']
 logger = logging.getLogger(__name__)
+
+apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
+sys.path.append(os.path.abspath(apa102_path))
+try:
+    import colorschemes
+    import apa102
+except ImportError as error:
+    colorschemes = None
+    apa102 = None
+    LED_SUPPORT_AVAILABLE = False
+    logger.warning('APA102 LED support unavailable: %s', error)
+else:
+    LED_SUPPORT_AVAILABLE = True
 
 # colour keyframes (R, G, B) approximating a dawn's progression from a dark
 # ember, through orange/amber, to a bright daylight white. sunset simply
@@ -47,6 +55,9 @@ class LEDs(object):
 
     def rainbow(self, brightness, duration_time):
         """colorful rainbow cycling through all leds"""
+        if not LED_SUPPORT_AVAILABLE:
+            logger.debug('skipping led rainbow; APA102 libraries are unavailable')
+            return
         if self.stop_led:
             logger.debug('skipping led rainbow, since button was pressed')
             return
@@ -63,6 +74,9 @@ class LEDs(object):
 
     def white_blinking(self, duration_time):
         """most bright white blinking, finally you should wake up"""
+        if not LED_SUPPORT_AVAILABLE:
+            logger.debug('skipping led blinking; APA102 libraries are unavailable')
+            return
         if self.stop_led:
             logger.debug('skipping led white blinking, since button was pressed')
             return
@@ -105,6 +119,9 @@ class LEDs(object):
         """gradually fades the whole strip through colour_stops while ramping
         the global brightness from start_brightness to end_brightness (both
         on the APA102's native 0-31 scale). Used by sunrise()/sunset()."""
+        if not LED_SUPPORT_AVAILABLE:
+            logger.debug('skipping LED gradient; APA102 libraries are unavailable')
+            return
         self.leds_active = True
         strip = apa102.APA102(num_led=self.number_of_leds)
         try:

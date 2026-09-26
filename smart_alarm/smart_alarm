@@ -53,7 +53,7 @@ coloredlogs.install(level='DEBUG')
 from modules.display_class import Display
 from modules.sounds import Sound
 from modules.xml_data import Xml_data
-from modules.led import LEDs
+from modules.led import LEDs, LED_SUPPORT_AVAILABLE
 
 
 def button_callback():
@@ -375,13 +375,9 @@ def change_stream_url(stream_url):
 
 
 def check_if_smartalarm_is_running_leds():
-    """checks if this smart alarm version is running LEDs by
-    looking for the file APA102_Pi/colorschemes.py. If it
-    is there, the operating smart alarm mostlikely is running
-    with LEDs"""
+    """Return whether both APA102 support modules loaded successfully."""
     logger.info('checking if I have LEDs installed...')
-    apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
-    if os.path.isfile(os.path.join(apa102_path, 'colorschemes.py')):
+    if LED_SUPPORT_AVAILABLE:
         logger.info('...yeah I\'m flashy')
         return True
     else:
