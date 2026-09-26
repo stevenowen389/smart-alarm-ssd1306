@@ -26,27 +26,6 @@ $APT apt-get update
 # recommended by apache2/alsa-utils, etc.) that this headless installer doesn't need.
 $APT apt-get install -y --no-install-recommends git python3-rpi.gpio python3-venv python3-dev python3-pip i2c-tools gpiod alsa-utils mpd mpc espeak-ng libespeak1 apache2 libapache2-mod-wsgi-py3
 
-SERVICE_USER="${SUDO_USER:-$(id -un)}"
-SERVICE_HOME="$(getent passwd "$SERVICE_USER" | cut -d: -f6)"
-if [ -z "$SERVICE_HOME" ]; then
-  echo "Could not determine home directory for service user: $SERVICE_USER" >&2
-  exit 1
-fi
-
-APA102_LIBRARY_DIR="$SERVICE_HOME/APA102_Pi"
-if [ -f "$APA102_LIBRARY_DIR/apa102.py" ] && [ -f "$APA102_LIBRARY_DIR/colorschemes.py" ]; then
-  echo "APA102_Pi already available at $APA102_LIBRARY_DIR"
-elif [ -e "$APA102_LIBRARY_DIR" ]; then
-  echo "ERROR: $APA102_LIBRARY_DIR exists but is missing apa102.py or colorschemes.py." >&2
-  exit 1
-else
-  echo "Installing APA102_Pi at $APA102_LIBRARY_DIR..."
-  git clone --depth 1 https://github.com/tinue/APA102_Pi.git "$APA102_LIBRARY_DIR"
-  if [ "$(id -u)" -eq 0 ]; then
-    chown -R "$SERVICE_USER:" "$APA102_LIBRARY_DIR"
-  fi
-fi
-
 echo "Enabling I2C interface (required for the SSD1306 display)..."
 CONFIG_TXT=/boot/firmware/config.txt
 [ -f "$CONFIG_TXT" ] || CONFIG_TXT=/boot/config.txt
@@ -57,6 +36,16 @@ else
 fi
 if [ ! -e /dev/i2c-1 ]; then
   echo "NOTE: /dev/i2c-1 not present yet; a reboot is required before the display will work."
+fi
+
+echo "Enabling SPI interface (required for APA102 LEDs)..."
+if command -v raspi-config > /dev/null; then
+  $APT raspi-config nonint do_spi 0
+else
+  grep -q '^dtparam=spi=on' "$CONFIG_TXT" 2>/dev/null || echo 'dtparam=spi=on' | $APT tee -a "$CONFIG_TXT" > /dev/null
+fi
+if [ ! -e /dev/spidev0.0 ]; then
+  echo "NOTE: /dev/spidev0.0 not present yet; a reboot may be required before APA102 LEDs will work."
 fi
 
 echo "Configuring onboard audio (PWM output via the PAM8403 amplifier)..."
@@ -131,7 +120,7 @@ echo
 echo "Dependencies installed. Run the alarm with:"
 echo "  $VENV/bin/python $PROJECT_ROOT/run_smart_alarm.py"
 echo
-echo "APA102_Pi LED support is available at $APA102_LIBRARY_DIR."
+echo "APA102-Pi LED support is installed in the project virtualenv."
 if [ ! -e /dev/i2c-1 ]; then
   echo
   echo "IMPORTANT: I2C was just enabled but requires a reboot to take effect (needed for the display)."

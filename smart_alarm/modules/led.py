@@ -1,17 +1,14 @@
 import time
 import os
-import sys
 import logging
 
 # read environmental variable for project path
 project_path = os.environ['smart_alarm_path']
 logger = logging.getLogger(__name__)
 
-apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
-sys.path.insert(0, os.path.abspath(apa102_path))
 try:
-    import colorschemes
-    import apa102
+    from apa102_pi.colorschemes import colorschemes
+    from apa102_pi.driver import apa102
 except ImportError as error:
     colorschemes = None
     apa102 = None
@@ -66,8 +63,9 @@ class LEDs(object):
         clock = 0
         start = time.time()
         while clock < duration_time and self.stop_led is False:
-            rainbow = colorschemes.Rainbow(numLEDs=self.number_of_leds, pauseValue=0.02, numStepsPerCycle=255,
-                                           numCycles=1, globalBrightness=brightness)
+            rainbow = colorschemes.Rainbow(num_led=self.number_of_leds, pause_value=0.02,
+                                           num_steps_per_cycle=255, num_cycles=1,
+                                           global_brightness=brightness)
             rainbow.start()
             clock = time.time() - start
         self.leds_active = False
@@ -85,8 +83,8 @@ class LEDs(object):
         clock = 0
         start = time.time()
         while clock < duration_time and self.stop_led is False:
-            blinking = colorschemes.Solid(numLEDs=self.number_of_leds, pauseValue=0.05, numStepsPerCycle=1,
-                                          numCycles=1)
+            blinking = colorschemes.Solid(num_led=self.number_of_leds, pause_value=0.05,
+                                          num_steps_per_cycle=1, num_cycles=1)
             blinking.start()
             time.sleep(0.05)
             clock = time.time() - start
