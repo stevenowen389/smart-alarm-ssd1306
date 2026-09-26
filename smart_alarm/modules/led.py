@@ -8,7 +8,7 @@ project_path = os.environ['smart_alarm_path']
 logger = logging.getLogger(__name__)
 
 apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
-sys.path.append(os.path.abspath(apa102_path))
+sys.path.insert(0, os.path.abspath(apa102_path))
 try:
     import colorschemes
     import apa102
