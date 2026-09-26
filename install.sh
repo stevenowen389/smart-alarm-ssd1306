@@ -1,9 +1,9 @@
 #!/bin/bash
-# update_local.sh
+# install.sh
 # Update an existing smart_alarm clone in place (run directly on the Raspberry Pi).
 # Equivalent to the remote-update portion of bundle_send_and_update.sh, but pulls
 # from the git remote instead of receiving a bundle over scp/ssh.
-# Usage: ./update_local.sh [--install-dependencies]
+# Usage: ./install.sh [--d]
 
 set -euo pipefail
 trap 'echo "Update failed at line $LINENO"; exit 1' ERR
@@ -20,7 +20,7 @@ for arg in "$@"; do
       ;;
     *)
       echo "Unknown argument: $arg" >&2
-      echo "Usage: $0 [--install-dependencies]" >&2
+      echo "Usage: $0 [--d]" >&2
       exit 1
       ;;
   esac
@@ -57,10 +57,13 @@ if [ "$INSTALL_DEPENDENCIES" -eq 1 ]; then
   bash "$REPO_DIR/install_dependencies.sh" "$REPO_DIR"
   echo "Dependencies are installed and up to date"
 else
-  echo "Dependency install skipped (use --install-dependencies to enable)"
+  echo "Dependency install skipped (use --d to enable)"
 fi
 
-echo "[4/4] Setting file permissions for web server"
+echo "[4/5] Installing and starting systemd service"
+bash "$REPO_DIR/install_systemd_unit.sh" "$REPO_DIR"
+
+echo "[5/5] Setting file permissions for web server"
 chmod 666 "$REPO_DIR/smart_alarm/data.xml"
 # 777: www-data (Apache) is not in the file owner's group, so it needs "other" write access
 chmod 777 "$REPO_DIR/smart_alarm/music/"
