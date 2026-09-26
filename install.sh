@@ -1,30 +1,21 @@
 #!/bin/bash
 # install.sh
-# Update an existing smart_alarm clone in place (run directly on the Raspberry Pi).
+# Install or update smart_alarm from an existing clone on the Raspberry Pi.
 # Equivalent to the remote-update portion of bundle_send_and_update.sh, but pulls
 # from the git remote instead of receiving a bundle over scp/ssh.
-# Usage: ./install.sh [--d]
+# Usage: ./install.sh
 
 set -euo pipefail
-trap 'echo "Update failed at line $LINENO"; exit 1' ERR
+trap 'echo "Install/update failed at line $LINENO"; exit 1' ERR
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BRANCH='smart-alarm-ssd1306'
 REMOTE='origin'
 
-INSTALL_DEPENDENCIES=0
-for arg in "$@"; do
-  case "$arg" in
-    --d)
-      INSTALL_DEPENDENCIES=1
-      ;;
-    *)
-      echo "Unknown argument: $arg" >&2
-      echo "Usage: $0 [--d]" >&2
-      exit 1
-      ;;
-  esac
-done
+if [ "$#" -ne 0 ]; then
+  echo "Usage: $0" >&2
+  exit 1
+fi
 
 cd "$REPO_DIR"
 
@@ -33,10 +24,10 @@ if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
   exit 1
 fi
 
-echo "[1/4] Fetching latest changes from $REMOTE"
+echo "[1/5] Fetching latest changes from $REMOTE"
 git fetch "$REMOTE" "$BRANCH"
 
-echo "[2/4] Checking out branch (preserving local data.xml)"
+echo "[2/5] Checking out branch (preserving local data.xml)"
 if [ -f "$REPO_DIR/smart_alarm/data.xml" ]; then
   cp "$REPO_DIR/smart_alarm/data.xml" "$HOME/.smart_alarm-data.xml"
 fi
@@ -51,14 +42,9 @@ fi
 echo "Checked out $BRANCH at $REPO_DIR"
 git --no-pager log -1 --oneline
 
-echo "[3/4] Optional dependency installation"
-if [ "$INSTALL_DEPENDENCIES" -eq 1 ]; then
-  echo "Ensuring virtualenv and dependencies are installed/up to date..."
-  bash "$REPO_DIR/install_dependencies.sh" "$REPO_DIR"
-  echo "Dependencies are installed and up to date"
-else
-  echo "Dependency install skipped (use --d to enable)"
-fi
+echo "[3/5] Installing system and Python dependencies"
+bash "$REPO_DIR/install_dependencies.sh" "$REPO_DIR"
+echo "Dependencies are installed and up to date"
 
 echo "[4/5] Installing and starting systemd service"
 bash "$REPO_DIR/install_systemd_unit.sh" "$REPO_DIR"
