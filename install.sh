@@ -15,7 +15,7 @@ REMOTE='origin'
 INSTALL_DEPENDENCIES=0
 for arg in "$@"; do
   case "$arg" in
-    --install-dependencies)
+    --d)
       INSTALL_DEPENDENCIES=1
       ;;
     *)
