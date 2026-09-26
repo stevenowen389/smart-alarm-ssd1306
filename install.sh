@@ -9,6 +9,7 @@ set -euo pipefail
 trap 'echo "Install/update failed at line $LINENO"; exit 1' ERR
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+RUN_USER="${SUDO_USER:-$(id -un)}"
 BRANCH='smart-alarm-ssd1306'
 REMOTE='origin'
 
@@ -47,7 +48,7 @@ bash "$REPO_DIR/install_dependencies.sh" "$REPO_DIR"
 echo "Dependencies are installed and up to date"
 
 echo "[4/5] Installing and starting systemd service"
-bash "$REPO_DIR/install_systemd_unit.sh" "$REPO_DIR"
+bash "$REPO_DIR/install_systemd_unit.sh" "$REPO_DIR" "$RUN_USER"
 
 echo "[5/5] Setting file permissions for web server"
 chmod 666 "$REPO_DIR/smart_alarm/data.xml"
