@@ -10,7 +10,7 @@ trap 'echo "Install/update failed at line $LINENO"; exit 1' ERR
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUN_USER="${SUDO_USER:-$(id -un)}"
-BRANCH='smart-alarm-ssd1306'
+BRANCH='master'
 REMOTE='origin'
 
 if [ "$#" -ne 0 ]; then
