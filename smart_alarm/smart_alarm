@@ -516,7 +516,9 @@ def main():
                 just_played_alarm = False
 
             alarm_time = xml_data.alarm_time()
-            time_to_alarm = int(int(str(alarm_time[:2]) + str(alarm_time[3:]))) - int(now)
+            alarm_minutes = int(alarm_time[:2]) * 60 + int(alarm_time[3:])
+            current_minutes = int(now[:2]) * 60 + int(now[2:])
+            time_to_alarm = alarm_minutes - current_minutes
             today_nr = time.strftime('%w')
             today_date = time.strftime('%Y-%m-%d')
             current_time = time.strftime('%H:%M')
