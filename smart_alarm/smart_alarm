@@ -574,13 +574,14 @@ def main():
                 # set just_played_alarm back to False in order to not miss the next alarm
                 just_played_light_show = False
 
-            # simulated sunset: runs once a day at the configured local bedtime,
+            # simulated sunset: runs once per configured time each day,
             # independent of the wake-up alarm's active/day settings
             if xml_data.sunset_active() == '1':
                 sunset_time = xml_data.sunset_time()
-                if current_time == sunset_time and last_scheduled_sunset != today_date:
+                scheduled_sunset = (today_date, sunset_time)
+                if current_time == sunset_time and last_scheduled_sunset != scheduled_sunset:
                     logger.warning('running scheduled sunset for %s', sunset_time)
-                    last_scheduled_sunset = today_date
+                    last_scheduled_sunset = scheduled_sunset
                     r = threading.Thread(target=run_sunset, args=())
                     r.start()
 
