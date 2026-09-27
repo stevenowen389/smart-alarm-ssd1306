@@ -89,23 +89,19 @@ smart_alarm/settings.py
 -----------------------
 Class Settings          Stores alarm configuration with defaults and property-based access.
 __init__()              Initializes a Settings instance and fills its default values.
-fill_with_default_values()
-                        Populates the settings object with the application's default alarm values.
+fill_with_default_values() Populates the settings object with the application's default alarm values.
 get_alarm_time()        Returns the configured alarm time.
 set_alarm_time(value)   Sets the configured alarm time.
 get_last_modified()     Returns the configuration's last-modified value.
-set_last_modified(value)
-                        Sets the configuration's last-modified value.
+set_last_modified(value) Sets the configuration's last-modified value.
 get_content()           Returns the selected content type such as music or news.
 set_content(value)      Sets the selected content type.
 get_days()              Returns the configured days on which the alarm runs.
 set_days(value)         Sets the configured alarm days.
 get_alarm_active()      Returns whether the alarm is enabled.
 set_alarm_active(value) Sets whether the alarm is enabled.
-get_individual_message()
-                        Returns whether the custom alarm message is enabled.
-set_individual_message(value)
-                        Sets whether the custom alarm message is enabled.
+get_individual_message() Returns whether the custom alarm message is enabled.
+set_individual_message(value) Sets whether the custom alarm message is enabled.
 get_text()              Returns the custom alarm message text.
 set_text(value)         Sets the custom alarm message text.
 get_volume()            Returns the configured playback volume.
@@ -115,8 +111,7 @@ last_modified property  Exposes the last-modified value through getter and sette
 content property        Exposes content type through the getter and setter methods.
 days property           Exposes alarm days through the getter and setter methods.
 alarm_active property   Exposes enabled state through the getter and setter methods.
-individual_message property
-                        Exposes custom-message state through getter and setter methods.
+individual_message property Exposes custom-message state through getter and setter methods.
 text property           Exposes custom message text through getter and setter methods.
 volume property         Exposes volume through the getter and setter methods.
 
@@ -129,6 +124,7 @@ logging_dict             Defines the shared logging configuration, including con
 smart_alarm/smart_alarm
 -----------------------
 Imports: RPi.GPIO, gpiozero.Button, gpiozero.DigitalInputDevice, gpiozero.DigitalOutputDevice, threading, logging.config, log_config, time, os, coloredlogs, difflib, modules.display_class.Display, modules.sounds.Sound, modules.xml_data.Xml_data, modules.led.LEDs.
+
 button_callback()        Handles short and long hardware-button presses, including status reporting, stopping playback, and shutdown.
 set_ind_msg(ind_msg_active, ind_msg_text) Selects either the configured individual wake-up message or a generated default message.
 read_photocell()         Measures ambient brightness through GPIO and converts it to the display brightness scale.
@@ -165,7 +161,7 @@ _draw_decimal(pos, decimal) Draws or removes a decimal-point indicator at a disp
 _draw_alarm_status()    Draws the alarm-enabled status indicator on the display.
 _time_layout(value)     Calculates the text layout needed to center a time value.
 _push()                 Sends the current image buffer to the physical display.
-scroll(message, number_of_iteration) Scrolls a text message horizontally across the OLED for a requested number of iterations.
+scroll(message, number_of_iteration) NO LONGER USED: Scrolls a text message horizontally across the OLED for a requested number of iterations.
 show_time(value)        Renders a time value with decimal points and alarm status on the OLED.
 show_message(message)   Renders a centered static message on the OLED.
 
@@ -174,10 +170,14 @@ smart_alarm/modules/led.py
 Imports: time, os, sys, colorschemes, apa102, logging.
 Class LEDs             Controls APA102 RGB LEDs for wake-up lighting effects.
 __init__()              Initializes the LED controller and animation state.
+
+The following are not implemented in my version:
 stopping_leds()         Requests that the current LED animation stop.
 rainbow(brightness, duration_time) Displays a cycling rainbow pattern for the requested duration and brightness.
 white_blinking(duration_time) Displays a blinking white-light pattern for the requested duration.
 wake_up_light_show(duration_time) Runs the combined wake-up sequence, including rainbow and white-blinking stages.
+
+Using these functions instead:
 sunrise(duration_time, max_brightness=10) Gradually brightens/warms the strip from a dark ember to bright white, simulating a local sunrise.
 sunset(duration_time, start_brightness=10) Gradually dims/cools the strip from bright white to off, simulating a local sunset.
 
@@ -347,35 +347,12 @@ SHELL AND DEPLOYMENT SCRIPTS
 
 scripts/install_dependencies.sh
 --------------------------------
-Parameter $1                  Optional project root used when creating the virtual environment.
 Top-level script              Installs Raspberry Pi OS packages, creates a Python virtual environment, and installs requirements.txt.
 
 scripts/install_systemd_unit.sh
 -------------------------------
-Parameters $1 and $2          Project root and Linux user used to configure the service unit.
 Top-level script              Creates, installs, enables, and starts the smart_alarm systemd service.
 
-smart_alarm/autostart.sh
-------------------------
-Top-level script              Stops MPD, configures GPIO18 for PWM through gpio_alt, starts the alarm application, fixes permissions, and optionally starts Mopidy.
-
-bundle_send_and_update.ps1
---------------------------
-Parameter -InstallDependencies
-                               Optionally requests dependency installation during remote deployment.
-Top-level script              Creates a Git bundle, copies it to the Raspberry Pi with SCP, and optionally runs the remote update process.
-
-========
-C SOURCE
-========
-
-playground/gpio_alt.c
----------------------
-Includes: ctype.h, stdio.h, stdlib.h, unistd.h, fcntl.h, sys/mman.h.
-Macros: INP_GPIO, OUT_GPIO, SET_GPIO_ALT, GPIO_SET, GPIO_CLR.
-Global variables: mem_fd, gpio_map, gpio.
-main(int argc, char **argv) Parses pin and alternate-function command-line arguments and applies the requested GPIO configuration.
-setup_io()               Maps the Raspberry Pi GPIO register region through /dev/mem and mmap.
 
 ========================
 PACKAGE MARKERS AND DATA
@@ -385,10 +362,8 @@ __init__.py files         Mark Python packages and define no functions or extern
 smart_alarm/data.xml      Stores alarm configuration consumed by Xml_data and the web interface.
 smart_alarm/music/*       Holds MP3 files selected by Sound and synchronized by Xml_data.
 smart_alarm/sounds/*      Holds sound assets used by the application.
-smart_alarm/logfiles/smala.log
-                          Stores runtime log output and defines no functions or libraries.
-smart_alarm/web/index.html
-                          Defines the configuration interface whose behavior is implemented by java_functions.js.
+smart_alarm/logfiles/smala.log Stores runtime log output and defines no functions or libraries.
+smart_alarm/web/index.html Defines the configuration interface whose behavior is implemented by java_functions.js.
 
 ================
 MAINTENANCE NOTE
