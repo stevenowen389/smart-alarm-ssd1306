@@ -1,20 +1,15 @@
-import sys
-import os
-apa102_path = os.environ.get('APA102_PI_PATH', os.path.expanduser('~/APA102_Pi'))
-sys.path.append(os.path.abspath(apa102_path))
-import colorschemes
+from apa102_pi.colorschemes import colorschemes
 
 
-numLEDs = 9
+num_leds = 6
 
-print('Rainbow Brightness 5of10')
-myCycle = colorschemes.Rainbow(numLEDs=numLEDs, pauseValue=0.05, numStepsPerCycle = 255, numCycles = 2, globalBrightness=5)
-myCycle.start()
+print('Rainbow Brightness 5 of 10')
+cycle = colorschemes.Rainbow(num_led=num_leds, pause_value=0.05,
+                             num_steps_per_cycle=255, num_cycles=2,
+                             global_brightness=5)
+cycle.start()
 
 print('Just plain white for 3 seconds')
-myCycle = colorschemes.Solid(numLEDs=numLEDs, pauseValue=3, numStepsPerCycle = 1, numCycles = 1)
-myCycle.start()
-
-
-
-
+cycle = colorschemes.Solid(num_led=num_leds, pause_value=3,
+                           num_steps_per_cycle=1, num_cycles=1)
+cycle.start()
