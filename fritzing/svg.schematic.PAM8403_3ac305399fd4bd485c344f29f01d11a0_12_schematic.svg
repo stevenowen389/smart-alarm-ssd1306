@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg xmlns="http://www.w3.org/2000/svg" gorn="0" y="0px" xml:space="preserve" xmlns:xml="http://www.w3.org/XML/1998/namespace" x="0px" viewBox="0 0 82.5 102.7" id="schematic_1_" height="1.42639in"  width="1.14583in" version="1.1">
+    <metadata id="metadata12997" >
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <cc:Work rdf:about="" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+                <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/"/>
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <defs id="defs12995" />
+    <desc id="desc12796" >
+        <referenceFile >GF1002_schematic.svg</referenceFile>
+    </desc>
+    <g transform="translate(166.5,-321.5)" >
+        <g >
+            <g gorn="0.3.0.0" id="g12990" >
+                <g gorn="0.3.0.0.0" id="g12988" >
+                    <rect stroke="#000000" gorn="0.3.0.0.0.0" fill="#ffffff" y="331.89999" x="-152.2" id="rect12798" height="82.199989" style="stroke-linecap:round"  width="56.699997" stroke-width="0.31749997"/>
+                    <line gorn="0.3.0.0.0.1" x2="-152.10001" stroke="#787878" fill="none" y1="352.20001" y2="352.20001" id="connector3pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <text gorn="0.3.0.0.0.2" fill="#8c8c8c" y="352.86639" x="-150.8508" id="text12801" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">L OUT +</text>
+                    <rect gorn="0.3.0.0.0.3" fill="none" y="351.79999" x="-152.8" id="connector29terminal" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.4" x2="-152.10001" stroke="#787878" fill="none" y1="359.39999" y2="359.39999" id="connector4pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <text gorn="0.3.0.0.0.5" fill="#8c8c8c" y="360.0672" x="-150.8508" id="text12811" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">L OUT -</text>
+                    <rect gorn="0.3.0.0.0.6" fill="none" y="359" x="-152.8" id="connector32terminal" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <text gorn="0.3.0.0.0.7" fill="#8c8c8c" y="375.142" x="-150.8511" id="text12820" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">GND</text>
+                    <rect gorn="0.3.0.0.0.8" fill="none" y="366.20001" x="-152.8" id="connector31terminal" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <text gorn="0.3.0.0.0.9" fill="#8c8c8c" y="381.66751" x="-150.8508" id="text12829" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">5V</text>
+                    <rect gorn="0.3.0.0.0.10" fill="none" y="380.60001" x="-152.8" id="connector35terminal" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.11" fill="none" y="423.79999" x="-124.2" id="connector33terminal" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.12" fill="none" y="315.79999" x="-131.40001" id="connector30terminal" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.13" fill="none" y="315.79999" x="-117" id="connector34terminal" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <text gorn="0.3.0.0.0.14" y="370.61679" x="-127.48371" id="text12848" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">6</text>
+                    <text gorn="0.3.0.0.0.15" y="370.61679" x="-125.14291" id="text12856" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1"/>
+                    <text gorn="0.3.0.0.0.16" y="370.61679" x="-124.03891" id="text12864" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">W</text>
+                    <text gorn="0.3.0.0.0.17" y="370.61679" x="-120.368" id="text12872" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">a</text>
+                    <text gorn="0.3.0.0.0.18" y="370.61679" x="-118.11211" id="text12880" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">t</text>
+                    <text gorn="0.3.0.0.0.19" y="370.61679" x="-116.63021" id="text12888" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">t</text>
+                    <text gorn="0.3.0.0.0.20" y="375.1514" x="-127.50861" id="label_2_" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">Stereo</text>
+                    <text gorn="0.3.0.0.0.21" y="379.68491" x="-126.90131" id="label_3_" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">Audio</text>
+                    <text gorn="0.3.0.0.0.22" y="384.21841" x="-127.35831" id="label_4_" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">Power</text>
+                    <text gorn="0.3.0.0.0.23" y="388.7504" x="-130.1115" id="label_5_" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">Amplifier</text>
+                    <rect gorn="0.3.0.0.0.24" fill="none" y="366.20001" x="-152.8" id="connector29terminal_1_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.25" x2="-152.10001" stroke="#787878" fill="none" y1="373.79999" y2="373.79999" id="connector5pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <rect gorn="0.3.0.0.0.26" fill="none" y="373.39999" x="-152.8" id="connector32terminal_1_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.27" fill="none" y="380.60001" x="-152.8" id="connector31terminal_1_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.28" x2="-152.10001" stroke="#787878" fill="none" y1="337.79999" y2="337.79999" id="connector1pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <rect gorn="0.3.0.0.0.29" fill="none" y="337.39999" x="-152.8" id="connector29terminal_2_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.30" x2="-152.10001" stroke="#787878" fill="none" y1="345" y2="345" id="connector2pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <rect gorn="0.3.0.0.0.31" fill="none" y="344.60001" x="-152.8" id="connector32terminal_2_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.32" fill="none" y="351.79999" x="-152.8" id="connector31terminal_2_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.33" x2="-152.10001" stroke="#787878" fill="none" y1="395.39999" y2="395.39999" id="connector7pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <rect gorn="0.3.0.0.0.34" fill="none" y="395" x="-152.8" id="connector29terminal_4_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.35" x2="-152.10001" stroke="#787878" fill="none" y1="402.60001" y2="402.60001" id="connector8pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <rect gorn="0.3.0.0.0.36" fill="none" y="402.20001" x="-152.8" id="connector32terminal_4_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.37" x2="-152.10001" stroke="#787878" fill="none" y1="381" y2="381" id="connector6pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <rect gorn="0.3.0.0.0.38" fill="none" y="380.60001" x="-152.8" id="connector29terminal_3_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.39" fill="none" y="387.79999" x="-152.8" id="connector32terminal_3_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.40" fill="none" y="395" x="-152.8" id="connector31terminal_3_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.41" fill="none" y="402.60001" x="-152.8" id="connector32terminal_5_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <rect gorn="0.3.0.0.0.42" fill="none" y="409.79999" x="-152.8" id="connector31terminal_4_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <line gorn="0.3.0.0.0.43" x2="-152.10001" stroke="#787878" fill="none" y1="409.79999" y2="409.79999" id="connector9pin" x1="-166.5" style="stroke-linecap:round"  stroke-width="0.24690001"/>
+                    <rect gorn="0.3.0.0.0.44" fill="none" y="409.79999" x="-152.8" id="connector29terminal_5_" height="0.69999993"  width="0.69999993" stroke-width="1"/>
+                    <text gorn="0.3.0.0.0.45" fill="#8c8c8c" y="346.24139" x="-150.8511" id="text12945" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">R OUT +</text>
+                    <text gorn="0.3.0.0.0.46" fill="#8c8c8c" y="339.09879" x="-150.8513" id="text12953" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">R OUT -</text>
+                    <text gorn="0.3.0.0.0.47" fill="#8c8c8c" y="396.41751" x="-150.85159" id="text12961" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">L INPUT</text>
+                    <text gorn="0.3.0.0.0.48" fill="#8c8c8c" y="403.79251" x="-150.85159" id="text12969" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">G INPUT</text>
+                    <text gorn="0.3.0.0.0.49" fill="#8c8c8c" y="410.46689" x="-150.85159" id="text12977" font-size="2.80001" style="font-family:DroidSans;"  stroke-width="1">R INPUT</text>
+                    <text gorn="0.3.0.0.0.50" y="364.08331" x="-128.5285" id="label" font-size="3.40001" style="font-family:DroidSans;"  stroke-width="1">PAM8403</text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -2,43 +2,44 @@
 # eMail=
 #
 # Project=complete circuit
-# Date=13:12:40
+# Date=15:11:28
 # CreatedBy=Fritzing 1.0.7.2026-04-14.CD-2576-0-394a8bb4
 #
 # Coordinates in mils, always center of component
 # Origin 0/0=Lower left corner of PCB. Rotation in degree (0-360, math. pos.)
 RefDes,Description,Package,X,Y,Rotation,Side,Mount
 Description: resistance;capacitance;inductance;voltage;current;power;mpn;mn;
-OLED I2C1,";;;;;;;;","",60.0777,618.591,90,Top,MANUAL
-Via17,";;;;;;;;","",151.996,626.972,0,Top,MANUAL
-Via14,";;;;;;;;","",423.996,546.972,0,Top,MANUAL
-Via16,";;;;;;;;","",247.996,962.972,0,Top,MANUAL
-Via15,";;;;;;;;","",583.996,642.972,0,Top,MANUAL
-Via13,";;;;;;;;","",1361.59,550.606,0,Top,MANUAL
-SPKR2,";;;;;;;;","",2444.27,452.969,0,Top,MANUAL
-SPKR1,";;;;;;;;","",2444.27,738.402,0,Top,MANUAL
-SW1,";;;;;;;;","screwterminal-3.5mm-2_lock",1152.05,200.217,180,Top,SMT
-R10,"150;;;;;0.25W;;;","THT",502.156,215.957,0,Top,THT
-R13,"1k;;;;;0.25W;;;","THT",508.444,314.391,180,Top,THT
-R8,"270;;;;;0.25W;;;","THT",508.444,432.491,180,Top,THT
-R9,"270;;;;;0.25W;;;","THT",502.156,519.813,0,Top,THT
-R11,"150;;;;;0.25W;;;","THT",502.156,618.235,0,Top,THT
-C8,";10nF;;35V;;;;;","100 mil [THT, multilayer]",889.144,266.146,90,Top,THT
-C9,";10nF;;35V;;;;;","100 mil [THT, multilayer]",356.678,836.046,0,Top,THT
-R12,"10k;;;;;0.25W;;;","THT",508.444,716.657,180,Top,THT
-C13,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",909.622,550.613,180,Top,THT
-R14,";;;;;0.25W;;;","THT",670.256,826.202,0,Top,THT
-gnd,";;;;;;;;","THT",1440.33,166.746,0,Top,THT
-C11,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1145.06,521.869,90,Top,THT
-5v,";;;;;;;;","THT",1440.33,265.18,0,Top,THT
-C12,";100nF;;35V;;;;;","100 mil [THT, multilayer]",976.756,836.046,0,Top,THT
-C10,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1164.74,786.346,90,Top,THT
-J5,";;;;;;;;","THT",1440.33,589.98,0,Top,THT
-J6,";;;;;;;;","THT",1440.33,688.402,0,Top,THT
-J7,";;;;;;;;","THT",1440.33,786.835,0,Top,THT
-J1,";;;;;;;;","THT",1277.03,994.791,90,Top,THT
--,";;;;;;;;","THT",2168.68,176.591,0,Top,THT
-J2,";;;;;;;;","THT",1277.03,1101.79,90,Top,THT
-+,";;;;;;;;","THT",2168.68,265.18,0,Top,THT
--,";;;;;;;;","THT",2168.68,698.246,0,Top,THT
-+,";;;;;;;;","THT",2168.68,786.835,0,Top,THT
+Via1,";;;;;;;;","",1910.78,809.128,0,Top,MANUAL
+L spk,";;;;;;;;","",2451.87,452.891,0,Top,MANUAL
+R spk,";;;;;;;;","",2451.87,738.324,0,Top,MANUAL
+SDA,";;;;;;;;","THT",99.5,422.58,0,Top,THT
+SCK,";;;;;;;;","THT",99.5,530.846,0,Top,THT
+VDD,";;;;;;;;","THT",99.5,639.113,0,Top,THT
+GND,";;;;;;;;","THT",99.5,737.535,0,Top,THT
+pr1,";;;;;;;;","THT",788.478,117.457,0,Top,THT
+R10,"150;;;;;0.25W;;;","THT",608.167,304.469,0,Top,THT
+R13,"1k;;;;;0.25W;;;","THT",614.456,394.324,180,Top,THT
+pr1,";;;;;;;;","THT",896.744,117.457,0,Top,THT
+R8,"270;;;;;0.25W;;;","THT",614.467,482.902,180,Top,THT
+R9,"270;;;;;0.25W;;;","THT",608.178,570.224,0,Top,THT
+snooze,";;;;;;;;","THT",1123.12,117.457,0,Top,THT
+R11,"150;;;;;0.25W;;;","THT",608.178,658.802,0,Top,THT
+C8,";10nF;;35V;;;;;","100 mil [THT, multilayer]",955.8,344.813,90,Top,THT
+snooze,";;;;;;;;","THT",1231.39,117.457,0,Top,THT
+R12,"10k;;;;;0.25W;;;","THT",614.467,767.069,180,Top,THT
+C13,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1173.12,334.002,180,Top,THT
+C12,";100nF;;35V;;;;;","100 mil [THT, multilayer]",965.644,569.246,-90,Top,THT
+gnd,";;;;;;;;","THT",1477.46,166.669,0,Top,THT
+C11,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1173.12,560.38,180,Top,THT
+5v,";;;;;;;;","THT",1477.46,265.102,0,Top,THT
+C9,";10nF;;35V;;;;;","100 mil [THT, multilayer]",955.8,787.724,90,Top,THT
+C10,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1172.34,786.269,90,Top,THT
+Right,";;;;;;;;","THT",1477.46,589.902,0,Top,THT
+GND,";;;;;;;;","THT",1477.46,688.324,0,Top,THT
+Left,";;;;;;;;","THT",1477.46,786.757,0,Top,THT
+J1,";;;;;;;;","THT",1284.63,994.713,90,Top,THT
+-,";;;;;;;;","THT",2205.8,176.513,0,Top,THT
+J2,";;;;;;;;","THT",1284.63,1101.71,90,Top,THT
++,";;;;;;;;","THT",2205.8,265.102,0,Top,THT
+-,";;;;;;;;","THT",2205.8,698.169,0,Top,THT
++,";;;;;;;;","THT",2205.8,786.757,0,Top,THT
