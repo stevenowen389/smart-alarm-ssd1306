@@ -2829,11 +2829,11 @@
                         </connector>
                     </connectors>
                 </breadboardView>
-                <pcbView layer="copper0">
-                    <geometry z="5.50323" x="245.629" y="88.0228">
+                <pcbView layer="copper0" locked="true">
+                    <geometry z="5.50323" x="245.523" y="87.8457">
                         <transform m11="0" m12="-1" m13="0" m21="1" m22="0" m23="0" m31="-85.5" m32="98.1" m33="1"/>
                     </geometry>
-                    <titleGeometry visible="false" x="342.729" y="187.123" z="13.0017" xOffset="97.0997" yOffset="99.1003" textColor="#000000" fontSize="5">
+                    <titleGeometry visible="false" x="342.623" y="186.946" z="13.0017" xOffset="97.0997" yOffset="99.1003" textColor="#000000" fontSize="5">
                         <transform m11="0" m12="1" m13="0" m21="-1" m22="0" m23="0" m31="8" m32="-1" m33="1"/>
                         <displayKey key=""/>
                     </titleGeometry>
@@ -13498,7 +13498,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19023</title>
             <views>
                 <pcbView layer="copper1trace">
-                    <geometry z="10.0061" x="328.429" y="179.823" x1="0" y1="0" x2="-0.423" y2="2.9612" wireFlags="4"/>
+                    <geometry z="10.0061" x="328.323" y="179.646" x1="0" y1="0" x2="-0.316835" y2="3.13833" wireFlags="4"/>
                     <wireExtras mils="16" color="#f2c600" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper1trace">
@@ -17262,7 +17262,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19385</title>
             <views>
                 <pcbView layer="copper0trace" bottom="true">
-                    <geometry z="7.00928" x="296.326" y="184.224" x1="0" y1="0" x2="-3.897" y2="-4.4012" wireFlags="36"/>
+                    <geometry z="7.00928" x="296.326" y="184.224" x1="0" y1="0" x2="-4.00317" y2="-4.57833" wireFlags="36"/>
                     <wireExtras mils="16" color="#f28a00" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper0trace">
@@ -17321,7 +17321,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19386</title>
             <views>
                 <pcbView layer="copper0trace" bottom="true">
-                    <geometry z="7.00919" x="292.429" y="179.823" x1="0" y1="0" x2="-6.183" y2="4.4012" wireFlags="36"/>
+                    <geometry z="7.00919" x="292.323" y="179.646" x1="0" y1="0" x2="-6.07683" y2="4.57833" wireFlags="36"/>
                     <wireExtras mils="16" color="#f28a00" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper0trace">
@@ -19100,7 +19100,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19416</title>
             <views>
                 <pcbView layer="copper0trace" bottom="true">
-                    <geometry z="7.00872" x="189.188" y="184.2" x1="0" y1="0" x2="-4.75856" y2="-4.37739" wireFlags="36"/>
+                    <geometry z="7.00872" x="189.188" y="184.2" x1="0" y1="0" x2="-4.86473" y2="-4.55452" wireFlags="36"/>
                     <wireExtras mils="16" color="#f28a00" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper0trace">
@@ -19159,7 +19159,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19417</title>
             <views>
                 <pcbView layer="copper0trace" bottom="true">
-                    <geometry z="7.00853" x="184.429" y="179.823" x1="0" y1="0" x2="-4.743" y2="2.9612" wireFlags="36"/>
+                    <geometry z="7.00853" x="184.323" y="179.646" x1="0" y1="0" x2="-4.63683" y2="3.13833" wireFlags="36"/>
                     <wireExtras mils="16" color="#f28a00" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper0trace">
@@ -19395,7 +19395,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19421</title>
             <views>
                 <pcbView layer="copper1trace">
-                    <geometry z="10.0075" x="301.429" y="179.823" x1="0" y1="0" x2="-5.103" y2="4.4012" wireFlags="36"/>
+                    <geometry z="10.0075" x="301.323" y="179.646" x1="0" y1="0" x2="-4.99683" y2="4.57833" wireFlags="36"/>
                     <wireExtras mils="16" color="#f2c600" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper1trace">
@@ -19986,7 +19986,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19431</title>
             <views>
                 <pcbView layer="copper1trace">
-                    <geometry z="10.0093" x="171.046" y="175.584" x1="0" y1="0" x2="-4.617" y2="4.2388" wireFlags="36"/>
+                    <geometry z="10.0093" x="171.046" y="175.584" x1="0" y1="0" x2="-4.72317" y2="4.06167" wireFlags="36"/>
                     <wireExtras mils="16" color="#f2c600" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper1trace">
@@ -20401,7 +20401,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19438</title>
             <views>
                 <pcbView layer="copper0trace" bottom="true">
-                    <geometry z="7.00773" x="175.429" y="179.823" x1="0" y1="0" x2="-4.383" y2="2.9612" wireFlags="36"/>
+                    <geometry z="7.00773" x="175.323" y="179.646" x1="0" y1="0" x2="-4.27683" y2="3.13833" wireFlags="36"/>
                     <wireExtras mils="16" color="#f28a00" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper0trace">
@@ -22053,7 +22053,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Wire19466</title>
             <views>
                 <pcbView layer="copper0trace" bottom="true">
-                    <geometry z="7.00808" x="238.429" y="179.823" x1="0" y1="0" x2="-4.023" y2="2.9612" wireFlags="36"/>
+                    <geometry z="7.00808" x="238.323" y="179.646" x1="0" y1="0" x2="-3.91683" y2="3.13833" wireFlags="36"/>
                     <wireExtras mils="16" color="#f28a00" opacity="1" banded="0"/>
                     <connectors>
                         <connector connectorId="connector1" layer="copper0trace">
@@ -22685,7 +22685,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Copper Fill10</title>
             <views>
                 <pcbView layer="groundplane" bottom="true">
-                    <geometry z="3.00389" x="142.423" y="193.173"/>
+                    <geometry z="3.00389" x="142.552" y="194.112"/>
                 </pcbView>
                 <breadboardView layer="groundplane">
                     <geometry z="-1" x="142.423" y="193.173"/>
@@ -23053,7 +23053,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
             <title>Copper Fill33</title>
             <views>
                 <pcbView layer="groundplane1">
-                    <geometry z="8.00392" x="149.392" y="185.841"/>
+                    <geometry z="8.00392" x="149.454" y="185.95"/>
                 </pcbView>
                 <breadboardView layer="groundplane">
                     <geometry z="-1" x="149.392" y="185.841"/>
