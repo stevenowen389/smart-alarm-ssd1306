@@ -4,7 +4,7 @@
 =======
 All credit goes to the creator of the original repo - Fabian Gebhart, this fork is my version that uses a SSD1306 OLED display.
 ALL PHOTOS SHOW THE ORIGINAL SMART ALARM CASE, I HAVEN'T MODIFIED THE CAD/STL FILES, I LEAVE THIS UP TO THE USER.
-THE WIKI ALSO HAS REFERENCES TO FUNCTIONS THAT I HAVEN'T IMPLEMENTED IE LEDs AND RSS FEEDS.
+THE WIKI ALSO HAS REFERENCES TO FUNCTIONS THAT I HAVEN'T IMPLEMENTED NAMELY RSS TEXT FEEDS.
 
 This smart_alarm project provides an easy to build and program Internet of Things alarm clock. We would love to see you build your own version of it. It is designed, such that you can adapt your needs and improve it easily. Let us know if you want to contribute to this repository or simply want to share your ideas. All kinds of support is appreciated. 
 
