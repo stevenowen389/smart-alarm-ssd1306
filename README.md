@@ -26,13 +26,13 @@ Currently working functions
    - user text input
 * two ways of wake-up sound:
    - play local mp3 files
-   - play internet radio station
+   - play internet radio station using url streaming
     
 * set alarm via smartphone or any other computer
 * running apache2 server
 * automatic display brightness adjustment due to inbuilt photocell
 * audio amplifier volume control
-
+* sunrise/sunset RGB led simulation
 
 
 ### Thanks 
