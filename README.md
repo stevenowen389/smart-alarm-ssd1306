@@ -18,7 +18,7 @@ Raspberry Pi setup with SSD1306 (quick guide)
  *  Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
  *  When the pi is running, ssh username@piaddress
  *  clone this repo: git clone 
- *  run install_dependencies.sh --installdependencies
+ *  run ~/smart_alarm-ssd1306 ./install_dependencies.sh
 
 Currently working functions
 ============================
