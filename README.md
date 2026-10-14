@@ -11,13 +11,13 @@ This smart_alarm project provides an easy to build and program Internet of Thing
 
 :warning: :warning: **THIS PROJECT IS STILL IN DEVELOPMENT AND MIGHT NOT RUN AS EXPECTED**  :warning: :warning:
 
-If you want to build and code your own _smart_alarm_ please visit the **[Smala Wiki](https://github.com/fgebhart/smart_alarm/wiki)**
-
 ### Raspberry Pi setup with SSD1306 (quick guide)
-Install the latest RPI OS
-Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
-When the pi is running, ssh username@piaddress
-run install_dependencies.sh --installdependencies
+   Attach the smart alarm HAT to the pi zero.
+   Install the latest RPI OS
+   Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
+   When the pi is running, ssh username@piaddress
+   clone this repo: git clone 
+   run install_dependencies.sh --installdependencies
 
 Currently working functions
 ============================
@@ -28,7 +28,7 @@ Currently working functions
    - play local mp3 files
    - play internet radio station using url streaming
     
-* set alarm via smartphone or any other computer
+* set alarm via smartphone or any other computer using the raspberry pi url found using ifconfig.
 * running apache2 server
 * automatic display brightness adjustment due to inbuilt photocell
 * audio amplifier volume control
