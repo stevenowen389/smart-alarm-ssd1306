@@ -13,12 +13,12 @@ This smart_alarm project provides an easy to build and program Internet of Thing
 
 Raspberry Pi setup with SSD1306 (quick guide)
 =============================================
-   Attach the smart alarm HAT to the pi zero.
-   Install the latest RPI OS
-   Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
-   When the pi is running, ssh username@piaddress
-   clone this repo: git clone 
-   run install_dependencies.sh --installdependencies
+ *  Attach the smart alarm HAT to the pi zero.
+ *  Install the latest RPI OS
+ *  Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
+ *  When the pi is running, ssh username@piaddress
+ *  clone this repo: git clone 
+ *  run install_dependencies.sh --installdependencies
 
 Currently working functions
 ============================
