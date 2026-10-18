@@ -1,0 +1,58 @@
+# Pick And Place List
+# eMail=
+#
+# Project=smart_alarmAmended
+# Date=17:49:05
+# CreatedBy=Fritzing 1.0.8.2026-07-28.CD-2843-0-5aa56a510
+#
+# Coordinates in mils, always center of component
+# Origin 0/0=Lower left corner of PCB. Rotation in degree (0-360, math. pos.)
+RefDes,Description,Package,X,Y,Rotation,Side,Mount
+Description: resistance;capacitance;inductance;voltage;current;power;mpn;mn;
+Via6,";;;;;;;;","",522.363,211.884,0,Top,MANUAL
+Via1,";;;;;;;;","",762.363,179.884,0,Top,MANUAL
+Via2,";;;;;;;;","",538.363,611.884,0,Top,MANUAL
+Via7,";;;;;;;;","",773.485,925.283,0,Top,MANUAL
+Via3,";;;;;;;;","",1482.36,467.884,0,Top,MANUAL
+Via8,";;;;;;;;","",1060.79,933.195,0,Top,MANUAL
+Via4,";;;;;;;;","",1674.36,627.884,0,Top,MANUAL
+Via5,";;;;;;;;","",1642.36,755.884,0,Top,MANUAL
+GND,";;;;;;;;","THT",328.244,118.369,0,Top,THT
+DI,";;;;;;;;","THT",406.989,118.369,0,Top,THT
+SDA,";;;;;;;;","THT",101.867,423.491,0,Top,THT
+SCK,";;;;;;;;","THT",101.867,531.757,0,Top,THT
+CI,";;;;;;;;","THT",564.467,118.369,0,Top,THT
+3.3V,";;;;;;;;","THT",101.867,640.024,0,Top,THT
+5V,";;;;;;;;","THT",643.211,118.369,0,Top,THT
+GND,";;;;;;;;","THT",101.867,738.446,0,Top,THT
+R10,"150;;;;;0.25W;;;","THT",610.533,305.38,0,Top,THT
+pr1,";;;;;;;;","THT",840.056,118.369,0,Top,THT
+R13,"1k;;;;;0.25W;;;","THT",616.822,395.235,180,Top,THT
+pr1,";;;;;;;;","THT",918.8,118.369,0,Top,THT
+R8,"270;;;;;0.25W;;;","THT",616.833,483.813,180,Top,THT
+R9,"270;;;;;0.25W;;;","THT",610.544,571.135,0,Top,THT
+R11,"150;;;;;0.25W;;;","THT",610.544,659.713,0,Top,THT
+snooze,";;;;;;;;","THT",1155.02,118.369,0,Top,THT
+C8,";10nF;;35V;;;;;","100 mil [THT, multilayer]",958.167,345.724,90,Top,THT
+snooze,";;;;;;;;","THT",1233.76,118.369,0,Top,THT
+R12,"10k;;;;;0.25W;;;","THT",616.833,767.98,180,Top,THT
+C13,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1175.49,334.913,180,Top,THT
+C12,";100nF;;35V;;;;;","100 mil [THT, multilayer]",968.011,570.157,-90,Top,THT
+C11,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1175.49,561.291,180,Top,THT
+C9,";10nF;;35V;;;;;","100 mil [THT, multilayer]",958.167,788.635,90,Top,THT
+gnd,";;;;;;;;","THT",1509.36,260.102,0,Top,THT
+spk +,";;;;;;;;","THT",1708.17,118.369,0,Top,THT
+5v,";;;;;;;;","THT",1509.36,358.524,0,Top,THT
+spk -,";;;;;;;;","THT",1786.91,118.369,0,Top,THT
+C10,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1174.71,787.18,90,Top,THT
+spk +,";;;;;;;;","THT",1973.91,118.369,0,Top,THT
+spk -,";;;;;;;;","THT",2052.66,118.369,0,Top,THT
+Right,";;;;;;;;","THT",1509.36,683.335,0,Top,THT
+J2,";;;;;;;;","THT",1277.07,994.356,-90,Top,THT
+GND,";;;;;;;;","THT",1509.36,781.757,0,Top,THT
+J1,";;;;;;;;","THT",1277.07,1092.78,-90,Top,THT
+Left,";;;;;;;;","THT",1509.36,880.18,0,Top,THT
+-,";;;;;;;;","THT",2237.7,260.102,0,Top,THT
++,";;;;;;;;","THT",2237.7,358.524,0,Top,THT
+-,";;;;;;;;","THT",2237.7,781.757,0,Top,THT
++,";;;;;;;;","THT",2237.7,880.18,0,Top,THT
