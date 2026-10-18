@@ -18,7 +18,17 @@ Raspberry Pi setup with SSD1306 (quick guide)
  *  Using the latest Raspberry pi Imager, enable SSH, add WIFI ssid and password etc.
  *  When the pi is running, ssh username@piaddress
  *  clone this repo: git clone 
- *  run ~/smart_alarm-ssd1306 ./install_dependencies.sh
+ *  Install the system and Python dependencies from the repository:
+    ```sh
+    cd ~/smart_alarm-ssd1306
+    bash ./install_dependencies.sh
+    ```
+ *  Run the alarm with the virtual environment created by the installer:
+    ```sh
+    ./.venv/bin/python ./run_smart_alarm.py
+    ```
+    Use this interpreter rather than the system `python3`; the project dependencies,
+    including `coloredlogs`, are installed in `.venv`.
 
 Currently working functions
 ============================
@@ -37,4 +47,3 @@ Currently working functions
 
 
 ### Thanks 
-
