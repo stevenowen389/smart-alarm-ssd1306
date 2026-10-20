@@ -1,0 +1,2 @@
+sudo systemctl start smart_alarm.service
+sudo systemctl stop smart_alarm.service
