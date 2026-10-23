@@ -2,19 +2,19 @@
 # eMail=
 #
 # Project=smart_alarm_V2.0
-# Date=11:58:43
+# Date=10:19:15
 # CreatedBy=Fritzing 1.0.8.2026-07-28.CD-2843-0-5aa56a510
 #
 # Coordinates in mils, always center of component
 # Origin 0/0=Lower left corner of PCB. Rotation in degree (0-360, math. pos.)
 RefDes,Description,Package,X,Y,Rotation,Side,Mount
 Description: resistance;capacitance;inductance;voltage;current;power;mpn;mn;
-Via1,";;;;;;;;","",582,500.969,0,Top,MANUAL
-Via5,";;;;;;;;","",1326,152.969,0,Top,MANUAL
-Via3,";;;;;;;;","",1122,416.969,0,Top,MANUAL
-Via2,";;;;;;;;","",1326,452.969,0,Top,MANUAL
-Via4,";;;;;;;;","",1062,836.969,0,Top,MANUAL
-Via6,";;;;;;;;","",1326,572.969,0,Top,MANUAL
+Via1,";;;;;;;;","",581.996,500.972,0,Top,MANUAL
+Via5,";;;;;;;;","",1326,152.972,0,Top,MANUAL
+Via3,";;;;;;;;","",1122,416.972,0,Top,MANUAL
+Via2,";;;;;;;;","",1326,452.972,0,Top,MANUAL
+Via4,";;;;;;;;","",1062,836.972,0,Top,MANUAL
+Via6,";;;;;;;;","",1326,572.972,0,Top,MANUAL
 GND,";;;;;;;;","THT",325.878,117.457,0,Top,THT
 DI,";;;;;;;;","THT",404.622,117.457,0,Top,THT
 SDA,";;;;;;;;","THT",99.5,422.58,0,Top,THT
@@ -38,9 +38,9 @@ C13,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1173.12,334.002,180,Top,THT
 C12,";100nF;;35V;;;;;","100 mil [THT, multilayer]",965.644,569.246,-90,Top,THT
 C11,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1173.12,560.38,180,Top,THT
 C9,";10nF;;35V;;;;;","100 mil [THT, multilayer]",955.8,787.724,90,Top,THT
-gnd,";;;;;;;;","THT",1506.98,278.878,0,Top,THT
+gnd,";;;;;;;;","THT",1506.99,278.88,0,Top,THT
 spk +,";;;;;;;;","THT",1705.8,117.457,0,Top,THT
-5v,";;;;;;;;","THT",1506.98,377.3,0,Top,THT
+5v,";;;;;;;;","THT",1506.99,377.302,0,Top,THT
 spk -,";;;;;;;;","THT",1784.54,117.457,0,Top,THT
 C10,";1µF;;35V;;;;;","100 mil [THT, electrolytic]",1172.34,786.269,90,Top,THT
 spk +,";;;;;;;;","THT",1971.54,117.457,0,Top,THT
@@ -50,7 +50,7 @@ J2,";;;;;;;;","THT",1274.7,993.445,-90,Top,THT
 GND,";;;;;;;;","THT",1506.99,780.846,0,Top,THT
 J1,";;;;;;;;","THT",1274.7,1091.87,-90,Top,THT
 Left,";;;;;;;;","THT",1506.99,879.269,0,Top,THT
--,";;;;;;;;","THT",2235.33,274.941,0,Top,THT
-+,";;;;;;;;","THT",2235.33,373.366,0,Top,THT
+-,";;;;;;;;","THT",2235.33,274.946,0,Top,THT
++,";;;;;;;;","THT",2235.33,373.369,0,Top,THT
 -,";;;;;;;;","THT",2235.33,780.846,0,Top,THT
 +,";;;;;;;;","THT",2235.33,879.269,0,Top,THT
