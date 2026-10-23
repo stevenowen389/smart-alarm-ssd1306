@@ -1,0 +1,2 @@
+http://stream.live.vc.bbcmedia.co.uk/bbc_world_service
+http://wsdownload.bbc.co.uk/worldservice/meta/live/shoutcast/mp3/eieuk.pls
