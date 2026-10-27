@@ -40,7 +40,7 @@ class LEDs(object):
         """init functions: set variables and start adafruit dotstar class"""
         # write to error.log file
         logger.info('led-module initialized')
-        self.number_of_leds = 10
+        self.number_of_leds = 12
         self.stop_led = False
         self.leds_active = False
 
@@ -113,7 +113,8 @@ class LEDs(object):
             for i in range(3)
         )
 
-    def _run_gradient(self, colour_stops, duration_time, start_brightness, end_brightness, update_interval=1.0):
+    def _run_gradient(self, colour_stops, duration_time, start_brightness, end_brightness,
+                      update_interval=1.0, hold_until_stopped=False):
         """gradually fades the whole strip through colour_stops while ramping
         the global brightness from start_brightness to end_brightness (both
         on the APA102's native 0-31 scale). Used by sunrise()/sunset()."""
@@ -142,6 +143,8 @@ class LEDs(object):
                 for led_index in range(self.number_of_leds):
                     strip.set_pixel(led_index, final_colour[0], final_colour[1], final_colour[2])
                 strip.show()
+                while hold_until_stopped and self.stop_led is False:
+                    time.sleep(update_interval)
         finally:
             strip.cleanup()
             self.leds_active = False
@@ -154,7 +157,13 @@ class LEDs(object):
             logger.debug('skipping led sunrise, since button was pressed')
             return
         logger.debug('running led sunrise for {}sec, up to brightness {}/31'.format(duration_time, max_brightness))
-        self._run_gradient(SUNRISE_COLOUR_STOPS, duration_time, start_brightness=0, end_brightness=max_brightness)
+        self._run_gradient(
+            SUNRISE_COLOUR_STOPS,
+            duration_time,
+            start_brightness=0,
+            end_brightness=max_brightness,
+            hold_until_stopped=True,
+        )
 
     def sunset(self, duration_time, start_brightness=10):
         """simulated sunset: gradually dims and shifts colour from a bright

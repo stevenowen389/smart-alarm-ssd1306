@@ -79,7 +79,7 @@ def button_callback():
     elif button.is_pressed:
         if sound.sound_active is True:
             sound.stopping_sound()
-        elif led.leds_active is True:
+        if led.leds_active is True:
             led.stopping_leds()
 
 
