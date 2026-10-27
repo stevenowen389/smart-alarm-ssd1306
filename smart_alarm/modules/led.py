@@ -18,7 +18,7 @@ else:
     LED_SUPPORT_AVAILABLE = True
 
 # colour keyframes (R, G, B) approximating a dawn's progression from a dark
-# ember, through orange/amber, to a bright daylight white. sunset simply
+# ember, through orange/amber, to a warm white. sunset simply
 # plays these keyframes in reverse.
 SUNRISE_COLOUR_STOPS = [
     (20, 0, 0),
@@ -26,7 +26,7 @@ SUNRISE_COLOUR_STOPS = [
     (255, 120, 0),
     (255, 180, 60),
     (255, 220, 150),
-    (255, 255, 255),
+    (255, 200, 140),
 ]
 
 
@@ -156,7 +156,7 @@ class LEDs(object):
 
     def sunrise(self, duration_time, max_brightness=10):
         """simulated sunrise: gradually brightens and shifts colour from a
-        dark ember through orange and warm white up to a bright white,
+        dark ember through orange and warm white,
         imitating a natural dawn as a gentle wake-up cue"""
         if self.stop_led:
             logger.debug('skipping led sunrise, since button was pressed')
@@ -172,7 +172,7 @@ class LEDs(object):
 
     def sunset(self, duration_time, start_brightness=10):
         """simulated sunset: gradually dims and shifts colour from a bright
-        white down through warm white, orange and a dark ember to fully off,
+        warm white down through orange and a dark ember to fully off,
         imitating a natural dusk as a gentle wind-down cue"""
         if self.stop_led:
             logger.debug('skipping led sunset, since button was pressed')

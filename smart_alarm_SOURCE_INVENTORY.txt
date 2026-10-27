@@ -178,8 +178,8 @@ white_blinking(duration_time) Displays a blinking white-light pattern for the re
 wake_up_light_show(duration_time) Runs the combined wake-up sequence, including rainbow and white-blinking stages.
 
 Using these functions instead:
-sunrise(duration_time, max_brightness=10) Gradually brightens/warms the strip from a dark ember to bright white, simulating a local sunrise.
-sunset(duration_time, start_brightness=10) Gradually dims/cools the strip from bright white to off, simulating a local sunset.
+sunrise(duration_time, max_brightness=10) Gradually brightens/warms the strip from a dark ember to warm white, simulating a local sunrise.
+sunset(duration_time, start_brightness=10) Gradually dims/cools the strip from warm white to off, simulating a local sunset.
 
 -----------------------------
 smart_alarm/modules/sounds.py
