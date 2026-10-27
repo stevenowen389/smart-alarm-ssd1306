@@ -1,14 +1,7 @@
 # Welcome to "_Smala_" - the IoT Smart Alarm Clock
 
-<<<<<<< HEAD
 =======
 All credit goes to the creator of the original repo - Fabian Gebhart, this fork is my version that uses a SSD1306 OLED display.
-ALL PHOTOS SHOW THE ORIGINAL SMART ALARM CASE, I HAVEN'T MODIFIED THE CAD/STL FILES, I LEAVE THIS UP TO THE USER.
-THE WIKI ALSO HAS REFERENCES TO FUNCTIONS THAT I HAVEN'T IMPLEMENTED NAMELY RSS TEXT FEEDS.
-
-This smart_alarm project provides an easy to build and program Internet of Things alarm clock. We would love to see you build your own version of it. It is designed, such that you can adapt your needs and improve it easily. Let us know if you want to contribute to this repository or simply want to share your ideas. All kinds of support is appreciated. 
-
-
 :warning: :warning: **THIS PROJECT IS STILL IN DEVELOPMENT AND MIGHT NOT RUN AS EXPECTED**  :warning: :warning:
 
 Raspberry Pi setup with SSD1306 (quick guide)
@@ -19,17 +12,9 @@ Raspberry Pi setup with SSD1306 (quick guide)
  *  When the pi is running, ssh username@piaddress
  *  clone this repo: git clone 
  *  Install the system and Python dependencies from the repository:
-    ```sh
     cd ~/smart_alarm-ssd1306
-    bash ./install_dependencies.sh
-    ```
- *  Run the alarm with the virtual environment created by the installer:
-    ```sh
-    ./.venv/bin/python ./run_smart_alarm.py
-    ```
-    Use this interpreter rather than the system `python3`; the project dependencies,
-    including `coloredlogs`, are installed in `.venv`.
-
+    ./install_dependencies.sh
+    
 Currently working functions
 ============================
 
@@ -43,7 +28,7 @@ Currently working functions
 * running apache2 server
 * automatic display brightness adjustment due to inbuilt photocell
 * audio amplifier volume control
-* sunrise/sunset RGB led simulation
+* RGB led sunrise/sunset simulation
 
 
-### Thanks 
+
