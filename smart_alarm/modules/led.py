@@ -40,7 +40,7 @@ class LEDs(object):
         """init functions: set variables and start adafruit dotstar class"""
         # write to error.log file
         logger.info('led-module initialized')
-        self.number_of_leds = 9
+        self.number_of_leds = 10
         self.stop_led = False
         self.leds_active = False
 
