@@ -435,7 +435,7 @@ def main():
     display.show_time(time.strftime("%H%M"))
 
     # one quick led rainbow
-    v = threading.Thread(target=led.rainbow, args=(10, 1,))
+    v = threading.Thread(target=led.rainbow, args=(12, 1,))
     v.start()
 
     # start the the button interrupt thread
