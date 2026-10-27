@@ -146,8 +146,13 @@ class LEDs(object):
                 while hold_until_stopped and self.stop_led is False:
                     time.sleep(update_interval)
         finally:
-            strip.cleanup()
-            self.leds_active = False
+            try:
+                for led_index in range(self.number_of_leds):
+                    strip.set_pixel(led_index, 0, 0, 0)
+                strip.show()
+            finally:
+                strip.cleanup()
+                self.leds_active = False
 
     def sunrise(self, duration_time, max_brightness=10):
         """simulated sunrise: gradually brightens and shifts colour from a
