@@ -29,7 +29,6 @@ SUNRISE_COLOUR_STOPS = [
     (255, 120, 40),
 ]
 
-
 class LEDs(object):
     """
     LEDs class: manages the implementation of the 'wake-up'-leds.
@@ -40,7 +39,7 @@ class LEDs(object):
         """init functions: set variables and start adafruit dotstar class"""
         # write to error.log file
         logger.info('led-module initialized')
-        self.number_of_leds = 18
+        self.number_of_leds = 30
         self.stop_led = False
         self.leds_active = False
 
