@@ -113,7 +113,7 @@ class LEDs(object):
         )
 
     def _run_gradient(self, colour_stops, duration_time, start_brightness, end_brightness,
-                      update_interval=1.0, hold_until_stopped=False):
+                      update_interval=0.05, hold_until_stopped=False):
         """gradually fades the whole strip through colour_stops while ramping
         the global brightness from start_brightness to end_brightness (both
         on the APA102's native 0-31 scale). Used by sunrise()/sunset()."""
