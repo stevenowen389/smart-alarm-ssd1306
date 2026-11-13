@@ -20,28 +20,34 @@ fi
 
 cd "$REPO_DIR"
 
-if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
-  echo "Not a git repository: $REPO_DIR" >&2
+if [ ! -f "$REPO_DIR/requirements.txt" ] || [ ! -f "$REPO_DIR/run_smart_alarm.py" ] || [ ! -d "$REPO_DIR/smart_alarm" ]; then
+  echo "Smart Alarm source files not found in: $REPO_DIR" >&2
+  echo "Run this script from the project directory containing requirements.txt, run_smart_alarm.py, and smart_alarm/." >&2
   exit 1
 fi
 
-echo "[1/5] Fetching latest changes from $REMOTE"
-git fetch "$REMOTE" "$BRANCH"
+if command -v git > /dev/null 2>&1 && git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+  echo "[1/5] Fetching latest changes from $REMOTE"
+  git fetch "$REMOTE" "$BRANCH"
 
-echo "[2/5] Checking out branch (preserving local data.xml)"
-if [ -f "$REPO_DIR/smart_alarm/data.xml" ]; then
-  cp "$REPO_DIR/smart_alarm/data.xml" "$HOME/.smart_alarm-data.xml"
+  echo "[2/5] Checking out branch (preserving local data.xml)"
+  if [ -f "$REPO_DIR/smart_alarm/data.xml" ]; then
+    cp "$REPO_DIR/smart_alarm/data.xml" "$HOME/.smart_alarm-data.xml"
+  fi
+  git reset --hard
+  git clean -fd -e wheelhouse/ -e wheelhouse/**
+  git checkout -B "$BRANCH" -f "$REMOTE/$BRANCH"
+  git reset --hard "$REMOTE/$BRANCH"
+  if [ -f "$HOME/.smart_alarm-data.xml" ]; then
+    cp "$HOME/.smart_alarm-data.xml" "$REPO_DIR/smart_alarm/data.xml"
+    rm -f "$HOME/.smart_alarm-data.xml"
+  fi
+  echo "Checked out $BRANCH at $REPO_DIR"
+  git --no-pager log -1 --oneline
+else
+  echo "[1/5] No Git checkout detected; installing the supplied source files"
+  echo "[2/5] Skipping update (future installs cannot fetch updates without Git metadata)"
 fi
-git reset --hard
-git clean -fd -e wheelhouse/ -e wheelhouse/**
-git checkout -B "$BRANCH" -f "$REMOTE/$BRANCH"
-git reset --hard "$REMOTE/$BRANCH"
-if [ -f "$HOME/.smart_alarm-data.xml" ]; then
-  cp "$HOME/.smart_alarm-data.xml" "$REPO_DIR/smart_alarm/data.xml"
-  rm -f "$HOME/.smart_alarm-data.xml"
-fi
-echo "Checked out $BRANCH at $REPO_DIR"
-git --no-pager log -1 --oneline
 
 echo "[3/5] Installing system and Python dependencies"
 bash "$REPO_DIR/install_dependencies.sh" "$REPO_DIR"

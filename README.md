@@ -14,6 +14,10 @@ Raspberry Pi setup with SSD1306 (quick guide)
  *  Install the system and Python dependencies from the repository:
     cd ~/smart_alarm-ssd1306
     ./install.sh
+
+   The installer updates the project automatically when it is a Git clone. If
+   you instead copied or downloaded the source without its `.git` directory,
+   it installs the files as-is; run `git clone` to enable automatic updates.
     
 Currently working functions
 ============================
@@ -29,6 +33,5 @@ Currently working functions
 * automatic display brightness adjustment due to inbuilt photocell
 * audio amplifier volume control
 * RGB led sunrise/sunset simulation
-
 
 
