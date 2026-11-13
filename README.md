@@ -12,7 +12,7 @@ Raspberry Pi setup with SSD1306 (quick guide)
  *  When the pi is running, ssh username@piaddress
  *  clone this repo: git clone https://github.com/stevenowen389/smart-alarm-ssd1306.git
  *  Install the system and Python dependencies from the repository:
-    cd ~/smart_alarm-ssd1306
+    cd ~/smart-alarm-ssd1306
     ./install.sh
 
    The installer updates the project automatically when it is a Git clone. If

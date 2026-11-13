@@ -5,7 +5,7 @@ Installs required on the Pi (inside your venv or system python):
   python -m pip install adafruit-blinka adafruit-circuitpython-ssd1306 pillow
 
 Run:
-  cd /home/steven/smart_alarm
+  cd /home/steven/smart-alarm-ssd1306
   source .venv/bin/activate
   python playground/hello_ssd1306_simple.py
 

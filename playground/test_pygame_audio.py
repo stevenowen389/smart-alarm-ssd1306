@@ -9,7 +9,7 @@ import time
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('file', nargs='?', default='smart_alarm/sounds/blop.mp3')
+    parser.add_argument('file', nargs='?', default='smart-alarm/sounds/blop.mp3')
     args = parser.parse_args()
 
     if not os.path.isfile(args.file):

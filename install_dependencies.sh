@@ -92,18 +92,18 @@ else
   "$VENV/bin/python" -m pip install -r "$PROJECT_ROOT/requirements.txt"
 fi
 
-echo "Configuring apache2 for smart_alarm..."
+echo "Configuring apache2 for smart-alarm..."
 $APT a2enmod wsgi
 # Keep Debian's envvars package file intact. Apache loads conf-enabled before
 # sites-enabled, so these values are available to the virtual host config.
 {
   echo "ServerName localhost"
-  echo "Define smart_alarm_path $PROJECT_ROOT/smart_alarm"
+  echo "Define smart_alarm_path $PROJECT_ROOT/smart-alarm"
   echo "Define smart_alarm_venv $VENV"
 } | $APT tee /etc/apache2/conf-available/smart-alarm-paths.conf > /dev/null
 $APT a2enconf smart-alarm-paths
 $APT cp "$PROJECT_ROOT/misc/apache/000-default.conf" /etc/apache2/sites-available/000-default.conf
-$APT chmod o+w "$PROJECT_ROOT/smart_alarm/data.xml" "$PROJECT_ROOT/smart_alarm/music"
+$APT chmod o+w "$PROJECT_ROOT/smart-alarm/data.xml" "$PROJECT_ROOT/smart-alarm/music"
 # www-data needs execute (traversal) permission on every directory leading to
 # the DocumentRoot. Walk up from PROJECT_ROOT instead of trusting $HOME, since
 # $HOME resolves to /root (not the invoking user's home) when this script is

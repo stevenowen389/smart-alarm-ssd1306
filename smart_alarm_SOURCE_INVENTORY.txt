@@ -85,7 +85,7 @@ run_smart_alarm.py
 Imports: os, sys, runpy.
 Main script             Launches the smart_alarm application without defining named functions.
 
-smart_alarm/settings.py
+smart-alarm/settings.py
 -----------------------
 Class Settings          Stores alarm configuration with defaults and property-based access.
 __init__()              Initializes a Settings instance and fills its default values.
@@ -116,12 +116,12 @@ text property           Exposes custom message text through getter and setter me
 volume property         Exposes volume through the getter and setter methods.
 
 --------------------------
-smart_alarm/log_config.py
+smart-alarm/log_config.py
 --------------------------
 logging_dict             Defines the shared logging configuration, including console and rotating-file handlers.
 
 -----------------------
-smart_alarm/smart_alarm
+smart-alarm/smart_alarm.py
 -----------------------
 Imports: RPi.GPIO, gpiozero.Button, gpiozero.DigitalInputDevice, gpiozero.DigitalOutputDevice, threading, logging.config, log_config, time, os, coloredlogs, difflib, modules.display_class.Display, modules.sounds.Sound, modules.xml_data.Xml_data, modules.led.LEDs.
 
@@ -142,7 +142,7 @@ main()                   Runs the main clock loop, synchronizes XML settings, up
 __main__ entry point     Initializes runtime state and invokes main() when this script is executed directly.
 
 ----------------------------
-smart_alarm/python_server.py
+smart-alarm/python_server.py
 ----------------------------
 Imports: cgi, sys, os.path, logging, base64, modules.xml_data, wsgiref.simple_server, webbrowser.
 application(environ, start_response) Handles WSGI GET and POST requests for the alarm configuration web interface.
@@ -150,7 +150,7 @@ content_type(path)      Determines a response MIME type from a requested file pa
 show_404_app(environ, start_response, path) Returns a WSGI 404 response for an unavailable resource.
 
 ------------------------------------
-smart_alarm/modules/display_class.py
+smart-alarm/modules/display_class.py
 ------------------------------------
 Imports: time, logging, os, threading, PIL.Image, PIL.ImageDraw, PIL.ImageFont, board, busio, adafruit_ssd1306, Adafruit_SSD1306.
 Class Display          Provides an SSD1306 OLED display abstraction with CircuitPython and legacy-driver fallbacks.
@@ -165,7 +165,7 @@ scroll(message, number_of_iteration) NO LONGER USED: Scrolls a text message hori
 show_time(value)        Renders a time value with decimal points and alarm status on the OLED.
 show_message(message)   Renders a centered static message on the OLED.
 
-smart_alarm/modules/led.py
+smart-alarm/modules/led.py
 --------------------------
 Imports: time, os, sys, colorschemes, apa102, logging.
 Class LEDs             Controls APA102 RGB LEDs for wake-up lighting effects.
@@ -182,7 +182,7 @@ sunrise(duration_time, max_brightness=10) Gradually brightens/warms the strip fr
 sunset(duration_time, start_brightness=10) Gradually dims/cools the strip from warm white to off, simulating a local sunset.
 
 -----------------------------
-smart_alarm/modules/sounds.py
+smart-alarm/modules/sounds.py
 -----------------------------
 Imports: pygame, pyttsx3, time, random.randint, os, gpiozero.OutputDevice, logging.
 Class Sound            Controls MP3 playback, speech synthesis, streaming audio, and the amplifier GPIO.
@@ -196,7 +196,7 @@ play_wakeup_music()    Selects and plays a random MP3 from the configured music 
 play_online_stream(force=False) Starts online stream playback through the mpc command-line client.
 
 -------------------------------
-smart_alarm/modules/xml_data.py
+smart-alarm/modules/xml_data.py
 -------------------------------
 Imports: xml.etree.cElementTree, copy, os, logging, os.listdir, os.path.isfile, os.path.join.
 Class Xml_data          Reads and persists alarm settings and synchronizes the music file list in XML.
@@ -311,7 +311,7 @@ read_default(xml_file, settings)
 JAVASCRIPT WEB SOURCE
 =====================
 
-smart_alarm/web/java_functions.js
+smart-alarm/web/java_functions.js
 ----------------------------------
 Libraries used: jQuery, jQuery UI, jQuery Knob, and jQuery UI Touch Punch.
 Global state              Stores initialization state, MP3 data, XML data, month names, and day names for the web UI.
@@ -329,7 +329,7 @@ MP3 delete handler        Removes the selected MP3 file through the web interfac
 Test alarm click handler Triggers the server-side test-alarm operation.
 
 ----------------------------------------------------
-Bundled JavaScript libraries in smart_alarm/web/libs
+Bundled JavaScript libraries in smart-alarm/web/libs
 ----------------------------------------------------
 excanvas.js               Provides a Canvas API compatibility layer for older browsers.
 jquery-ui.js              Provides jQuery UI widgets such as sliders, buttons, and selectable menus.
@@ -338,7 +338,7 @@ jquery.ui.touch-punch.js Translates touch gestures into jQuery UI mouse-style ev
 listbox.js                Provides the repository's custom listbox widget behavior.
 jquery-ui.css             Supplies styles for jQuery UI widgets and is not executable library source.
 listbox.css               Supplies styles for the custom listbox and is not executable library source.
-smart_alarm/web/stylesheet.css Supplies the custom CSS styling for the alarm configuration interface and defines no functions or libraries.
+smart-alarm/web/stylesheet.css Supplies the custom CSS styling for the alarm configuration interface and defines no functions or libraries.
 images/*                  Supplies image assets used by the bundled web widgets.
 
 ============================
@@ -359,11 +359,11 @@ PACKAGE MARKERS AND DATA
 ========================
 
 __init__.py files         Mark Python packages and define no functions or external libraries.
-smart_alarm/data.xml      Stores alarm configuration consumed by Xml_data and the web interface.
-smart_alarm/music/*       Holds MP3 files selected by Sound and synchronized by Xml_data.
-smart_alarm/sounds/*      Holds sound assets used by the application.
-smart_alarm/logfiles/smala.log Stores runtime log output and defines no functions or libraries.
-smart_alarm/web/index.html Defines the configuration interface whose behavior is implemented by java_functions.js.
+smart-alarm/data.xml      Stores alarm configuration consumed by Xml_data and the web interface.
+smart-alarm/music/*       Holds MP3 files selected by Sound and synchronized by Xml_data.
+smart-alarm/sounds/*      Holds sound assets used by the application.
+smart-alarm/logfiles/smala.log Stores runtime log output and defines no functions or libraries.
+smart-alarm/web/index.html Defines the configuration interface whose behavior is implemented by java_functions.js.
 
 ================
 MAINTENANCE NOTE

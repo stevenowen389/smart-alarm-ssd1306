@@ -4,8 +4,8 @@ SMART ALARM WEB INTERFACE AND SERVER REFERENCE
 Purpose
 -------
 Describes the behavior of the browser-based configuration interface
-(smart_alarm/web/index.html, smart_alarm/web/java_functions.js) and the WSGI
-server that backs it (smart_alarm/python_server.py). Companion document to
+(smart-alarm/web/index.html, smart-alarm/web/java_functions.js) and the WSGI
+server that backs it (smart-alarm/python_server.py). Companion document to
 smart_alarm_SOURCE_INVENTORY.txt, which covers the whole repository at a
 one-sentence-per-entry level; this file goes into more behavioral detail for
 the web/server layer only.
@@ -14,8 +14,8 @@ Scope
 -----
 Covers: index.html controls, java_functions.js event handlers and their
 server-bound requests, python_server.py request handling, and the
-request/response contract with smart_alarm/data.xml. Does not cover the
-alarm daemon (smart_alarm/smart_alarm) except where it reads the same
+request/response contract with smart-alarm/data.xml. Does not cover the
+alarm daemon (smart-alarm/smart_alarm.py) except where it reads the same
 data.xml file and therefore affects web behavior.
 
 ===================
@@ -29,8 +29,8 @@ OVERALL DATA FLOW
   Apache + mod_wsgi -> python_server.py: application(environ, start_response)
       | writes field(s) into the in-memory XML tree, then serializes to disk
       v
-  smart_alarm/data.xml  <-- also read/written independently by the alarm
-                            daemon process (smart_alarm/smart_alarm) every
+  smart-alarm/data.xml  <-- also read/written independently by the alarm
+                            daemon process (smart-alarm/smart_alarm.py) every
                             main-loop iteration.
 
 Because the daemon and the web server are separate OS processes each holding
@@ -40,7 +40,7 @@ applying a change, so it never overwrites fields the daemon updated in the
 meantime (e.g. test_alarm being reset to '0' after a test alarm completes).
 
 ======================
-smart_alarm/web/index.html
+smart-alarm/web/index.html
 ======================
 Static HTML shell; all interactivity is added by java_functions.js after
 load. Key elements, by id/class:
@@ -52,7 +52,7 @@ hour_knob / minute_knob                     Rotating dials (jQuery Knob) that se
 cb_days_mon .. cb_days_sun (class cb_days)  Per-weekday checkboxes; values 1-6 = Mon-Sat, 0 = Sun, matching Python's time.strftime('%w').
 sm_content                                  Selects alarm content: "mp3" or "stream".
 txt_content_stream_url                      Free-text URL for the stream content type.
-sel_mp3_list (multiple select)              Lists MP3 filenames currently in smart_alarm/music/; supports multi-select for deletion.
+sel_mp3_list (multiple select)              Lists MP3 filenames currently in smart-alarm/music/; supports multi-select for deletion.
 btn_add_mp3_list (input type=file)          Native file picker; selecting a file immediately uploads it. 
 btn_del_mp3_list                            Deletes every filename currently selected in sel_mp3_list.
 cb_individual_message / txt_individual_message Toggles and text for a custom wake-up message; the alarm speaks a generated default message when disabled.
@@ -62,7 +62,7 @@ slider (#slider, jQuery UI)                 Volume control, 0-100.
 class_hide                                  Marks the groups of controls that are always shown; the alarm no longer hides/shows this class based on cb_alarm_active.
 
 =================================
-smart_alarm/web/java_functions.js
+smart-alarm/web/java_functions.js
 =================================
 Loaded once per page view; wraps all behavior in a single top-level jQuery
 $(function(){...}) block. Uses two pieces of shared state: `initializing`
@@ -145,7 +145,7 @@ Test alarm button (#btn_test_alarm click)
     data.xml once handled.
 
 ==============================
-smart_alarm/python_server.py
+smart-alarm/python_server.py
 ==============================
 A single WSGI callable (`application`) is registered as the Apache
 mod_wsgi entry point (see misc/apache/000-default.conf: WSGIScriptAlias /
@@ -165,12 +165,12 @@ Request handling, in order:
    - 'uploadMp3File': the field is a file upload (has .filename/.file).
      The filename is sanitized with os.path.basename (prevents path
      traversal), the raw bytes are written directly to
-     smart_alarm/music/<filename> in binary mode, and
+     smart-alarm/music/<filename> in binary mode, and
      xml_data.readFileNamesInMusicDirectory() is called to refresh the
      <mp3_files> list in data.xml. Returns 400 with a short text body on
      failure instead of raising.
    - 'deleteMp3File': filename is sanitized the same way, the file is
-     removed from smart_alarm/music/, and the MP3 list in data.xml is
+     removed from smart-alarm/music/, and the MP3 list in data.xml is
      refreshed. Returns 400 on failure instead of raising.
    - anything else: treated as a direct data.xml field update via
      xml_data.changeValue(field, value); exceptions are logged, not raised,
@@ -199,14 +199,14 @@ __main__ block
 OPERATIONAL NOTES / GOTCHAS
 ==========================
 - File permissions: Apache runs python_server.py as www-data. data.xml must
-  be world-writable (chmod 666) and smart_alarm/music/ must be world-writable
+  be world-writable (chmod 666) and   smart-alarm/music/ must be world-writable
   (chmod 777, not 775 -- www-data is not a member of the file owner's group,
   so group-only write access is not enough) for uploads, deletes, and XML
   field updates to succeed. bundle_send_and_update.ps1/.sh set both
   permissions automatically as step [6/6] of every deployment.
 - Logging: python_server.py's logger writes to whatever handler mod_wsgi/
   Apache is configured with (typically Apache's error log), NOT to
-  smart_alarm/logfiles/smala.log -- that file is only written by the
+  smart-alarm/logfiles/smala.log -- that file is only written by the
   separate alarm daemon process, which calls logging.config.dictConfig
   itself. Check Apache's error log to see python_server.py warnings.
 - Stale in-memory XML: because xml_data is a per-process singleton reused

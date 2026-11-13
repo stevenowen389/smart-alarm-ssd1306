@@ -12,6 +12,8 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUN_USER="${SUDO_USER:-$(id -un)}"
 BRANCH='master'
 REMOTE='origin'
+APP_DIR="$REPO_DIR/smart-alarm"
+LEGACY_APP_DIR="$REPO_DIR/smart_alarm"
 
 if [ "$#" -ne 0 ]; then
   echo "Usage: $0" >&2
@@ -20,9 +22,13 @@ fi
 
 cd "$REPO_DIR"
 
-if [ ! -f "$REPO_DIR/requirements.txt" ] || [ ! -f "$REPO_DIR/run_smart_alarm.py" ] || [ ! -d "$REPO_DIR/smart_alarm" ]; then
+if [ ! -d "$APP_DIR" ] && [ -d "$LEGACY_APP_DIR" ]; then
+  APP_DIR="$LEGACY_APP_DIR"
+fi
+
+if [ ! -f "$REPO_DIR/requirements.txt" ] || [ ! -f "$REPO_DIR/run_smart_alarm.py" ] || [ ! -d "$APP_DIR" ]; then
   echo "Smart Alarm source files not found in: $REPO_DIR" >&2
-  echo "Run this script from the project directory containing requirements.txt, run_smart_alarm.py, and smart_alarm/." >&2
+  echo "Run this script from the project directory containing requirements.txt, run_smart_alarm.py, and smart-alarm/." >&2
   exit 1
 fi
 
@@ -31,22 +37,26 @@ if command -v git > /dev/null 2>&1 && git rev-parse --is-inside-work-tree > /dev
   git fetch "$REMOTE" "$BRANCH"
 
   echo "[2/5] Checking out branch (preserving local data.xml)"
-  if [ -f "$REPO_DIR/smart_alarm/data.xml" ]; then
-    cp "$REPO_DIR/smart_alarm/data.xml" "$HOME/.smart_alarm-data.xml"
+  if [ -f "$APP_DIR/data.xml" ]; then
+    cp "$APP_DIR/data.xml" "$HOME/.smart_alarm-data.xml"
   fi
   git reset --hard
   git clean -fd -e wheelhouse/ -e wheelhouse/**
   git checkout -B "$BRANCH" -f "$REMOTE/$BRANCH"
   git reset --hard "$REMOTE/$BRANCH"
-  if [ -f "$HOME/.smart_alarm-data.xml" ]; then
-    cp "$HOME/.smart_alarm-data.xml" "$REPO_DIR/smart_alarm/data.xml"
-    rm -f "$HOME/.smart_alarm-data.xml"
-  fi
   echo "Checked out $BRANCH at $REPO_DIR"
   git --no-pager log -1 --oneline
 else
   echo "[1/5] No Git checkout detected; installing the supplied source files"
   echo "[2/5] Skipping update (future installs cannot fetch updates without Git metadata)"
+fi
+
+if [ ! -d "$REPO_DIR/smart-alarm" ] && [ -d "$REPO_DIR/smart_alarm" ]; then
+  mv "$REPO_DIR/smart_alarm" "$REPO_DIR/smart-alarm"
+fi
+if [ -f "$HOME/.smart_alarm-data.xml" ]; then
+  cp "$HOME/.smart_alarm-data.xml" "$REPO_DIR/smart-alarm/data.xml"
+  rm -f "$HOME/.smart_alarm-data.xml"
 fi
 
 echo "[3/5] Installing system and Python dependencies"
@@ -57,8 +67,8 @@ echo "[4/5] Installing and starting systemd service"
 bash "$REPO_DIR/install_systemd_unit.sh" "$REPO_DIR" "$RUN_USER"
 
 echo "[5/5] Setting file permissions for web server"
-chmod 666 "$REPO_DIR/smart_alarm/data.xml"
+chmod 666 "$REPO_DIR/smart-alarm/data.xml"
 # 777: www-data (Apache) is not in the file owner's group, so it needs "other" write access
-chmod 777 "$REPO_DIR/smart_alarm/music/"
+chmod 777 "$REPO_DIR/smart-alarm/music/"
 
 echo "Local update complete."
